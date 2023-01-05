@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 18:15:24
+ * @LastEditTime: 2023-01-05 11:06:44
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -40,6 +40,42 @@ const routes = [
         meta: {
           title: "大雾",
           activePath: "/particle/fog",
+        },
+      },
+    ],
+  },
+  {
+    path: "/camera",
+    component: EmptyRouterView,
+    meta: {
+      title: "相机",
+    },
+    children: [
+      {
+        path: "fly",
+        name: "camera_fly",
+        component: () => import("@/views/camera/fly.vue"),
+        meta: {
+          title: "飞行",
+          activePath: "/camera/fly",
+        },
+      },
+    ],
+  },
+  {
+    path: "/mark",
+    component: EmptyRouterView,
+    meta: {
+      title: "打点",
+    },
+    children: [
+      {
+        path: "combine",
+        name: "mark_combine",
+        component: () => import("@/views/mark/combine.vue"),
+        meta: {
+          title: "聚合",
+          activePath: "/mark/combine",
         },
       },
     ],

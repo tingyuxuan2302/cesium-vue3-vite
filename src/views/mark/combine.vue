@@ -3,14 +3,18 @@
  * @Author: 笙痞
  * @Date: 2023-01-05 11:05:00
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-05 17:53:32
+ * @LastEditTime: 2023-01-06 16:32:59
 -->
 <script setup>
-import { ref } from 'vue'
+import { ref, h, createApp } from 'vue'
 import { useStore } from 'vuex';
 import * as Cesium from "cesium"
+import Dialog from '@/helpFunc/dialog';
+import DialogContent from "./components/DialogContent.vue"
 
 const store = useStore()
+const dialogs = ref()
+const app = createApp()
 const { viewer } = store.state
 const initCluster = () => {
   new Cesium.GeoJsonDataSource().load("/json/chuzhong.geojson").then(async dataSource => {
@@ -21,7 +25,6 @@ const initCluster = () => {
     dataSource.clustering.minimumClusterSize = 2;
 
     dataSource.entities.values.forEach((entity) => {
-      console.log('xxx', entity)
       // 将点拉伸一定高度，防止被地形压盖
       entity.position._value.z += 50
       entity._id = `mark-${entity.id}`
@@ -31,7 +34,7 @@ const initCluster = () => {
         height: 32,
       }
       entity.label = {
-        text: "POI",
+        text: entity.name,
         font: "bold 15px Microsoft YaHei",
         // 竖直对齐方式
         verticalOrigin: Cesium.VerticalOrigin.CENTER,
@@ -116,10 +119,32 @@ const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas)
 handler.setInputAction((e) => {
   // 获取实体
   const pick = scene.pick(e.position)
-  if (Cesium.defined(pick) && pick.id.id.indexOf("mark") > -1) {
-    console.log('---', pick.id.name)
+  if (Cesium.defined(pick) && pick.id?.id.indexOf("mark") > -1) {
+    const opts = Object.assign(pick.id, {
+      viewer,
+      title: pick.id.name,
+      content: pick.id.properties.address._value
+      // slotTitle: h('span', {
+      //   innerHTML: pick.id.name,
+      // })
+      // slotContent: h(DialogContent, {
+      //   onClose: handleClose
+      // }, {
+      //   content: () => pick.id.properties.address._value
+      // })
+    })
+    console.log('---', pick.id, opts)
+    if (dialogs.value) {
+      // 只允许一个弹窗出现
+      dialogs.value.windowClose()
+    }
+    dialogs.value = new Dialog(opts)
   }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+
+const handleClose = () => {
+  dialogs.value?.windowClose()
+}
 
 </script>
 <template>

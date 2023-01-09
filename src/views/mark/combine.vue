@@ -1,9 +1,9 @@
 <!--
- * @Descripttion: 聚合点位
+ * @Descripttion: 聚合点位，entity，适用于少量点位
  * @Author: 笙痞
  * @Date: 2023-01-05 11:05:00
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 11:32:43
+ * @LastEditTime: 2023-01-09 15:09:30
 -->
 <script setup>
 import { ref, h } from 'vue'
@@ -32,16 +32,16 @@ const initCluster = () => {
         width: 32,
         height: 32,
       }
-      entity.label = {
-        text: entity.name,
-        font: "bold 15px Microsoft YaHei",
-        // 竖直对齐方式
-        verticalOrigin: Cesium.VerticalOrigin.CENTER,
-        // 水平对齐方式
-        horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-        // 偏移量
-        pixelOffset: new Cesium.Cartesian2(15, 0),
-      }
+      // entity.label = {
+      //   text: entity.name,
+      //   font: "bold 15px Microsoft YaHei",
+      //   // 竖直对齐方式
+      //   verticalOrigin: Cesium.VerticalOrigin.CENTER,
+      //   // 水平对齐方式
+      //   horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+      //   // 偏移量
+      //   pixelOffset: new Cesium.Cartesian2(15, 0),
+      // }
     })
     dataSource.clustering.clusterEvent.addEventListener(
       (clusteredEntities, cluster) => {

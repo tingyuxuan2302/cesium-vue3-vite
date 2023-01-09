@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 10:20:49
+ * @LastEditTime: 2023-01-09 14:45:55
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -69,6 +69,15 @@ const routes = [
       title: "打点",
     },
     children: [
+      {
+        path: "primitive",
+        name: "mark_primitive",
+        component: () => import("@/views/mark/primitive.vue"),
+        meta: {
+          title: "底层打点",
+          activePath: "/mark/primitive",
+        },
+      },
       {
         path: "combine",
         name: "mark_combine",

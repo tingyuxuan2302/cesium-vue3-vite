@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 09:29:31
+ * @LastEditTime: 2023-01-09 14:11:00
 -->
 <script setup>
 import { Viewer, Ion } from 'cesium';
@@ -17,10 +17,13 @@ onMounted(() => {
 })
 const init = () => {
   const viewer = new Viewer('cesiumContainer', {
-    infoBox: false,
+    infoBox: false
   });
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none"
+  // 显示帧率
+  viewer.scene.debugShowFramesPerSecond = true;
+
   store.commit("initViewer", viewer)
 }
 </script>

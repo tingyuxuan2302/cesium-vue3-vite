@@ -1,3 +1,10 @@
+/*
+ * @Descripttion:
+ * @Author: 笙痞
+ * @Date: 2022-10-17 09:43:04
+ * @LastEditors: 笙痞
+ * @LastEditTime: 2023-01-09 16:15:23
+ */
 import axios from "axios";
 import { ElMessage } from "element-plus";
 
@@ -20,7 +27,7 @@ const ERR_TYPE = {
 // 创建 axios 实例
 const axiosInstance = axios.create({
   timeout: 10000, // 请求超时时间
-  baseURL: "http://47.105.103.126:22000", // API 请求的默认前缀
+  baseURL: "/", // API 请求的默认前缀
 });
 
 const handleNetworkError = (errStatus) => {
@@ -61,10 +68,10 @@ const request = (url, method, query, config = {}) => {
     })
       .then((result) => {
         const res = result.data;
-        resolve([null, res]);
+        resolve({ res });
       })
       .catch((err) => {
-        resolve([err, null]);
+        resolve({ err });
       });
   });
 };

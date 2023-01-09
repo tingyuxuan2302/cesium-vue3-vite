@@ -3,10 +3,10 @@
  * @Author: 笙痞
  * @Date: 2023-01-05 11:05:00
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-06 16:32:59
+ * @LastEditTime: 2023-01-09 11:32:43
 -->
 <script setup>
-import { ref, h, createApp } from 'vue'
+import { ref, h } from 'vue'
 import { useStore } from 'vuex';
 import * as Cesium from "cesium"
 import Dialog from '@/helpFunc/dialog';
@@ -14,11 +14,10 @@ import DialogContent from "./components/DialogContent.vue"
 
 const store = useStore()
 const dialogs = ref()
-const app = createApp()
 const { viewer } = store.state
 const initCluster = () => {
-  new Cesium.GeoJsonDataSource().load("/json/chuzhong.geojson").then(async dataSource => {
-    await viewer.dataSources.add(dataSource)
+  viewer.dataSources.add(new Cesium.GeoJsonDataSource().load("/json/chuzhong.geojson").then(dataSource => {
+    // await viewer.dataSources.add(dataSource)
     // 设置聚合参数
     dataSource.clustering.enabled = true;
     dataSource.clustering.pixelRange = 60;
@@ -71,7 +70,9 @@ const initCluster = () => {
         // }
       }
     )
+    return dataSource
   })
+  )
 }
 /**
  * @description: 将图片和文字合成新图标使用（参考Cesium源码）
@@ -112,7 +113,6 @@ viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
 })
-initCluster()
 
 const scene = viewer.scene
 const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas)
@@ -145,10 +145,17 @@ handler.setInputAction((e) => {
 const handleClose = () => {
   dialogs.value?.windowClose()
 }
+const onClear = () => {
+  handleClose()
+  viewer.dataSources?.removeAll()
+}
 
 </script>
 <template>
-  <div></div>
+  <OperateBox>
+    <el-button type="primary" @click="initCluster">打点</el-button>
+    <el-button type="primary" @click="onClear">清除打点</el-button>
+  </OperateBox>
 </template>
 <style lang='less' scoped>
 

@@ -1,3 +1,10 @@
+<!--
+ * @Descripttion: 
+ * @Author: 笙痞
+ * @Date: 2022-10-13 16:07:57
+ * @LastEditors: 笙痞
+ * @LastEditTime: 2023-01-09 09:29:31
+-->
 <script setup>
 import { Viewer, Ion } from 'cesium';
 import { onMounted } from "vue"
@@ -12,6 +19,8 @@ const init = () => {
   const viewer = new Viewer('cesiumContainer', {
     infoBox: false,
   });
+  // 去除logo
+  viewer.cesiumWidget.creditContainer.style.display = "none"
   store.commit("initViewer", viewer)
 }
 </script>

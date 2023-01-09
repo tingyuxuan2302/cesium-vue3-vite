@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-05 11:06:44
+ * @LastEditTime: 2023-01-09 10:20:49
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -76,6 +76,33 @@ const routes = [
         meta: {
           title: "聚合",
           activePath: "/mark/combine",
+        },
+      },
+    ],
+  },
+  {
+    path: "/renderServe",
+    component: EmptyRouterView,
+    meta: {
+      title: "服务加载",
+    },
+    children: [
+      {
+        path: "xyz",
+        name: "renderServe_xyz",
+        component: () => import("@/views/renderServe/xyz.vue"),
+        meta: {
+          title: "xyz瓦片",
+          activePath: "/renderServe/xyz",
+        },
+      },
+      {
+        path: "3dtiles",
+        name: "renderServe_3dtiles",
+        component: () => import("@/views/renderServe/3dtiles.vue"),
+        meta: {
+          title: "3D Tiles",
+          activePath: "/renderServe/3dtiles",
         },
       },
     ],

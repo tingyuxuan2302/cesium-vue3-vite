@@ -3,12 +3,13 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 14:11:00
+ * @LastEditTime: 2023-01-10 15:29:00
 -->
 <script setup>
 import { Viewer, Ion } from 'cesium';
 import { onMounted } from "vue"
 import store from "@/store/store.js";
+import * as Cesium from "cesium"
 
 Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYWE5M2QzNy1hNGFjLTQ3YzItYmU0ZS05MDkyODc1MzVhNzAiLCJpZCI6MTE1MDQwLCJpYXQiOjE2Njg1OTA2NDh9.oW-_utGumUSPqYzlWGjhG8hbda-b4UxZdL0_2t4ASig';
 
@@ -17,12 +18,24 @@ onMounted(() => {
 })
 const init = () => {
   const viewer = new Viewer('cesiumContainer', {
-    infoBox: false
+    infoBox: false,
+    timeline: false, // 是否显示时间线控件
   });
+  // 不显示底图
+  // viewer.imageryLayers.get(0).show = false;
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none"
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
+
+  // const imageryProvider = new Cesium.UrlTemplateImageryProvider({
+  //   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
+  // })
+  // viewer.imageryLayers.addImageryProvider(imageryProvider)
+  // viewer.camera.setView({
+  //   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
+  //   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
+  // })
 
   store.commit("initViewer", viewer)
 }

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 14:45:55
+ * @LastEditTime: 2023-01-10 11:13:03
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -40,6 +40,15 @@ const routes = [
         meta: {
           title: "大雾",
           activePath: "/particle/fog",
+        },
+      },
+      {
+        path: "fire",
+        name: "particle_fire",
+        component: () => import("@/views/particle/fire.vue"),
+        meta: {
+          title: "火焰",
+          activePath: "/particle/fire",
         },
       },
     ],

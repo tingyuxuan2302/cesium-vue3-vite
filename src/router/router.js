@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-10 11:13:03
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-01-11 13:51:29
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -121,6 +121,33 @@ const routes = [
         meta: {
           title: "3D Tiles",
           activePath: "/renderServe/3dtiles",
+        },
+      },
+    ],
+  },
+  {
+    path: "/material",
+    component: EmptyRouterView,
+    meta: {
+      title: "材质",
+    },
+    children: [
+      {
+        path: "highlightRoad",
+        name: "material_highlightRoad",
+        component: () => import("@/views/material/highlightRoad.vue"),
+        meta: {
+          title: "道路闪烁",
+          activePath: "/material/highlightRoad",
+        },
+      },
+      {
+        path: "throughRoad",
+        name: "material_throughRoad",
+        component: () => import("@/views/material/throughRoad.vue"),
+        meta: {
+          title: "道路穿梭",
+          activePath: "/material/throughRoad",
         },
       },
     ],

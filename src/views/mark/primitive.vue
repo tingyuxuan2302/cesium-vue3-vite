@@ -2,8 +2,8 @@
  * @Descripttion: 底层打点，对于大数据量的点渲染效果更佳
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 18:18:59
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-01-11 10:36:04
 -->
 
 <script setup>
@@ -27,9 +27,9 @@ const primitives = viewer.scene.primitives.add(new Cesium.PrimitiveCollection())
 
 
 const getJson = () => {
-  getGeojson("/json/chuzhong.geojson").then(res => {
+  getGeojson("/json/chuzhong.geojson").then(({res}) => {
     console.log(res)
-    const { features } = res.res
+    const { features } = res
     formatData(features)
   })
 }

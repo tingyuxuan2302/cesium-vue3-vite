@@ -6,7 +6,7 @@
  * @LastEditTime: 2023-01-04 18:17:07
 -->
 <script setup>
-import FogEffect from "@/helpFunc/fog.js"
+import FogEffect from "@/utils/cesiumCtrl/fog.js"
 import { useStore } from "vuex"
 import { onUnmounted } from "vue"
 import { Color } from "cesium"

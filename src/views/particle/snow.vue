@@ -6,7 +6,7 @@
  * @LastEditTime: 2023-01-04 17:59:58
 -->
 <script setup>
-import SnowEffect from "@/helpFunc/snow.js"
+import SnowEffect from "@/utils/cesiumCtrl/snow.js"
 import { useStore } from "vuex"
 import { onUnmounted } from "vue"
 

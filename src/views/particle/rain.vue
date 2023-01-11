@@ -6,7 +6,7 @@
  * @LastEditTime: 2023-01-04 18:00:10
 -->
 <script setup>
-import RainEffect from "@/helpFunc/rain.js"
+import RainEffect from "@/utils/cesiumCtrl/rain.js"
 import { useStore } from "vuex"
 import { onUnmounted } from "vue"
 

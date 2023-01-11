@@ -2,8 +2,8 @@
  * @Descripttion: 
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-10 15:29:00
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-01-11 15:17:30
 -->
 <script setup>
 import { Viewer, Ion } from 'cesium';
@@ -23,6 +23,7 @@ const init = () => {
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;
+  // viewer.scene.globe.show = false
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none"
   // 显示帧率

@@ -16,7 +16,7 @@ const { viewer } = store.state
 const set3Dtitle3 = () => {
   let translation = Cesium.Cartesian3.fromArray([0, 0, 0])
   let m = Cesium.Matrix4.fromTranslation(translation)
-  const url = "http://192.168.1.101:9003/model/tiBYmKybj/tileset.json"
+  const url = "http://114.215.136.187:8080/spatio/resource-service/23b42d31f7e74bb998f53831b1d44ac8/280/"
   let tilesetJson = {
     url,
     modelMatrix: m,

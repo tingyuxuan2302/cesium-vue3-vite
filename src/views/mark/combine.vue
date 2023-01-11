@@ -9,7 +9,7 @@
 import { ref, h } from 'vue'
 import { useStore } from 'vuex';
 import * as Cesium from "cesium"
-import Dialog from '@/helpFunc/dialog';
+import Dialog from '@/utils/cesiumCtrl/dialog';
 import DialogContent from "./components/DialogContent.vue"
 
 const store = useStore()

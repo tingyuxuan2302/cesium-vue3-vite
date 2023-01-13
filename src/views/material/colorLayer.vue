@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-13 10:49:26
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-13 15:27:43
+ * @LastEditTime: 2023-01-13 17:41:55
 -->
 <script setup>
 import * as Cesium from 'cesium'
@@ -61,7 +61,6 @@ const addDataToGlobe = (features) => {
   });
   viewer.scene.primitives.add(primitive);
 }
-
 const onClear = () => {
   viewer.scene.primitives.removeAll();
 }

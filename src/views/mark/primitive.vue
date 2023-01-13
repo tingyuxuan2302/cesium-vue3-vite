@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-11 10:36:04
+ * @LastEditTime: 2023-01-13 15:26:59
 -->
 
 <script setup>
@@ -12,6 +12,7 @@ import { useStore } from 'vuex';
 import * as Cesium from "cesium"
 import { getGeojson } from "@/common/api/api.js"
 
+// 聚合实现：https://blog.csdn.net/qq_53979889/article/details/126173439#comments_24834053
 // 聚合实现：https://www.jianshu.com/p/80d40c447657
 
 const store = useStore()
@@ -27,7 +28,7 @@ const primitives = viewer.scene.primitives.add(new Cesium.PrimitiveCollection())
 
 
 const getJson = () => {
-  getGeojson("/json/chuzhong.geojson").then(({res}) => {
+  getGeojson("/json/chuzhong.geojson").then(({ res }) => {
     console.log(res)
     const { features } = res
     formatData(features)

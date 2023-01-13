@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-11 13:51:29
+ * @LastEditTime: 2023-01-13 10:53:01
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -148,6 +148,33 @@ const routes = [
         meta: {
           title: "道路穿梭",
           activePath: "/material/throughRoad",
+        },
+      },
+      {
+        path: "radiant",
+        name: "material_radiant",
+        component: () => import("@/views/material/radiant.vue"),
+        meta: {
+          title: "辐射圈",
+          activePath: "/material/radiant",
+        },
+      },
+      {
+        path: "diffuse",
+        name: "material_diffuse",
+        component: () => import("@/views/material/diffuse.vue"),
+        meta: {
+          title: "圆扩散",
+          activePath: "/material/diffuse",
+        },
+      },
+      {
+        path: "colorLayer",
+        name: "material_colorLayer",
+        component: () => import("@/views/material/colorLayer.vue"),
+        meta: {
+          title: "四色图",
+          activePath: "/material/colorLayer",
         },
       },
     ],

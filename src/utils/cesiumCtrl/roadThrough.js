@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 11:19:55
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-11 17:50:37
+ * @LastEditTime: 2023-01-12 15:48:32
  */
 import * as Cesium from "cesium";
 
@@ -64,9 +64,8 @@ Cesium.Material._materialCache.addMaterial(Cesium.Material.Spriteline1Type, {
   fabric: {
     type: Cesium.Material.Spriteline1Type,
     uniforms: {
-      // color: new Cesium.Color(1, 0, 0, 0.5),
-      // image: "/images/spriteline.png" || "",
-      image: "/images/spriteline.png",
+      color: new Cesium.Color(1, 0, 0, 0.5),
+      image: "",
       transparent: true,
       time: 20,
     },

@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 13:39:25
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-11 18:25:57
+ * @LastEditTime: 2023-01-12 15:48:46
 -->
 <script setup>
 import * as Cesium from 'cesium'
@@ -11,6 +11,7 @@ import { useStore } from 'vuex'
 import { onUnmounted, ref } from 'vue'
 import RoadThroughLine from "@/utils/cesiumCtrl/roadThrough.js"
 import { getGeojson } from "@/common/api/api.js"
+import gsap from "gsap"
 
 const store = useStore()
 const { viewer } = store.state
@@ -24,21 +25,21 @@ viewer.camera.setView({
   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
 })
 
-// const onStart = () => {
-//   // 道路闪烁线
-//   Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (dataSource) {
-//     viewer.dataSources.add(dataSource);
-//     const entities = dataSource.entities.values;
-//     // 聚焦
-//     // viewer.zoomTo(entities);
-//     for (let i = 0; i < entities.length; i++) {
-//       let entity = entities[i];
-//       entity.polyline.width = 1.7;
-//       entity.polyline.material = new RoadThroughLine(1000, '/images/spriteline.png');
-//     }
-//   });
-// }
-const onStart = async () => {
+const onStart = () => {
+  // 道路闪烁线
+  Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (dataSource) {
+    viewer.dataSources.add(dataSource);
+    const entities = dataSource.entities.values;
+    // 聚焦
+    // viewer.zoomTo(entities);
+    for (let i = 0; i < entities.length; i++) {
+      let entity = entities[i];
+      entity.polyline.width = 1.7;
+      entity.polyline.material = new RoadThroughLine(1000, '/images/spriteline.png');
+    }
+  });
+}
+const onStartPimitive = async () => {
   const { res } = await getGeojson("/json/qingdaoRoad.geojson")
   console.log("---", res)
   const { features } = res
@@ -68,16 +69,47 @@ const onStart = async () => {
 
     })
     const ins = new RoadThroughLine(1000, '/images/spriteline.png')
-    console.log("-----instance-----", ins)
+    console.log("-----instance-----", Cesium.Material.Spriteline1Source)
 
     const primitive = new Cesium.Primitive({
       geometryInstances: instance,
       appearance: new Cesium.PolylineMaterialAppearance({
-        flat: true,
-        material: Cesium.Material.fromType(ins.getType(), ins.getValue()),
+        material: new Cesium.Material({
+          fabric: {
+            type: 'Spriteline1',
+            uniforms: {
+              color: new Cesium.Color(1, 0, 0, 0.5),
+              image: '/images/spriteline.png',
+              speed: 20,
+              transparent: true,
+              time: 20,
+            },
+            source: Cesium.Material.Spriteline1Source,
+          },
+          translucent: function () {
+            return true
+          },
+        })
+
       }),
       asynchronous: false,
     })
+    primitive.material = ins
+    //使用gasp实现补间动画，完成动画效果
+    // gsap.to({
+    //   uniforms: {
+    //     // color: new Cesium.Color(1, 0, 0, 0.5),
+    //     // image: "/images/spriteline.png" || "",
+    //     image: "/images/spriteline.png",
+    //     transparent: true,
+    //     time: 20,
+    //   }
+    // }, {
+    //   uTime: 1,
+    //   duration: 2,
+    //   repeat: -1,
+    //   ease: "linear",
+    // })
     viewer.scene.primitives.add(primitive);
   }
 }

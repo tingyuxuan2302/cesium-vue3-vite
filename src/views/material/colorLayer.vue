@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-13 10:49:26
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-13 17:41:55
+ * @LastEditTime: 2023-01-16 13:47:59
 -->
 <script setup>
 import * as Cesium from 'cesium'
@@ -19,14 +19,18 @@ viewer.camera.setView({
 })
 const getJson = async () => {
   const { res } = await getGeojson("/json/qingdaoArea.geojson")
-  addDataToGlobe(res.features)
+  const { res: pointRes } = await getGeojson("/json/areaPoint.geojson")
+  addDataToGlobe(res.features, pointRes)
 }
+const labelCollection = viewer.scene.primitives.add(new Cesium.LabelCollection());
 const colorArrs = ["AQUAMARINE", "BEIGE", "CORNFLOWERBLUE", "DARKORANGE", "GOLD", "GREENYELLOW", "LIGHTPINK", "ORANGERED", "YELLOWGREEN", "TOMATO"]
-const addDataToGlobe = (features) => {
+const areaPointCenter = []
+const addDataToGlobe = (features, pointRes) => {
   let instances = [];
   for (let i = 0; i < features.length; i++) {
-    for (let j = 0; j < features[i].geometry.coordinates.length; j++) {
-      const polygonArray = features[i].geometry.coordinates[j].toString().split(',').map(Number);
+    const curFeatures = features[i]
+    for (let j = 0; j < curFeatures.geometry.coordinates.length; j++) {
+      const polygonArray = curFeatures.geometry.coordinates[j].toString().split(',').map(Number);
       const polygon = new Cesium.PolygonGeometry({
         polygonHierarchy: new Cesium.PolygonHierarchy(
           Cesium.Cartesian3.fromDegreesArray(polygonArray)
@@ -36,6 +40,8 @@ const addDataToGlobe = (features) => {
         extrudedHeight: 100,
         // height: 100, // 多边形和椭球表面之间的距离（以米为单位）。
       });
+      // console.log('---', polygon)
+      // const polygonPositions = polygon.polygonHierarchy.getValue
       const geometry = Cesium.PolygonGeometry.createGeometry(polygon);
       instances.push(new Cesium.GeometryInstance({
         id: `polygon-${i}`,
@@ -47,6 +53,20 @@ const addDataToGlobe = (features) => {
         },
       }));
     }
+    // 寻找中心点位，添加标签
+    const p = pointRes.features.find(item => item.properties["ID"] == curFeatures["properties"]["id"])
+    const carter3Position = Cesium.Cartesian3.fromDegrees(...p["geometry"]["coordinates"])
+    areaPointCenter.push(p["geometry"]["coordinates"])
+    labelCollection.add({
+      text: curFeatures["properties"]["name"],
+      font: "bold 15px Microsoft YaHei",
+      blendOption: Cesium.BlendOption.TRANSLUCENT, // 半透明，提高性能2倍
+      position: carter3Position,
+      // 竖直对齐方式
+      verticalOrigin: Cesium.VerticalOrigin.CENTER,
+      // 水平对齐方式
+      horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+    })
   }
 
 
@@ -71,12 +91,29 @@ handler.setInputAction((e) => {
   // 获取实体
   const pick = scene.pick(e.position)
   if (Cesium.defined(pick) && pick.id.indexOf("polygon") > -1) {
+    const id = pick.id.replace(/polygon-/g, "")
+    console.log("xxx", pick.id, pick)
+    pick.primitive.polygon.material = Cesium.Color.WHITE
+    viewer.camera.flyTo({
+      // 从以度为单位的经度和纬度值返回笛卡尔3位置。
+      destination: Cesium.Cartesian3.fromDegrees(...areaPointCenter[id], 40000),
+      orientation: {
+        // heading：默认方向为正北，正角度为向东旋转，即水平旋转，也叫偏航角。
+        // pitch：默认角度为-90，即朝向地面，正角度在平面之上，负角度为平面下，即上下旋转，也叫俯仰角。
+        // roll：默认旋转角度为0，左右旋转，正角度向右，负角度向左，也叫翻滚角
+        heading: Cesium.Math.toRadians(0.0), // 正东，默认北
+        pitch: Cesium.Math.toRadians(-90), // 向正下方看
+        roll: 0.0, // 左右
+      },
+      duration: 2, // 飞行时间（s）
+    })
     // const opts = Object.assign(pick.id, {
     //   viewer,
     //   title: pick.id.name,
     //   content: pick.id.properties.address._value
     // })
-    console.log("xxx", pick,)
+    //     console.log("xxx", pick,)
+
   }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 

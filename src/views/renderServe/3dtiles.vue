@@ -2,21 +2,31 @@
  * @Descripttion: 3D tiles
  * @Author: 笙痞
  * @Date: 2023-01-09 10:17:36
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 10:24:47
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-01-16 16:53:46
 -->
 <script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex';
 import * as Cesium from "cesium"
+import MeasureTool from "@/utils/cesiumCtrl/measure.js"
 
 const store = useStore()
 const { viewer } = store.state
+const measure = new MeasureTool(viewer)
 
+const onTrianglesMeasure = () => {
+  measure.drawTrianglesMeasureGraphics({
+    callback: () => { }
+  });
+}
+const onClear = () => {
+  measure._drawLayer.entities.removeAll();
+}
 const set3Dtitle3 = () => {
   let translation = Cesium.Cartesian3.fromArray([0, 0, 0])
   let m = Cesium.Matrix4.fromTranslation(translation)
-  const url = "http://114.215.136.187:8080/spatio/resource-service/23b42d31f7e74bb998f53831b1d44ac8/280/"
+  const url = "http://114.215.136.187:8080/spatio/resource-service/803c888b6e144462ab8fd5a8d539f7c9/38/"
   let tilesetJson = {
     url,
     modelMatrix: m,
@@ -83,7 +93,10 @@ const set3Dtitle3 = () => {
 set3Dtitle3()
 </script>
 <template>
-  <div></div>
+  <operate-box>
+    <el-button type='primary' @click='onTrianglesMeasure'>三角量测</el-button>
+    <el-button type='primary' @click='onClear'>清除</el-button>
+  </operate-box>
 </template>
 <style lang='less' scoped>
 

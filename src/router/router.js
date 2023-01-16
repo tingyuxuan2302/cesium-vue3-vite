@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-13 10:53:01
+ * @LastEditTime: 2023-01-16 15:08:01
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -175,6 +175,24 @@ const routes = [
         meta: {
           title: "四色图",
           activePath: "/material/colorLayer",
+        },
+      },
+    ],
+  },
+  {
+    path: "/geometry",
+    component: EmptyRouterView,
+    meta: {
+      title: "几何",
+    },
+    children: [
+      {
+        path: "measure",
+        name: "geometry_measure",
+        component: () => import("@/views/geometry/measure.vue"),
+        meta: {
+          title: "量测",
+          activePath: "/geometry/measure",
         },
       },
     ],

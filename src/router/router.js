@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-16 15:08:01
+ * @LastEditTime: 2023-01-29 11:13:24
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -177,6 +177,15 @@ const routes = [
           activePath: "/material/colorLayer",
         },
       },
+      {
+        path: "water",
+        name: "material_water",
+        component: () => import("@/views/material/water.vue"),
+        meta: {
+          title: "流动水面",
+          activePath: "/material/water",
+        },
+      },
     ],
   },
   {
@@ -193,6 +202,24 @@ const routes = [
         meta: {
           title: "量测",
           activePath: "/geometry/measure",
+        },
+      },
+    ],
+  },
+  {
+    path: "/scene",
+    component: EmptyRouterView,
+    meta: {
+      title: "场景",
+    },
+    children: [
+      {
+        path: "waterFlood",
+        name: "scene_waterFlood",
+        component: () => import("@/views/scene/waterFlood.vue"),
+        meta: {
+          title: "水淹模拟",
+          activePath: "/scene/waterFlood",
         },
       },
     ],

@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 13:39:25
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-12 15:48:46
+ * @LastEditTime: 2023-01-30 15:54:29
 -->
 <script setup>
 import * as Cesium from 'cesium'
@@ -11,21 +11,21 @@ import { useStore } from 'vuex'
 import { onUnmounted, ref } from 'vue'
 import RoadThroughLine from "@/utils/cesiumCtrl/roadThrough.js"
 import { getGeojson } from "@/common/api/api.js"
-import gsap from "gsap"
 
 const store = useStore()
 const { viewer } = store.state
 
-const imageryProvider = new Cesium.UrlTemplateImageryProvider({
-  url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
-})
-viewer.imageryLayers.addImageryProvider(imageryProvider)
+// const imageryProvider = new Cesium.UrlTemplateImageryProvider({
+//   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
+// })
+// viewer.imageryLayers.addImageryProvider(imageryProvider)
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
 })
 
-const onStart = () => {
+const onStartEntity = () => {
+  const material = new RoadThroughLine(1000, '/images/spriteline.png');
   // 道路闪烁线
   Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (dataSource) {
     viewer.dataSources.add(dataSource);
@@ -35,13 +35,12 @@ const onStart = () => {
     for (let i = 0; i < entities.length; i++) {
       let entity = entities[i];
       entity.polyline.width = 1.7;
-      entity.polyline.material = new RoadThroughLine(1000, '/images/spriteline.png');
+      entity.polyline.material = material
     }
   });
 }
 const onStartPimitive = async () => {
   const { res } = await getGeojson("/json/qingdaoRoad.geojson")
-  console.log("---", res)
   const { features } = res
   const instance = []
   if (features?.length) {
@@ -68,54 +67,45 @@ const onStartPimitive = async () => {
       })
 
     })
-    const ins = new RoadThroughLine(1000, '/images/spriteline.png')
     console.log("-----instance-----", Cesium.Material.Spriteline1Source)
+    let source = `czm_material czm_getMaterial(czm_materialInput materialInput)
+                          {
+                             czm_material material = czm_getDefaultMaterial(materialInput);
+                             vec2 st = materialInput.st;
+                             vec4 colorImage = texture2D(image, vec2(fract((st.s - speed * czm_frameNumber * 0.001)), st.t));
+                             material.alpha = colorImage.a * color.a;
+                             material.diffuse = colorImage.rgb * 1.5 ;
+                             return material;
+                          }`;
 
+    const material = new Cesium.Material({
+      fabric: {
+        uniforms: {
+          color: Cesium.Color.fromCssColorString('#7ffeff'),
+          image: "/images/spriteline.png",
+          speed: 10,
+        },
+        source,
+      },
+      translucent: function () {
+        return true;
+      },
+    })
+    const appearance = new Cesium.PolylineMaterialAppearance()
+    appearance.material = material
     const primitive = new Cesium.Primitive({
       geometryInstances: instance,
-      appearance: new Cesium.PolylineMaterialAppearance({
-        material: new Cesium.Material({
-          fabric: {
-            type: 'Spriteline1',
-            uniforms: {
-              color: new Cesium.Color(1, 0, 0, 0.5),
-              image: '/images/spriteline.png',
-              speed: 20,
-              transparent: true,
-              time: 20,
-            },
-            source: Cesium.Material.Spriteline1Source,
-          },
-          translucent: function () {
-            return true
-          },
-        })
-
-      }),
+      appearance,
       asynchronous: false,
     })
-    primitive.material = ins
-    //使用gasp实现补间动画，完成动画效果
-    // gsap.to({
-    //   uniforms: {
-    //     // color: new Cesium.Color(1, 0, 0, 0.5),
-    //     // image: "/images/spriteline.png" || "",
-    //     image: "/images/spriteline.png",
-    //     transparent: true,
-    //     time: 20,
-    //   }
-    // }, {
-    //   uTime: 1,
-    //   duration: 2,
-    //   repeat: -1,
-    //   ease: "linear",
-    // })
+
     viewer.scene.primitives.add(primitive);
   }
 }
 
 const onClear = () => {
   viewer.dataSources.removeAll()
+  viewer.scene.primitives.removeAll()
 }
 onUnmounted(() => {
   onClear()
@@ -123,7 +113,8 @@ onUnmounted(() => {
 </script>
 <template>
   <operate-box>
-    <el-button type="primary" @click="onStart">开始</el-button>
+    <el-button type="primary" @click="onStartEntity">开始(entity渲染)</el-button>
+    <el-button type="primary" @click="onStartPimitive">开始(primitive渲染)</el-button>
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>

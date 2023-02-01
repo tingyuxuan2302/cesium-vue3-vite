@@ -1,7 +1,23 @@
 # Vue 3 + Vite
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+项目基于 vue3 + vite + cesium，欢迎有兴趣的同学加入共建，一起搞开源，一起学习，一起乐呵呵~~
 
-## Recommended IDE Setup
+## 项目启动
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+```
+npm i
+npm run dev
+```
+
+## TODO
+
+### 优化
+
+- [ ] 火焰粒子效果不太好看
+- [ ] 基于 primitive 实现点聚合效果
+- [ ] 量测工具性能卡顿
+- [ ] 3dtiles 加载缓慢，尝试使用异步方法优化
+
+### 计划
+
+- [ ] 热力图效果

@@ -222,6 +222,15 @@ const routes = [
           activePath: "/scene/waterFlood",
         },
       },
+      {
+        path: "heatMap",
+        name: "scene_heatMap",
+        component: () => import("@/views/scene/heatMap.vue"),
+        meta: {
+          title: "热力图",
+          activePath: "/scene/heatMap",
+        },
+      },
     ],
   },
 ];

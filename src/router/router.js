@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-29 11:13:24
+ * @LastEditTime: 2023-02-02 14:31:17
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -202,6 +202,15 @@ const routes = [
         meta: {
           title: "量测",
           activePath: "/geometry/measure",
+        },
+      },
+      {
+        path: "draw",
+        name: "geometry_draw",
+        component: () => import("@/views/geometry/draw.vue"),
+        meta: {
+          title: "绘制",
+          activePath: "/geometry/draw",
         },
       },
     ],

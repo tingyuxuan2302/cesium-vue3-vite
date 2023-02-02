@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 10:17:36
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-16 16:53:46
+ * @LastEditTime: 2023-02-02 10:17:32
 -->
 <script setup>
 import { ref } from 'vue'
@@ -69,22 +69,22 @@ const set3Dtitle3 = () => {
   }
   const tileset = new Cesium.Cesium3DTileset(tilesetJson)
   // 非异步加载
-  viewer.scene.primitives.add(tileset)
-  viewer.flyTo(tileset, {
-    offset: {
-      heading: Cesium.Math.toRadians(120.0),//方向
-      pitch: Cesium.Math.toRadians(-10),//倾斜角度
-      range: 450
-    }
-  })
-  // viewer.flyTo(tileset);
-  // viewer.zoomTo(tileset);
-  // 异步加载
-  // tileset.readyPromise.then(function (tileset) {
-  //   viewer.scene.primitives.add(tileset, 1)
-  // }).otherwise(function (error) {
-  //   console.log(error)
+  // viewer.scene.primitives.add(tileset)
+  // viewer.flyTo(tileset, {
+  //   offset: {
+  //     heading: Cesium.Math.toRadians(120.0),//方向
+  //     pitch: Cesium.Math.toRadians(-10),//倾斜角度
+  //     range: 450
+  //   }
   // })
+  viewer.flyTo(tileset);
+  // 异步加载
+  tileset.readyPromise.then(function (tileset) {
+    viewer.scene.primitives.add(tileset, 1)
+  })
+    .catch(function (error) {
+      console.log(error)
+    })
   tileset.allTilesLoaded.addEventListener(function () {
     console.log('模型已经全部加载完成')
 

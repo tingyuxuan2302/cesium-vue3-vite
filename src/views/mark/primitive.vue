@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-13 15:26:59
+ * @LastEditTime: 2023-02-08 14:09:20
 -->
 
 <script setup>
@@ -11,12 +11,15 @@ import { ref } from 'vue'
 import { useStore } from 'vuex';
 import * as Cesium from "cesium"
 import { getGeojson } from "@/common/api/api.js"
+import PrimitiveCluster from '@/utils/cesiumCtrl/primitiveCluster';
+import Dialog from '@/utils/cesiumCtrl/dialog';
 
 // 聚合实现：https://blog.csdn.net/qq_53979889/article/details/126173439#comments_24834053
 // 聚合实现：https://www.jianshu.com/p/80d40c447657
 
 const store = useStore()
 const { viewer } = store.state
+const dialogs = ref()
 
 const pointCollection = viewer.scene.primitives.add(new Cesium.PointPrimitiveCollection());
 const billboardsCollection = viewer.scene.primitives.add(new Cesium.BillboardCollection());
@@ -26,11 +29,13 @@ const primitives = viewer.scene.primitives.add(new Cesium.PrimitiveCollection())
 
 
 
+let pointFeatures = []
 
 const getJson = () => {
   getGeojson("/json/chuzhong.geojson").then(({ res }) => {
     console.log(res)
     const { features } = res
+    pointFeatures = features
     formatData(features)
   })
 }
@@ -48,6 +53,7 @@ const formatData = (features) => {
     //   pixelSize: 36,
     // })
     // 带图片的点
+    billboardsCollection._id = `mark`
     billboardsCollection.add({
       image: "/images/mark-icon.png",
       width: 32,
@@ -70,7 +76,41 @@ const formatData = (features) => {
 
   }
 }
+const scene = viewer.scene
+const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas)
+handler.setInputAction((e) => {
+  console.log("xxxx", e)
+  // 获取实体
+  const pick = scene.pick(e.position)
+  if (Cesium.defined(pick) && pick.collection._id.indexOf("mark") > -1) {
+    const property = pointFeatures[pick.primitive._index]
+    const opts = {
+      viewer,
+      position: {
+        _value: pick.primitive.position
+      },
+      title: property.properties.name,
+      content: property.properties.address
+      // slotTitle: h('span', {
+      //   innerHTML: pick.id.name,
+      // })
+      // slotContent: h(DialogContent, {
+      //   onClose: handleClose
+      // }, {
+      //   content: () => pick.id.properties.address._value
+      // })
+    }
+    if (dialogs.value) {
+      // 只允许一个弹窗出现
+      dialogs.value.windowClose()
+    }
+    dialogs.value = new Dialog(opts)
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
+const handleClose = () => {
+  dialogs.value?.windowClose()
+}
 
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
@@ -78,13 +118,110 @@ viewer.camera.setView({
 })
 
 const onClear = () => {
+  handleClose()
   billboardsCollection.removeAll()
   // labelCollection.removeAll()
+}
+
+const onCluster = () => {
+  getGeojson("/json/chuzhong.geojson").then(({ res }) => {
+    console.log(res)
+    const { features } = res
+    formatClusterPoint(features)
+  })
+
+}
+const formatClusterPoint = (features) => {
+
+  var scene = viewer.scene;
+  var primitivecluster = new PrimitiveCluster();
+  primitives.add(primitivecluster);
+
+  //与entitycluster相同设置其是否聚合 以及最大最小值
+  primitivecluster.enabled = true;
+  primitivecluster.pixelRange = 60;
+  primitivecluster.minimumClusterSize = 2;
+  primitivecluster._pointCollection = pointCollection;
+  primitivecluster._billboardCollection = billboardsCollection;
+  primitivecluster._labelCollection = labelCollection;
+  // 同时在赋值时调用_initialize方法
+  primitivecluster._initialize(scene);
+
+  //后面设置聚合的距离及聚合后的图标颜色显示与官方案例一样
+  for (let i = 0; i < features.length; i++) {
+    const feature = features[i]
+    const coordinates = feature.geometry.coordinates
+    const position = Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1])
+
+    // 带图片的点
+    primitivecluster._billboardCollection.add({
+      image: "/images/mark-icon.png",
+      width: 32,
+      height: 32,
+      position,
+    })
+    primitivecluster._id = `mark-${i}`
+  }
+  console.log("---", primitives)
+
+
+  primitivecluster.clusterEvent.addEventListener(
+    (clusteredEntities, cluster) => {
+      console.log('clusteredEntities', clusteredEntities)
+      console.log('cluster', cluster)
+      // 关闭自带的显示聚合数量的标签
+      cluster.label.show = false;
+      cluster.billboard.show = true;
+      cluster.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+
+      // 根据聚合数量的多少设置不同层级的图片以及大小
+      cluster.billboard.image = combineIconAndLabel('/images/mark-icon.png', clusteredEntities?.length, 64);
+      cluster.billboard.width = 40;
+      cluster.billboard.height = 40;
+    }
+  )
+
+
+}
+/**
+ * @description: 将图片和文字合成新图标使用（参考Cesium源码）
+ * @param {*} url：图片地址
+ * @param {*} label：文字
+ * @param {*} size：画布大小
+ * @return {*} 返回canvas
+ */
+function combineIconAndLabel(url, label, size) {
+  // 创建画布对象
+  let canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  let ctx = canvas.getContext("2d");
+
+  let promise = new Cesium.Resource.fetchImage(url).then(image => {
+    // 异常判断
+    try {
+      ctx.drawImage(image, 0, 0);
+    } catch (e) {
+      console.log(e);
+    }
+
+    // 渲染字体
+    // font属性设置顺序：font-style, font-variant, font-weight, font-size, line-height, font-family
+    ctx.fillStyle = Cesium.Color.BLACK.toCssColorString();
+    ctx.font = 'bold 20px Microsoft YaHei';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(label, size / 2, size / 2);
+
+    return canvas;
+  });
+  return promise;
 }
 </script>
 <template>
   <OperateBox>
     <el-button type="primary" @click="getJson">打点</el-button>
+    <el-button type="primary" @click="onCluster">打点聚合</el-button>
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>

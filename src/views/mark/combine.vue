@@ -2,8 +2,8 @@
  * @Descripttion: 聚合点位，entity，适用于少量点位
  * @Author: 笙痞
  * @Date: 2023-01-05 11:05:00
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 15:09:30
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-02-08 14:59:05
 -->
 <script setup>
 import { ref, h } from 'vue'
@@ -117,9 +117,16 @@ viewer.camera.setView({
 const scene = viewer.scene
 const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas)
 handler.setInputAction((e) => {
+  const clickPosition = viewer.scene.camera.pickEllipsoid(e.position)
+  const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition)
+  // console.log("经度：" + Cesium.Math.toDegrees(randiansPos.longitude) + ", 纬度：" + Cesium.Math.toDegrees(randiansPos.latitude))
   // 获取实体
   const pick = scene.pick(e.position)
   if (Cesium.defined(pick) && pick.id?.id.indexOf("mark") > -1) {
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(Cesium.Math.toDegrees(randiansPos.longitude), Cesium.Math.toDegrees(randiansPos.latitude), 10000),
+      duration: 1
+    })
     const opts = Object.assign(pick.id, {
       viewer,
       title: pick.id.name,

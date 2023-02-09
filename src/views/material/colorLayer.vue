@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-13 10:49:26
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-16 13:47:59
+ * @LastEditTime: 2023-02-09 16:12:21
 -->
 <script setup>
 import * as Cesium from 'cesium'
@@ -72,6 +72,7 @@ const addDataToGlobe = (features, pointRes) => {
 
   // 合并单个geometry,提高渲染效率
   const primitive = new Cesium.Primitive({
+    releaseGeometryInstances: false,
     geometryInstances: instances,
     appearance: new Cesium.PerInstanceColorAppearance({
       translucent: true, // 当 true 时，几何体应该是半透明的，因此 PerInstanceColorAppearance#renderState 启用了 alpha 混合。
@@ -93,7 +94,12 @@ handler.setInputAction((e) => {
   if (Cesium.defined(pick) && pick.id.indexOf("polygon") > -1) {
     const id = pick.id.replace(/polygon-/g, "")
     console.log("xxx", pick.id, pick)
-    pick.primitive.polygon.material = Cesium.Color.WHITE
+
+    // 单击变色(TODO:遇到多个相同id的instance会失效)
+    // const attributes = pick.primitive.getGeometryInstanceAttributes(pick.id)
+    // console.log("----attributes---", attributes)
+    // attributes.color = Cesium.ColorGeometryInstanceAttribute.toValue(Cesium.Color.WHITE);
+
     viewer.camera.flyTo({
       // 从以度为单位的经度和纬度值返回笛卡尔3位置。
       destination: Cesium.Cartesian3.fromDegrees(...areaPointCenter[id], 40000),
@@ -107,12 +113,6 @@ handler.setInputAction((e) => {
       },
       duration: 2, // 飞行时间（s）
     })
-    // const opts = Object.assign(pick.id, {
-    //   viewer,
-    //   title: pick.id.name,
-    //   content: pick.id.properties.address._value
-    // })
-    //     console.log("xxx", pick,)
 
   }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK)

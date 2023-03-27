@@ -3,20 +3,21 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-29 10:25:08
+ * @LastEditTime: 2023-03-06 14:31:15
 -->
 <script setup>
-import { onMounted } from "vue"
+import { onMounted } from "vue";
 import store from "@/store/store.js";
-import * as Cesium from "cesium"
+import * as Cesium from "cesium";
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYWE5M2QzNy1hNGFjLTQ3YzItYmU0ZS05MDkyODc1MzVhNzAiLCJpZCI6MTE1MDQwLCJpYXQiOjE2Njg1OTA2NDh9.oW-_utGumUSPqYzlWGjhG8hbda-b4UxZdL0_2t4ASig';
+Cesium.Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYWE5M2QzNy1hNGFjLTQ3YzItYmU0ZS05MDkyODc1MzVhNzAiLCJpZCI6MTE1MDQwLCJpYXQiOjE2Njg1OTA2NDh9.oW-_utGumUSPqYzlWGjhG8hbda-b4UxZdL0_2t4ASig";
 
 onMounted(() => {
-  init()
-})
+  init();
+});
 const init = () => {
-  const viewer = new Cesium.Viewer('cesiumContainer', {
+  const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
   });
@@ -24,9 +25,10 @@ const init = () => {
   // viewer.imageryLayers.get(0).show = false;
   // viewer.scene.globe.show = false
   // 去除logo
-  viewer.cesiumWidget.creditContainer.style.display = "none"
+  viewer.cesiumWidget.creditContainer.style.display = "none";
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
+  viewer.scene.globe.depthTestAgainstTerrain = true;
 
   // const imageryProvider = new Cesium.UrlTemplateImageryProvider({
   //   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
@@ -37,16 +39,35 @@ const init = () => {
   //   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
   // })
 
-  store.commit("initViewer", viewer)
+  store.commit("initViewer", viewer);
 
   // 监听点击事件，拾取坐标
-  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
   handler.setInputAction((e) => {
-    const clickPosition = viewer.scene.camera.pickEllipsoid(e.position)
-    const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition)
-    console.log("经度：" + Cesium.Math.toDegrees(randiansPos.longitude) + ", 纬度：" + Cesium.Math.toDegrees(randiansPos.latitude))
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
-}
+    // const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+    // const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+    // console.log(
+    //   "经度：" +
+    //     Cesium.Math.toDegrees(randiansPos.longitude) +
+    //     ", 纬度：" +
+    //     Cesium.Math.toDegrees(randiansPos.latitude),
+    //   "，高度：" + Cesium.Math.toDegrees(randiansPos.height)
+    // );
+
+    const position = viewer.scene.pickPosition(e.position);
+    // console.log("position", position);
+    const { x, y, z } = position;
+    const cartesian3 = new Cesium.Cartesian3(x, y, z);
+    const ellipsoid = viewer.scene.globe.ellipsoid;
+    const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
+    var lat = Cesium.Math.toDegrees(cartographic.latitude);
+
+    var lng = Cesium.Math.toDegrees(cartographic.longitude);
+
+    var alt = cartographic.height;
+    console.log("经度--：" + lng + ", 纬度--：" + lat, "，高度--：" + alt);
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+};
 </script>
 
 <template>

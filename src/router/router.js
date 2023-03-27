@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-02-02 14:31:17
+ * @LastEditTime: 2023-03-21 11:21:09
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -238,6 +238,24 @@ const routes = [
         meta: {
           title: "热力图",
           activePath: "/scene/heatMap",
+        },
+      },
+    ],
+  },
+  {
+    path: "/case",
+    component: EmptyRouterView,
+    meta: {
+      title: "案例",
+    },
+    children: [
+      {
+        path: "buildInfo",
+        name: "case_buildInfo",
+        component: () => import("@/views/case/buildInfo.vue"),
+        meta: {
+          title: "楼户信息",
+          activePath: "/case/buildInfo",
         },
       },
     ],

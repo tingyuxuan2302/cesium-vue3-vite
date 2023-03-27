@@ -3,31 +3,23 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 10:17:36
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-06 11:31:36
+ * @LastEditTime: 2023-03-06 15:23:05
 -->
 <script setup>
 import { ref } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
-import MeasureTool from "@/utils/cesiumCtrl/measure.js";
+import Dialog from "@/utils/cesiumCtrl/dialog";
 
 const store = useStore();
 const { viewer } = store.state;
-const measure = new MeasureTool(viewer);
+const dialogs = ref();
 
-const onTrianglesMeasure = () => {
-  measure.drawTrianglesMeasureGraphics({
-    callback: () => {},
-  });
-};
-const onClear = () => {
-  measure._drawLayer.entities.removeAll();
-};
 const set3Dtitle3 = () => {
   let translation = Cesium.Cartesian3.fromArray([0, 0, 0]);
   let m = Cesium.Matrix4.fromTranslation(translation);
   const url =
-    "http://114.215.136.187:8080/spatio/resource-service/803c888b6e144462ab8fd5a8d539f7c9/38/";
+    "http://114.215.136.187:8080/spatio/resource-service/65d34e8ed37f468c944f765d2484b520/295/";
   let tilesetJson = {
     url,
     modelMatrix: m,
@@ -69,19 +61,32 @@ const set3Dtitle3 = () => {
     dynamicScreenSpaceError: true, // 根据测试，有了这个后，会在真正的全屏加载完之后才清晰化房屋 --- 优化选项。减少距离相机较远的图块的屏幕空间错误(默认false)
   };
   const tileset = new Cesium.Cesium3DTileset(tilesetJson);
-  // 非异步加载
-  // viewer.scene.primitives.add(tileset)
-  // viewer.flyTo(tileset, {
-  //   offset: {
-  //     heading: Cesium.Math.toRadians(120.0),//方向
-  //     pitch: Cesium.Math.toRadians(-10),//倾斜角度
-  //     range: 450
-  //   }
-  // })
   viewer.flyTo(tileset);
+
+  var heightOffset = -53;
   // 异步加载
   tileset.readyPromise
     .then(function (tileset) {
+      const boundingSphere = tileset.boundingSphere;
+      const cartographic = Cesium.Cartographic.fromCartesian(
+        boundingSphere.center
+      );
+      const surface = Cesium.Cartesian3.fromRadians(
+        cartographic.longitude,
+        cartographic.latitude,
+        0.0
+      );
+      const offset = Cesium.Cartesian3.fromRadians(
+        cartographic.longitude,
+        cartographic.latitude,
+        heightOffset
+      );
+      const translation = Cesium.Cartesian3.subtract(
+        offset,
+        surface,
+        new Cesium.Cartesian3()
+      );
+      tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
       viewer.scene.primitives.add(tileset);
     })
     .catch(function (error) {
@@ -92,11 +97,64 @@ const set3Dtitle3 = () => {
   });
 };
 set3Dtitle3();
+
+const onShowInfo = () => {
+  viewer.dataSources.add(
+    new Cesium.GeoJsonDataSource()
+      .load("/json/buildInfo.geojson")
+      .then((dataSource) => {
+        // await viewer.dataSources.add(dataSource)
+
+        dataSource.entities.values.forEach((entity) => {
+          entity._id = `mark-${entity.id}`;
+          entity.billboard = {
+            image: "/images/school-icon.png",
+            width: 32,
+            height: 32,
+          };
+          entity.label = {
+            text: entity.name,
+            font: "bold 15px Microsoft YaHei",
+            // 竖直对齐方式
+            verticalOrigin: Cesium.VerticalOrigin.CENTER,
+            // 水平对齐方式
+            horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
+            // 偏移量
+            pixelOffset: new Cesium.Cartesian2(15, 0),
+          };
+        });
+        return dataSource;
+      })
+  );
+};
+const scene = viewer.scene;
+const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+handler.setInputAction((e) => {
+  // const clickPosition = viewer.scene.camera.pickEllipsoid(e.position)
+  // const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition)
+  const pick = scene.pick(e.position);
+  if (Cesium.defined(pick) && pick.id?.id.indexOf("mark") > -1) {
+    // viewer.camera.flyTo({
+    //   destination: Cesium.Cartesian3.fromDegrees(Cesium.Math.toDegrees(randiansPos.longitude), Cesium.Math.toDegrees(randiansPos.latitude), 10000),
+    //   duration: 1
+    // })
+    const opts = Object.assign(pick.id, {
+      viewer,
+      title: pick.id.name,
+      content: pick.id.properties.address._value,
+    });
+    console.log("---", pick.id, opts);
+    if (dialogs.value) {
+      // 只允许一个弹窗出现
+      dialogs.value.windowClose();
+    }
+    dialogs.value = new Dialog(opts);
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 </script>
 <template>
   <operate-box>
-    <el-button type="primary" @click="onTrianglesMeasure">三角量测</el-button>
-    <el-button type="primary" @click="onClear">清除</el-button>
+    <el-button type="primary" @click="onShowInfo">展示楼层</el-button>
   </operate-box>
 </template>
 <style lang='less' scoped>

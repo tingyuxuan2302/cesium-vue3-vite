@@ -162,10 +162,7 @@ function addCluster(position, numPoints, ids, entityCluster) {
   cluster.label.show = true;
   cluster.label.text = numPoints.toLocaleString();
   cluster.label.id = ids;
-  cluster.billboard.position =
-    cluster.label.position =
-    cluster.point.position =
-      position;
+  cluster.billboard.position = cluster.label.position = cluster.point.position = position;
 
   entityCluster._clusterEvent.raiseEvent(ids, cluster);
 }
@@ -258,38 +255,30 @@ function createDeclutterCallback(entityCluster) {
       entityCluster._clusterBillboardCollection;
     let clusteredPointCollection = entityCluster._clusterPointCollection;
 
-    if (
-      defined(clusteredLabelCollection) &&
-      !clusteredLabelCollection.isDestroyed()
-    ) {
+    if (defined(clusteredLabelCollection)) {
       clusteredLabelCollection.removeAll();
     } else {
-      clusteredLabelCollection = entityCluster._clusterLabelCollection =
-        new LabelCollection({
+      clusteredLabelCollection = entityCluster._clusterLabelCollection = new LabelCollection(
+        {
           scene: scene,
-        });
+        }
+      );
     }
 
-    if (
-      defined(clusteredBillboardCollection) &&
-      !clusteredBillboardCollection.isDestroyed()
-    ) {
+    if (defined(clusteredBillboardCollection)) {
       clusteredBillboardCollection.removeAll();
     } else {
-      clusteredBillboardCollection = entityCluster._clusterBillboardCollection =
-        new BillboardCollection({
+      clusteredBillboardCollection = entityCluster._clusterBillboardCollection = new BillboardCollection(
+        {
           scene: scene,
-        });
+        }
+      );
     }
 
-    if (
-      defined(clusteredPointCollection) &&
-      !clusteredPointCollection.isDestroyed()
-    ) {
+    if (defined(clusteredPointCollection)) {
       clusteredPointCollection.removeAll();
     } else {
-      clusteredPointCollection = entityCluster._clusterPointCollection =
-        new PointPrimitiveCollection();
+      clusteredPointCollection = entityCluster._clusterPointCollection = new PointPrimitiveCollection();
     }
 
     const pixelRange = entityCluster._pixelRange;
@@ -498,26 +487,17 @@ function createDeclutterCallback(entityCluster) {
       }
     }
 
-    if (
-      clusteredLabelCollection.length === 0 ||
-      !clusteredLabelCollection?.isDestroyed()
-    ) {
+    if (clusteredLabelCollection.length === 0) {
       clusteredLabelCollection.destroy();
       entityCluster._clusterLabelCollection = undefined;
     }
 
-    if (
-      clusteredBillboardCollection.length === 0 ||
-      !clusteredBillboardCollection?.isDestroyed()
-    ) {
+    if (clusteredBillboardCollection.length === 0) {
       clusteredBillboardCollection.destroy();
       entityCluster._clusterBillboardCollection = undefined;
     }
 
-    if (
-      clusteredPointCollection.length === 0 ||
-      !clusteredPointCollection?.isDestroyed()
-    ) {
+    if (clusteredPointCollection.length === 0) {
       clusteredPointCollection.destroy();
       entityCluster._clusterPointCollection = undefined;
     }
@@ -855,22 +835,13 @@ function updateEnable(entityCluster) {
     return;
   }
 
-  if (
-    defined(entityCluster._clusterLabelCollection) &&
-    !entityCluster._clusterLabelCollection.isDestroyed()
-  ) {
+  if (defined(entityCluster._clusterLabelCollection)) {
     entityCluster._clusterLabelCollection.destroy();
   }
-  if (
-    defined(entityCluster._clusterBillboardCollection) &&
-    !entityCluster._clusterBillboardCollection.isDestroyed()
-  ) {
+  if (defined(entityCluster._clusterBillboardCollection)) {
     entityCluster._clusterBillboardCollection.destroy();
   }
-  if (
-    defined(entityCluster._clusterPointCollection) &&
-    !entityCluster._clusterPointCollection.isDestroyed()
-  ) {
+  if (defined(entityCluster._clusterPointCollection)) {
     entityCluster._clusterPointCollection.destroy();
   }
 

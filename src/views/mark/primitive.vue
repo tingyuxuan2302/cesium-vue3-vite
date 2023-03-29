@@ -3,11 +3,11 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-28 16:20:38
+ * @LastEditTime: 2023-03-29 10:20:32
 -->
 
 <script setup>
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
@@ -27,6 +27,7 @@ const pointCollection = viewer.scene.primitives.add(
 const billboardsCollection = viewer.scene.primitives.add(
   new Cesium.BillboardCollection()
 );
+const billboardsCollectionCombine = new Cesium.BillboardCollection();
 const labelCollection = viewer.scene.primitives.add(
   new Cesium.LabelCollection()
 );
@@ -132,7 +133,7 @@ const onClear = () => {
 };
 
 const onCluster = () => {
-  getGeojson("/json/chuzhong.geojson").then(({ res }) => {
+  getGeojson("/json/schools.geojson").then(({ res }) => {
     console.log(res);
     const { features } = res;
     formatClusterPoint(features);
@@ -146,10 +147,8 @@ const formatClusterPoint = (features) => {
   primitivecluster.enabled = true;
   primitivecluster.pixelRange = 60;
   primitivecluster.minimumClusterSize = 2;
-  primitivecluster._pointCollection = pointCollection;
-  primitivecluster._labelCollection = labelCollection;
-  // 同时在赋值时调用_initialize方法
-  primitivecluster._initialize(scene);
+  // primitivecluster._pointCollection = pointCollection;
+  // primitivecluster._labelCollection = labelCollection;
 
   //后面设置聚合的距离及聚合后的图标颜色显示与官方案例一样
   for (let i = 0; i < features.length; i++) {
@@ -161,20 +160,18 @@ const formatClusterPoint = (features) => {
     );
 
     // 带图片的点
-    billboardsCollection.add({
+    billboardsCollectionCombine.add({
       image: "/images/mark-icon.png",
       width: 32,
       height: 32,
       position,
     });
-    billboardsCollection._billboards[i].position.z += 50;
-
-    // primitivecluster._id = `mark-${i}`;
   }
-  console.log("---", primitives);
-  primitivecluster._billboardCollection = billboardsCollection;
+  primitivecluster._billboardCollection = billboardsCollectionCombine;
+  // 同时在赋值时调用_initialize方法
+  primitivecluster._initialize(scene);
 
-  // primitives.add(primitivecluster);
+  primitives.add(primitivecluster);
 
   primitivecluster.clusterEvent.addEventListener(
     (clusteredEntities, cluster) => {
@@ -187,14 +184,19 @@ const formatClusterPoint = (features) => {
 
       // 根据聚合数量的多少设置不同层级的图片以及大小
       cluster.billboard.image = combineIconAndLabel(
-        "/images/mark-icon.png",
+        "/images/school-icon.png",
         clusteredEntities.length,
         64
       );
+      // cluster.billboard.image = "/images/school-icon.png";
+      cluster.billboard._imageHeight = 60;
+      cluster.billboard._imageWidth = 60;
+      cluster.billboard._dirty = false;
       cluster.billboard.width = 40;
       cluster.billboard.height = 40;
     }
   );
+  return primitivecluster;
 };
 /**
  * @description: 将图片和文字合成新图标使用（参考Cesium源码）
@@ -234,7 +236,7 @@ function combineIconAndLabel(url, label, size) {
 <template>
   <OperateBox>
     <el-button type="primary" @click="getJson">打点</el-button>
-    <el-button type="primary" @click="onCluster">打点聚合</el-button>
+    <el-button type="primary" @click="onCluster">primitive打点聚合</el-button>
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>

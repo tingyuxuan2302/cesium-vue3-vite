@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-02-02 14:31:17
+ * @LastEditTime: 2023-03-29 11:04:34
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -238,6 +238,15 @@ const routes = [
         meta: {
           title: "热力图",
           activePath: "/scene/heatMap",
+        },
+      },
+      {
+        path: "timeLine",
+        name: "scene_timeLine",
+        component: () => import("@/views/scene/timeLine.vue"),
+        meta: {
+          title: "时间轴",
+          activePath: "/scene/timeLine",
         },
       },
     ],

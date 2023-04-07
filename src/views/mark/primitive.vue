@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-29 10:20:32
+ * @LastEditTime: 2023-04-06 13:56:25
 -->
 
 <script setup>
@@ -236,7 +236,9 @@ function combineIconAndLabel(url, label, size) {
 <template>
   <OperateBox>
     <el-button type="primary" @click="getJson">打点</el-button>
+
     <el-button type="primary" @click="onCluster">primitive打点聚合</el-button>
+
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>

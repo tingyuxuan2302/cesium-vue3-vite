@@ -2,11 +2,12 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-17 09:43:04
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-09 16:15:23
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-04-07 10:48:55
  */
 import axios from "axios";
 import { ElMessage } from "element-plus";
+import { BASE_URL } from "@/common/constant"
 
 const METHOD_TYPE = ["post", "put", "patch"];
 const ERR_TYPE = {
@@ -27,7 +28,7 @@ const ERR_TYPE = {
 // 创建 axios 实例
 const axiosInstance = axios.create({
   timeout: 10000, // 请求超时时间
-  baseURL: "/", // API 请求的默认前缀
+  baseURL: BASE_URL, // API 请求的默认前缀
 });
 
 const handleNetworkError = (errStatus) => {

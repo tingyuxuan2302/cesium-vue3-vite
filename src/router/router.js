@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-29 11:04:34
+ * @LastEditTime: 2023-04-06 14:32:28
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -247,6 +247,33 @@ const routes = [
         meta: {
           title: "时间轴",
           activePath: "/scene/timeLine",
+        },
+      },
+      {
+        path: "maskReverseSelect",
+        name: "scene_maskReverseSelect",
+        component: () => import("@/views/scene/maskReverseSelect.vue"),
+        meta: {
+          title: "遮罩反选",
+          activePath: "/scene/maskReverseSelect",
+        },
+      },
+    ],
+  },
+  {
+    path: "/lowCode",
+    component: EmptyRouterView,
+    meta: {
+      title: "低代码平台",
+    },
+    children: [
+      {
+        path: "set",
+        name: "lowCode_set",
+        component: () => import("@/views/lowCode/lowCode.vue"),
+        meta: {
+          title: "配置",
+          activePath: "/lowCode/set",
         },
       },
     ],

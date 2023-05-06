@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-17 09:43:04
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-07 10:48:55
+ * @LastEditTime: 2023-05-06 17:07:23
  */
 import axios from "axios";
 import { ElMessage } from "element-plus";
@@ -28,7 +28,7 @@ const ERR_TYPE = {
 // 创建 axios 实例
 const axiosInstance = axios.create({
   timeout: 10000, // 请求超时时间
-  baseURL: BASE_URL, // API 请求的默认前缀
+  // baseURL: BASE_URL, // API 请求的默认前缀
 });
 
 const handleNetworkError = (errStatus) => {

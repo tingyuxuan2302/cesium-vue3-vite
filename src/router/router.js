@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-06 14:32:28
+ * @LastEditTime: 2023-05-06 17:09:20
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -260,24 +260,24 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/lowCode",
-    component: EmptyRouterView,
-    meta: {
-      title: "低代码平台",
-    },
-    children: [
-      {
-        path: "set",
-        name: "lowCode_set",
-        component: () => import("@/views/lowCode/lowCode.vue"),
-        meta: {
-          title: "配置",
-          activePath: "/lowCode/set",
-        },
-      },
-    ],
-  },
+  // {
+  //   path: "/lowCode",
+  //   component: EmptyRouterView,
+  //   meta: {
+  //     title: "低代码平台",
+  //   },
+  //   children: [
+  //     {
+  //       path: "set",
+  //       name: "lowCode_set",
+  //       component: () => import("@/views/lowCode/lowCode.vue"),
+  //       meta: {
+  //         title: "配置",
+  //         activePath: "/lowCode/set",
+  //       },
+  //     },
+  //   ],
+  // },
 ];
 
 export default routes;

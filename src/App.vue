@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-06 18:18:27
+ * @LastEditTime: 2023-05-08 13:26:52
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -20,10 +20,10 @@ const init = () => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
-    // 指定上下文
-    contextOptions: {
-      requestWebgl1: true,
-    },
+    // // 指定上下文
+    // contextOptions: {
+    //   requestWebgl1: true,
+    // },
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;

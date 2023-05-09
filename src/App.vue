@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-06 14:31:15
+ * @LastEditTime: 2023-05-09 16:38:02
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -20,6 +20,16 @@ const init = () => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
+    imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+    }),
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+      url: "http://data.marsgis.cn/terrain",
+    })
+    // // 指定上下文
+    // contextOptions: {
+    //   requestWebgl1: true,
+    // },
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;
@@ -40,33 +50,30 @@ const init = () => {
   // })
 
   store.commit("initViewer", viewer);
+  // 外天空盒 
+  viewer.scene.skyBox = new Cesium.SkyBox({
+    sources: {
+      positiveX: '/images/Standard-Cube-Map/px1.png',
+      negativeX: '/images/Standard-Cube-Map/nx1.png',
+      positiveY: '/images/Standard-Cube-Map/pz.png',
+      negativeY: '/images/Standard-Cube-Map/nz1.png',
+      positiveZ: '/images/Standard-Cube-Map/py.png',
+      negativeZ: '/images/Standard-Cube-Map/ny1.png'
+    }
+  })
 
   // 监听点击事件，拾取坐标
-  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-  handler.setInputAction((e) => {
-    // const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
-    // const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
-    // console.log(
-    //   "经度：" +
-    //     Cesium.Math.toDegrees(randiansPos.longitude) +
-    //     ", 纬度：" +
-    //     Cesium.Math.toDegrees(randiansPos.latitude),
-    //   "，高度：" + Cesium.Math.toDegrees(randiansPos.height)
-    // );
-
-    const position = viewer.scene.pickPosition(e.position);
-    // console.log("position", position);
-    const { x, y, z } = position;
-    const cartesian3 = new Cesium.Cartesian3(x, y, z);
-    const ellipsoid = viewer.scene.globe.ellipsoid;
-    const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
-    var lat = Cesium.Math.toDegrees(cartographic.latitude);
-
-    var lng = Cesium.Math.toDegrees(cartographic.longitude);
-
-    var alt = cartographic.height;
-    console.log("经度--：" + lng + ", 纬度--：" + lat, "，高度--：" + alt);
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  // const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  // handler.setInputAction((e) => {
+  //   const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+  //   const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+  //   console.log(
+  //     "经度：" +
+  //     Cesium.Math.toDegrees(randiansPos.longitude) +
+  //     ", 纬度：" +
+  //     Cesium.Math.toDegrees(randiansPos.latitude)
+  //   );
+  // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };
 </script>
 

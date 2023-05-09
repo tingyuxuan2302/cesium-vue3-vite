@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-21 11:21:09
+ * @LastEditTime: 2023-05-09 15:58:28
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -186,6 +186,15 @@ const routes = [
           activePath: "/material/water",
         },
       },
+      {
+        path: "skybox",
+        name: "material_skybox",
+        component: () => import("@/views/material/skybox.vue"),
+        meta: {
+          title: "天空盒",
+          activePath: "/material/skybox",
+        },
+      },
     ],
   },
   {
@@ -211,6 +220,15 @@ const routes = [
         meta: {
           title: "绘制",
           activePath: "/geometry/draw",
+        },
+      },
+      {
+        path: "arrow",
+        name: "geometry_arrow",
+        component: () => import("@/views/geometry/arrow.vue"),
+        meta: {
+          title: "态势图",
+          activePath: "/geometry/arrow",
         },
       },
     ],
@@ -240,6 +258,24 @@ const routes = [
           activePath: "/scene/heatMap",
         },
       },
+      {
+        path: "timeLine",
+        name: "scene_timeLine",
+        component: () => import("@/views/scene/timeLine.vue"),
+        meta: {
+          title: "时间轴",
+          activePath: "/scene/timeLine",
+        },
+      },
+      {
+        path: "maskReverseSelect",
+        name: "scene_maskReverseSelect",
+        component: () => import("@/views/scene/maskReverseSelect.vue"),
+        meta: {
+          title: "遮罩反选",
+          activePath: "/scene/maskReverseSelect",
+        },
+      },
     ],
   },
   {
@@ -260,6 +296,24 @@ const routes = [
       },
     ],
   },
+  // {
+  //   path: "/lowCode",
+  //   component: EmptyRouterView,
+  //   meta: {
+  //     title: "低代码平台",
+  //   },
+  //   children: [
+  //     {
+  //       path: "set",
+  //       name: "lowCode_set",
+  //       component: () => import("@/views/lowCode/lowCode.vue"),
+  //       meta: {
+  //         title: "配置",
+  //         activePath: "/lowCode/set",
+  //       },
+  //     },
+  //   ],
+  // },
 ];
 
 export default routes;

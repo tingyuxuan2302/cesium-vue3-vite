@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-08 14:50:50
+ * @LastEditTime: 2023-05-09 15:58:28
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -184,6 +184,15 @@ const routes = [
         meta: {
           title: "流动水面",
           activePath: "/material/water",
+        },
+      },
+      {
+        path: "skybox",
+        name: "material_skybox",
+        component: () => import("@/views/material/skybox.vue"),
+        meta: {
+          title: "天空盒",
+          activePath: "/material/skybox",
         },
       },
     ],

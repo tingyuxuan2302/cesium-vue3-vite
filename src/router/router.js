@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-06 17:09:20
+ * @LastEditTime: 2023-05-08 14:50:50
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -211,6 +211,15 @@ const routes = [
         meta: {
           title: "绘制",
           activePath: "/geometry/draw",
+        },
+      },
+      {
+        path: "arrow",
+        name: "geometry_arrow",
+        component: () => import("@/views/geometry/arrow.vue"),
+        meta: {
+          title: "态势图",
+          activePath: "/geometry/arrow",
         },
       },
     ],

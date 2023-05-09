@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-08 13:26:52
+ * @LastEditTime: 2023-05-09 09:48:42
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -20,6 +20,12 @@ const init = () => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
+    imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+    }),
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+      url: "http://data.marsgis.cn/terrain",
+    })
     // // 指定上下文
     // contextOptions: {
     //   requestWebgl1: true,
@@ -45,17 +51,17 @@ const init = () => {
   store.commit("initViewer", viewer);
 
   // 监听点击事件，拾取坐标
-  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-  handler.setInputAction((e) => {
-    const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
-    const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
-    console.log(
-      "经度：" +
-      Cesium.Math.toDegrees(randiansPos.longitude) +
-      ", 纬度：" +
-      Cesium.Math.toDegrees(randiansPos.latitude)
-    );
-  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  // const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  // handler.setInputAction((e) => {
+  //   const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+  //   const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+  //   console.log(
+  //     "经度：" +
+  //     Cesium.Math.toDegrees(randiansPos.longitude) +
+  //     ", 纬度：" +
+  //     Cesium.Math.toDegrees(randiansPos.latitude)
+  //   );
+  // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };
 </script>
 

@@ -4,6 +4,8 @@ import { useStore } from 'vuex'
 import { ref } from 'vue'
 import SkyBoxOnGround from "@/utils/cesiumCtrl/skyBoxOnGround.js"
 
+// 教程：https://blog.csdn.net/qq_25519615/article/details/128063735
+
 const store = useStore()
 const { viewer } = store.state
 

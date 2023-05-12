@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-09 16:38:02
+ * @LastEditTime: 2023-05-11 17:12:23
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -60,6 +60,9 @@ const init = () => {
       negativeZ: '/images/Standard-Cube-Map/ny1.png'
     }
   })
+
+  // 调试使用
+  window.viewer = viewer
 
   // 监听点击事件，拾取坐标
   // const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);

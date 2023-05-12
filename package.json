@@ -39,6 +39,8 @@
     "mysql2": "^3.2.0",
     "path": "^0.12.7",
     "prettier": "^2.7.1",
+    "proton-engine": "^5.4.5",
+    "raf-manager": "^0.3.0",
     "unplugin-auto-import": "^0.11.2",
     "unplugin-vue-components": "^0.22.8",
     "vite": "^3.1.0",

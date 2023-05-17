@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-16 09:59:14
+ * @LastEditTime: 2023-05-17 14:54:37
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -292,6 +292,15 @@ const routes = [
         meta: {
           title: "天际线分析",
           activePath: "/analysis/skyLine",
+        },
+      },
+      {
+        path: "elevation",
+        name: "analysis_elevation",
+        component: () => import("@/views/analysis/elevation.vue"),
+        meta: {
+          title: "高程（限高）分析",
+          activePath: "/analysis/elevation",
         },
       },
     ],

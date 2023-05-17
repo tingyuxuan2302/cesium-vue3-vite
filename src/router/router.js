@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-09 15:58:28
+ * @LastEditTime: 2023-05-16 09:59:14
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -274,6 +274,24 @@ const routes = [
         meta: {
           title: "遮罩反选",
           activePath: "/scene/maskReverseSelect",
+        },
+      },
+    ],
+  },
+  {
+    path: "/analysis",
+    component: EmptyRouterView,
+    meta: {
+      title: "分析",
+    },
+    children: [
+      {
+        path: "skyLine",
+        name: "analysis_skyLine",
+        component: () => import("@/views/analysis/skyLine.vue"),
+        meta: {
+          title: "天际线分析",
+          activePath: "/analysis/skyLine",
         },
       },
     ],

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-11 17:12:23
+ * @LastEditTime: 2023-05-16 10:19:59
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -65,17 +65,17 @@ const init = () => {
   window.viewer = viewer
 
   // 监听点击事件，拾取坐标
-  // const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-  // handler.setInputAction((e) => {
-  //   const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
-  //   const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
-  //   console.log(
-  //     "经度：" +
-  //     Cesium.Math.toDegrees(randiansPos.longitude) +
-  //     ", 纬度：" +
-  //     Cesium.Math.toDegrees(randiansPos.latitude)
-  //   );
-  // }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  handler.setInputAction((e) => {
+    const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+    const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+    console.log(
+      "经度：" +
+      Cesium.Math.toDegrees(randiansPos.longitude) +
+      ", 纬度：" +
+      Cesium.Math.toDegrees(randiansPos.latitude)
+    );
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };
 </script>
 

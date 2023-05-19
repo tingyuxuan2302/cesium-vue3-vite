@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: 笙痞77
+ * @Date: 2023-05-19 09:58:36
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-05-19 10:10:50
+ */
 import * as Cesium from "cesium"
 
 export default class SkyLineAnalysis {
@@ -19,16 +26,17 @@ export default class SkyLineAnalysis {
       //unform着色器对象 textureScale
       fragmentShader: 'uniform sampler2D colorTexture;' +
         'uniform sampler2D depthTexture;' +
-        'varying vec2 v_textureCoordinates;' +
+        'in vec2 v_textureCoordinates;' +
+        "out vec4 fragColor;" +
         'void main(void)' +
         '{' +
         'float depth = czm_readDepth(depthTexture, v_textureCoordinates);' +
-        'vec4 color = texture2D(colorTexture, v_textureCoordinates);' +
+        'vec4 color = texture(colorTexture, v_textureCoordinates);' +
         'if(depth<1.0 - 0.000001){' +
-        'gl_FragColor = color;' +
+        'fragColor = color;' +
         '}' +
         'else{' +
-        'gl_FragColor = vec4(1.0,0.0,0.0,1.0);' +
+        'fragColor = vec4(1.0,0.0,0.0,1.0);' +
         '}' +
         '}'
     });
@@ -39,17 +47,18 @@ export default class SkyLineAnalysis {
       fragmentShader: 'uniform sampler2D colorTexture;' +
         'uniform sampler2D redTexture;' +
         'uniform sampler2D silhouetteTexture;' +
-        'varying vec2 v_textureCoordinates;' +
+        'in vec2 v_textureCoordinates;' +
+        "out vec4 fragColor;" +
         'void main(void)' +
         '{' +
-        'vec4 redcolor=texture2D(redTexture, v_textureCoordinates);' +
-        'vec4 silhouetteColor = texture2D(silhouetteTexture, v_textureCoordinates);' +
-        'vec4 color = texture2D(colorTexture, v_textureCoordinates);' +
+        'vec4 redcolor=texture(redTexture, v_textureCoordinates);' +
+        'vec4 silhouetteColor = texture(silhouetteTexture, v_textureCoordinates);' +
+        'vec4 color = texture(colorTexture, v_textureCoordinates);' +
         'if(redcolor.r == 1.0){' +
-        'gl_FragColor = mix(color, vec4(5.0,0.0,0.0,1.0), silhouetteColor.a);' +
+        'fragColor = mix(color, vec4(5.0,0.0,0.0,1.0), silhouetteColor.a);' +
         '}' +
         'else{' +
-        'gl_FragColor = color;' +
+        'fragColor = color;' +
         '}' +
         '}',
       //uniform着色器对象

@@ -52,7 +52,7 @@ czm_material czm_getMaterial(czm_materialInput materialInput)
 {
 czm_material material = czm_getDefaultMaterial(materialInput);
 vec2 st = materialInput.st;
-vec4 colorImage = texture2D(image, vec2(fract(st.s - time), st.t));
+vec4 colorImage = texture(image, vec2(fract(st.s - time), st.t));
 material.alpha = colorImage.a;
 material.diffuse = colorImage.rgb * 1.5 ;
 return material;
@@ -108,7 +108,7 @@ export default Spriteline1MaterialProperty;
 //           // 获取当前帧数,fract(x) 返回x的小数部分
 //           float time = fract(czm_frameNumber / (60.0 * durationTime));
 //           // 根据uv采样颜色
-//           vec4 color = texture2D(img,vec2(fract(st.s - time),st.t));
+//           vec4 color = texture(img,vec2(fract(st.s - time),st.t));
 //           material.alpha = color.a;
 //           material.diffuse = color.rgb;
 //           return material;

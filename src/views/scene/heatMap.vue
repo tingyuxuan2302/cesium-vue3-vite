@@ -30,7 +30,6 @@ const getData = async () => {
       };
     });
   }
-  console.log("--", heatData);
   cesiumHeatMap = new CesiumHeatmap(viewer, {
     zoomToLayer: true,
     points: heatData,
@@ -55,5 +54,7 @@ onUnmounted(() => {
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>
+
 <style scoped lang='less'>
 </style>
+

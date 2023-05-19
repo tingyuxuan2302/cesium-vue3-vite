@@ -2,8 +2,8 @@
  * @Descripttion: 雪花粒子类
  * @Author: 笙痞
  * @Date: 2023-01-04 14:01:07
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 18:03:10
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-05-19 09:52:52
  */
 
 import * as Cesium from "cesium";
@@ -50,7 +50,7 @@ class SnowEffect {
 
   snow() {
     return "uniform sampler2D colorTexture;\n\
-          varying vec2 v_textureCoordinates;\n\
+          in vec2 v_textureCoordinates;\n\
           uniform float snowSpeed;\n\
                   uniform float snowSize;\n\
           float snow(vec2 uv,float scale)\n\
@@ -63,6 +63,7 @@ class SnowEffect {
               k=smoothstep(0.,k,sin(f.x+f.y)*snowSize);\n\
               return k*w;\n\
           }\n\
+          out vec4 fragColor;\n\
           void main(void){\n\
               vec2 resolution=czm_viewport.zw;\n\
               vec2 uv=(gl_FragCoord.xy*2.-resolution.xy)/min(resolution.x,resolution.y);\n\
@@ -77,7 +78,7 @@ class SnowEffect {
               c+=snow(uv,6.);\n\
               c+=snow(uv,5.);\n\
               finalColor=(vec3(c));\n\
-              gl_FragColor=mix(texture2D(colorTexture,v_textureCoordinates),vec4(finalColor,1),.5);\n\
+              fragColor=mix(texture(colorTexture,v_textureCoordinates),vec4(finalColor,1),.5);\n\
               }\n\
               ";
   }

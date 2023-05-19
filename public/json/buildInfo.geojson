@@ -1,0 +1,57 @@
+{
+  "type": "FeatureCollection",
+  "name": "build",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id_0": 1,
+        "id": "xx_cz_000001",
+        "name": "10楼",
+        "address": "山东省青岛市黄岛区前湾港路888号"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.47246888596526,
+          36.143793850136646,
+          79.07818125215218
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_0": 2,
+        "id": "xx_cz_000002",
+        "name": "11楼",
+        "address": "山东省青岛市城阳区重庆北路398号"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.47246816417298,
+          36.14379232714737,
+          82.1827559289035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id_0": 3,
+        "id": "xx_cz_000003",
+        "name": "12楼",
+        "address": "山东省青岛市西海岸新区钱塘江路366号"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          120.47246729591478,
+          36.143792670296726,
+          85.08256386181192
+        ]
+      }
+    }
+  ]
+}

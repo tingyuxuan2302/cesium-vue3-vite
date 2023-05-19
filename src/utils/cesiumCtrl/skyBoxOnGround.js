@@ -2,17 +2,18 @@ import * as Cesium from 'cesium'
 
 //片元着色器，直接从源码复制
 const SkyBoxFS = `uniform samplerCube u_cubeMap;
-    varying vec3 v_texCoord;
+    in vec3 v_texCoord;
+    out vec4 fragColor;
     void main(){
         vec4 color = textureCube(u_cubeMap, normalize(v_texCoord));
-        gl_FragColor = vec4(czm_gammaCorrect(color).rgb, czm_morphTime);
+        fragColor = vec4(czm_gammaCorrect(color).rgb, czm_morphTime);
     }
 `;
 
 //顶点着色器有修改，主要是乘了一个旋转矩阵
 const SkyBoxVS = `
-    attribute vec3 position;
-    varying vec3 v_texCoord;
+    out vec3 position;
+    in vec3 v_texCoord;
     uniform mat3 u_rotateMatrix;
     void main(){
         vec3 p = czm_viewRotation * u_rotateMatrix * (czm_temeToPseudoFixed * (czm_entireFrustum.y * position));

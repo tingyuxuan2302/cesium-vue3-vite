@@ -38,6 +38,7 @@ const init = () => {
   viewer.cesiumWidget.creditContainer.style.display = "none";
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
+  viewer.scene.globe.depthTestAgainstTerrain = true;
 
   // const imageryProvider = new Cesium.UrlTemplateImageryProvider({
   //   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 09:41:20
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-04 11:10:02
+ * @LastEditTime: 2023-05-09 16:51:44
 -->
 <script setup>
 import { ref } from "vue";
@@ -36,5 +36,4 @@ viewer.camera.setView({
 <template>
   <div></div>
 </template>
-<style lang='less' scoped>
-</style>
+<style lang='less' scoped></style>

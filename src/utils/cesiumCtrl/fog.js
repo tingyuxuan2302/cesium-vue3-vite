@@ -2,8 +2,8 @@
  * @Descripttion: 雾粒子
  * @Author: 笙痞
  * @Date: 2023-01-04 18:11:32
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 18:19:41
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-05-19 09:56:16
  */
 import * as Cesium from "cesium";
 class FogEffect {
@@ -56,16 +56,17 @@ class FogEffect {
        uniform sampler2D depthTexture;\n\
        uniform float visibility;\n\
        uniform vec4 fogColor;\n\
-       varying vec2 v_textureCoordinates; \n\
+       in vec2 v_textureCoordinates; \n\
+       out vec4 fragColor;\n\
        void main(void) \n\
        { \n\
-          vec4 origcolor = texture2D(colorTexture, v_textureCoordinates); \n\
+          vec4 origcolor = texture(colorTexture, v_textureCoordinates); \n\
           float depth = czm_readDepth(depthTexture, v_textureCoordinates); \n\
-          vec4 depthcolor = texture2D(depthTexture, v_textureCoordinates); \n\
+          vec4 depthcolor = texture(depthTexture, v_textureCoordinates); \n\
           float f = visibility * (depthcolor.r - 0.3) / 0.2; \n\
           if (f < 0.0) f = 0.0; \n\
           else if (f > 1.0) f = 1.0; \n\
-          gl_FragColor = mix(origcolor, fogColor, f); \n\
+          fragColor = mix(origcolor, fogColor, f); \n\
        }\n";
   }
 }

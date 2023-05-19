@@ -2,8 +2,8 @@
  * @Descripttion: 雨粒子效果
  * @Author: 笙痞
  * @Date: 2023-01-04 15:01:03
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 18:02:58
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2023-05-19 09:54:15
  */
 import * as Cesium from "cesium";
 
@@ -57,13 +57,14 @@ class RainEffect {
 
   rain() {
     return "uniform sampler2D colorTexture;\n\
-              varying vec2 v_textureCoordinates;\n\
+              in vec2 v_textureCoordinates;\n\
               uniform float tiltAngle;\n\
               uniform float rainSize;\n\
               uniform float rainSpeed;\n\
               float hash(float x) {\n\
                   return fract(sin(x * 133.3) * 13.13);\n\
               }\n\
+              out vec4 fragColor;\n\
               void main(void) {\n\
                   float time = czm_frameNumber / rainSpeed;\n\
                   vec2 resolution = czm_viewport.zw;\n\
@@ -76,7 +77,7 @@ class RainEffect {
                   float v = 1. - sin(hash(floor(uv.x * 100.)) * 2.);\n\
                   float b = clamp(abs(sin(20. * time * v + uv.y * (5. / (2. + v)))) - .95, 0., 1.) * 20.;\n\
                   c *= v * b;\n\
-                  gl_FragColor = mix(texture2D(colorTexture, v_textureCoordinates), vec4(c, 1), .5);\n\
+                  fragColor = mix(texture(colorTexture, v_textureCoordinates), vec4(c, 1), .5);\n\
               }\n\
               ";
   }

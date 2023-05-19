@@ -72,7 +72,7 @@ const onStartPimitive = async () => {
                           {
                              czm_material material = czm_getDefaultMaterial(materialInput);
                              vec2 st = materialInput.st;
-                             vec4 colorImage = texture2D(image, vec2(fract((st.s - speed * czm_frameNumber * 0.001)), st.t));
+                             vec4 colorImage = texture(image, vec2(fract((st.s - speed * czm_frameNumber * 0.001)), st.t));
                              material.alpha = colorImage.a * color.a;
                              material.diffuse = colorImage.rgb * 1.5 ;
                              return material;
@@ -118,6 +118,4 @@ onUnmounted(() => {
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>
-<style scoped lang='less'>
-
-</style>
+<style scoped lang='less'></style>

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-16 10:19:59
+ * @LastEditTime: 2023-05-19 13:26:09
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -25,8 +25,11 @@ const init = () => {
     }),
     terrainProvider: new Cesium.CesiumTerrainProvider({
       url: "http://data.marsgis.cn/terrain",
-    })
-    // // 指定上下文
+    }),
+    // terrain: Cesium.Terrain.fromWorldTerrain({
+    //   requestVertexNormals: true, //Needed to visualize slope
+    // }),
+    // 指定上下文
     // contextOptions: {
     //   requestWebgl1: true,
     // },

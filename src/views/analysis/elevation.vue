@@ -1,7 +1,7 @@
 <script setup>
 import * as Cesium from 'cesium'
 import { useStore } from 'vuex'
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const store = useStore()
 const { viewer } = store.state
@@ -33,6 +33,9 @@ onMounted(() => {
       Cesium.knockout.getObservable(viewModel, name).subscribe(updateMaterial)
     }
   }
+})
+onUnmounted(() => {
+  clearMaterial()
 })
 
 
@@ -68,7 +71,7 @@ const updateMaterial = () => {
   }
   layers.push(backgroundLayer);
   const gridStartHeight = 200.0;
-  const gridEndHeight = 1800.0;
+  const gridEndHeight = 1500.0;
   const gridCount = 50;
 
   for (let i = 0; i < gridCount; i++) {
@@ -185,13 +188,18 @@ const updateMaterial = () => {
     scene: viewer.scene,
     layers
   })
+  viewer.scene.globe.material = material;
 }
 
+const clearMaterial = () => {
+  viewer.scene.globe.material = null
+}
 
 </script>
 <template>
   <operate-box>
     <el-button type="primary" @click="updateMaterial">开始分析</el-button>
+    <el-button type="primary" @click="clearMaterial">结束分析</el-button>
     <div id="toolBar">
       <table>
         <tbody>
@@ -218,19 +226,19 @@ const updateMaterial = () => {
           <tr>
             <td>Band 1 Position</td>
             <td>
-              <input type="range" min="4000" max="8848" step="1" data-bind="value: band1Position, valueUpdate: 'input'">
+              <input type="range" min="200" max="1500" step="1" data-bind="value: band1Position, valueUpdate: 'input'">
             </td>
           </tr>
           <tr>
             <td>Band 2 Position</td>
             <td>
-              <input type="range" min="4000" max="8848" step="1" data-bind="value: band2Position, valueUpdate: 'input'">
+              <input type="range" min="200" max="1500" step="1" data-bind="value: band2Position, valueUpdate: 'input'">
             </td>
           </tr>
           <tr>
             <td>Band 3 Position</td>
             <td>
-              <input type="range" min="4000" max="8848" step="1" data-bind="value: band3Position, valueUpdate: 'input'">
+              <input type="range" min="200" max="1500" step="1" data-bind="value: band3Position, valueUpdate: 'input'">
             </td>
           </tr>
           <tr>

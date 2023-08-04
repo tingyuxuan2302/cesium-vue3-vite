@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-06 10:51:17
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-04 20:42:35
+ * @LastEditTime: 2023-08-04 20:48:08
  */
 import mysql2 from "mysql2"
 import express from "express"
@@ -14,7 +14,7 @@ const logger = log4js.getLogger("mysqlErr")
 
 const options = {
   host: "xxx", // 主机名
-  port: 'xxxx',
+  port: 'xxx',
   user: 'xxx', // 数据库用户名
   password: 'xxx',
   database: "xxx" // 数据库名称

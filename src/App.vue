@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-19 13:26:09
+ * @LastEditTime: 2023-08-04 20:51:19
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -36,7 +36,6 @@ const init = () => {
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;
-  // viewer.scene.globe.show = false
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
   // 显示帧率

@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "nodemon ./server/app.js",
     "lint": "eslint --ext .vue,.js,.ts,.jsx,.tsx src/",
     "format": "prettier --write \"./**/*.{html,vue,ts,js}\""
   },

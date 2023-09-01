@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-06 13:56:25
+ * @LastEditTime: 2023-09-01 10:01:29
 -->
 
 <script setup>
@@ -53,7 +53,8 @@ const formatData = (features) => {
     const coordinates = feature.geometry.coordinates;
     const position = Cesium.Cartesian3.fromDegrees(
       coordinates[0],
-      coordinates[1]
+      coordinates[1],
+      1000
     );
     const name = feature.properties.name;
     // 画普通的点
@@ -129,6 +130,7 @@ viewer.camera.setView({
 const onClear = () => {
   handleClose();
   billboardsCollection.removeAll();
+  primitives.removeAll()
   // labelCollection.removeAll()
 };
 
@@ -156,7 +158,8 @@ const formatClusterPoint = (features) => {
     const coordinates = feature.geometry.coordinates;
     const position = Cesium.Cartesian3.fromDegrees(
       coordinates[0],
-      coordinates[1]
+      coordinates[1],
+      2000
     );
 
     // 带图片的点
@@ -242,5 +245,4 @@ function combineIconAndLabel(url, label, size) {
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>
-<style lang='less' scoped>
-</style>
+<style lang='less' scoped></style>

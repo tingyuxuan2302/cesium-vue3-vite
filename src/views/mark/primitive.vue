@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-10 09:17:59
+ * @LastEditTime: 2023-11-10 09:57:34
 -->
 
 <script setup>
@@ -26,9 +26,6 @@ const billboardsCollection = viewer.scene.primitives.add(
 );
 let billboardsCollectionCombine = new Cesium.BillboardCollection();
 
-// const primitives = viewer.scene.primitives.add(
-//   new Cesium.PrimitiveCollection()
-// );
 let primitivesCollection = null;
 let primitives = null;
 

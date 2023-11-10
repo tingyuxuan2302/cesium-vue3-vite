@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-09-01 10:01:29
+ * @LastEditTime: 2023-11-10 09:17:59
 -->
 
 <script setup>
@@ -21,20 +21,16 @@ const store = useStore();
 const { viewer } = store.state;
 const dialogs = ref();
 
-const pointCollection = viewer.scene.primitives.add(
-  new Cesium.PointPrimitiveCollection()
-);
 const billboardsCollection = viewer.scene.primitives.add(
   new Cesium.BillboardCollection()
 );
-const billboardsCollectionCombine = new Cesium.BillboardCollection();
-const labelCollection = viewer.scene.primitives.add(
-  new Cesium.LabelCollection()
-);
+let billboardsCollectionCombine = new Cesium.BillboardCollection();
 
-const primitives = viewer.scene.primitives.add(
-  new Cesium.PrimitiveCollection()
-);
+// const primitives = viewer.scene.primitives.add(
+//   new Cesium.PrimitiveCollection()
+// );
+let primitivesCollection = null;
+let primitives = null;
 
 let pointFeatures = [];
 
@@ -130,8 +126,9 @@ viewer.camera.setView({
 const onClear = () => {
   handleClose();
   billboardsCollection.removeAll();
-  primitives.removeAll()
-  // labelCollection.removeAll()
+  primitives.removeAll();
+  primitivesCollection = null;
+  billboardsCollectionCombine = null;
 };
 
 const onCluster = () => {
@@ -142,8 +139,11 @@ const onCluster = () => {
   });
 };
 const formatClusterPoint = (features) => {
+  primitivesCollection = new Cesium.PrimitiveCollection();
+  billboardsCollectionCombine = new Cesium.BillboardCollection();
   var scene = viewer.scene;
-  var primitivecluster = new PrimitiveCluster();
+  let primitivecluster = null;
+  primitivecluster = new PrimitiveCluster();
 
   //与entitycluster相同设置其是否聚合 以及最大最小值
   primitivecluster.enabled = true;
@@ -174,12 +174,13 @@ const formatClusterPoint = (features) => {
   // 同时在赋值时调用_initialize方法
   primitivecluster._initialize(scene);
 
-  primitives.add(primitivecluster);
+  primitivesCollection.add(primitivecluster);
+  primitives = viewer.scene.primitives.add(primitivesCollection);
 
   primitivecluster.clusterEvent.addEventListener(
     (clusteredEntities, cluster) => {
-      console.log("clusteredEntities", clusteredEntities);
-      console.log("cluster", cluster);
+      // console.log("clusteredEntities", clusteredEntities);
+      // console.log("cluster", cluster);
       // 关闭自带的显示聚合数量的标签
       cluster.label.show = false;
       cluster.billboard.show = true;
@@ -245,4 +246,4 @@ function combineIconAndLabel(url, label, size) {
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-08-04 20:51:19
+ * @LastEditTime: 2023-09-08 13:41:23
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -23,9 +23,9 @@ const init = () => {
     imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
     }),
-    terrainProvider: new Cesium.CesiumTerrainProvider({
-      url: "http://data.marsgis.cn/terrain",
-    }),
+    // terrainProvider: new Cesium.CesiumTerrainProvider({
+    //   url: "http://data.marsgis.cn/terrain",
+    // }),
     // terrain: Cesium.Terrain.fromWorldTerrain({
     //   requestVertexNormals: true, //Needed to visualize slope
     // }),

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 10:17:36
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-06 11:31:36
+ * @LastEditTime: 2023-09-08 15:28:32
 -->
 <script setup>
 import { ref } from "vue";
@@ -17,7 +17,7 @@ const measure = new MeasureTool(viewer);
 
 const onTrianglesMeasure = () => {
   measure.drawTrianglesMeasureGraphics({
-    callback: () => {},
+    callback: () => { },
   });
 };
 const onClear = () => {
@@ -27,9 +27,16 @@ const set3Dtitle3 = () => {
   let translation = Cesium.Cartesian3.fromArray([0, 0, 0]);
   let m = Cesium.Matrix4.fromTranslation(translation);
   const url =
-    "http://114.215.136.187:8080/spatio/resource-service/803c888b6e144462ab8fd5a8d539f7c9/38/";
+    "http://114.215.136.187:8080/spatio/resource-service/7bce98c868c841ad9f629e114f748dff/314/";
   let tilesetJson = {
-    url,
+    // url,
+    url: new Cesium.Resource({
+      url,
+      headers: {
+        Authorization: "eyJhbGciOiJIUzUxMiJ9.eyJpc19hZG1pbiI6dHJ1ZSwidXNlcl9pZCI6NDMsInVzZXJfa2V5IjoiZGJkZmI1MDctZDMxNS00MTE4LWExNGYtZjU1OWRhNjgxMDM3IiwidXNlcm5hbWUiOiJSZW5haXRyZSJ9.LIq3NqAPzMJPm3sLEzS_3VdF_AqDlixJk7sWTFk_BnE5S-gxFY4Cx6519DJPx8_sbcoOwvmHfApzAwfanZm25Q",
+      },
+    }),
+
     modelMatrix: m,
     show: true, // 是否显示图块集(默认true)
     skipLevelOfDetail: true, // --- 优化选项。确定是否应在遍历期间应用详细级别跳过(默认false)
@@ -99,5 +106,4 @@ set3Dtitle3();
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>
-<style lang='less' scoped>
-</style>
+<style lang='less' scoped></style>

@@ -3,17 +3,17 @@
  * @Author: 笙痞77
  * @Date: 2023-04-04 11:19:51
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-04-04 15:28:55
+ * @LastEditTime: 2023-11-23 16:05:07
 -->
 <script setup>
 import * as Cesium from "cesium";
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
 
 const store = useStore();
 const { viewer } = store.state;
-viewer.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
+// viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
 
 const onStart = async () => {
   const { res } = await getGeojson("/json/laixi.geojson");
@@ -25,6 +25,7 @@ const onStart = async () => {
     maskpointArray.push(arr[i][1]);
   }
   var maskspoint = Cesium.Cartesian3.fromDegreesArray(maskpointArray);
+  console.log("---maskspoint", maskspoint);
   const area = new Cesium.Entity({
     id: 1,
     polygon: {
@@ -47,6 +48,7 @@ const onStart = async () => {
       positions: maskspoint,
       width: 2, //边界线宽
       material: Cesium.Color.fromCssColorString("#6dcdeb"), //边界线颜色
+      clampToGround: true, // 贴地
     },
   });
   viewer.entities.add(area);
@@ -57,6 +59,9 @@ const onStart = async () => {
 const onClear = () => {
   viewer.entities.removeAll();
 };
+onUnmounted(() => {
+  onClear();
+});
 </script>
 <template>
   <operate-box>
@@ -64,5 +69,4 @@ const onClear = () => {
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>
-<style scoped lang='less'>
-</style>
+<style scoped lang="less"></style>

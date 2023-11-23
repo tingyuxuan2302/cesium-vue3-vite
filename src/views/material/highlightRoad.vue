@@ -3,23 +3,27 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 09:18:28
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-11 11:18:39
+ * @LastEditTime: 2023-11-23 16:32:08
 -->
 <script setup>
-import * as Cesium from 'cesium'
-import { useStore } from 'vuex'
-import { ref } from 'vue'
-import "@/utils/cesiumCtrl/lineMaterial.js"
-import LineFlickerMaterialProperty from "@/utils/cesiumCtrl/lineMaterial.js"
-import { getGeojson } from "@/common/api/api.js"
+import * as Cesium from "cesium";
+import { useStore } from "vuex";
+import { onUnmounted, ref } from "vue";
+import "@/utils/cesiumCtrl/lineMaterial.js";
+import LineFlickerMaterialProperty from "@/utils/cesiumCtrl/lineMaterial.js";
+import { getGeojson } from "@/common/api/api.js";
 
-const store = useStore()
-const { viewer } = store.state
-
-
+const store = useStore();
+const { viewer } = store.state;
+viewer.camera.setView({
+  // 从以度为单位的经度和纬度值返回笛卡尔3位置。
+  destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
+});
 const onStart = () => {
   // 道路闪烁线
-  Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (dataSource) {
+  Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (
+    dataSource
+  ) {
     viewer.dataSources.add(dataSource);
     const entities = dataSource.entities.values;
     // 聚焦
@@ -32,10 +36,10 @@ const onStart = () => {
         color: Cesium.Color.YELLOW,
         // 设置随机变化速度
         speed: 20 * Math.random(),
-      })
+      });
     }
   });
-}
+};
 
 // const onStart = () => {
 //   getGeojson("/json/qingdaoRoad.geojson").then(({res}) => {
@@ -44,8 +48,11 @@ const onStart = () => {
 // }
 
 const onClear = () => {
-  viewer.dataSources.removeAll()
-}
+  viewer.dataSources.removeAll();
+};
+onUnmounted(() => {
+  onClear();
+});
 </script>
 <template>
   <operate-box>
@@ -53,6 +60,4 @@ const onClear = () => {
     <el-button type="primary" @click="onClear">清除</el-button>
   </operate-box>
 </template>
-<style scoped lang='less'>
-
-</style>
+<style scoped lang="less"></style>

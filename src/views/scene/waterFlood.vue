@@ -3,25 +3,25 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 10:17:36
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-01-29 11:25:14
+ * @LastEditTime: 2023-11-23 16:51:05
 -->
 <script setup>
-import { onUnmounted, ref } from 'vue'
-import { useStore } from 'vuex';
-import * as Cesium from "cesium"
-import MeasureTool from "@/utils/cesiumCtrl/measure.js"
+import { onUnmounted, ref } from "vue";
+import { useStore } from "vuex";
+import * as Cesium from "cesium";
+import MeasureTool from "@/utils/cesiumCtrl/measure.js";
 
-const store = useStore()
-const { viewer } = store.state
-const measure = new MeasureTool(viewer)
+const store = useStore();
+const { viewer } = store.state;
+const measure = new MeasureTool(viewer);
 
 const onClear = () => {
   measure._drawLayer.entities.removeAll();
-}
+};
 const set3Dtitle3 = () => {
-  let translation = Cesium.Cartesian3.fromArray([0, 0, 0])
-  let m = Cesium.Matrix4.fromTranslation(translation)
-  const url = "http://114.215.136.187:8080/spatio/resource-service/803c888b6e144462ab8fd5a8d539f7c9/38/"
+  let translation = Cesium.Cartesian3.fromArray([0, 0, 0]);
+  let m = Cesium.Matrix4.fromTranslation(translation);
+  const url = "http://data.mars3d.cn/3dtiles/max-fsdzm/tileset.json";
   let tilesetJson = {
     url,
     modelMatrix: m,
@@ -60,68 +60,65 @@ const set3Dtitle3 = () => {
     debugShowRenderingStatistics: false, // --- 仅用于调试。如果为 true，则绘制标签以指示每个图块的命令、点、三角形和特征的数量(默认false)
     debugShowMemoryUsage: false, // --- 仅用于调试。如果为 true，则绘制标签以指示每个图块使用的纹理和几何内存（以兆字节为单位）(默认false)
     debugShowUrl: false, // --- 仅用于调试。如果为 true，则绘制标签以指示每个图块的 url(默认false)
-    dynamicScreenSpaceError: true // 根据测试，有了这个后，会在真正的全屏加载完之后才清晰化房屋 --- 优化选项。减少距离相机较远的图块的屏幕空间错误(默认false)
-  }
-  const tileset = new Cesium.Cesium3DTileset(tilesetJson)
+    dynamicScreenSpaceError: true, // 根据测试，有了这个后，会在真正的全屏加载完之后才清晰化房屋 --- 优化选项。减少距离相机较远的图块的屏幕空间错误(默认false)
+  };
+  const tileset = new Cesium.Cesium3DTileset(tilesetJson);
   // 非异步加载
-  viewer.scene.primitives.add(tileset)
-  viewer.flyTo(tileset, {
-    offset: {
-      heading: Cesium.Math.toRadians(120.0),//方向
-      pitch: Cesium.Math.toRadians(-10),//倾斜角度
-      range: 450
-    }
-  })
+  viewer.scene.primitives.add(tileset);
+  viewer.flyTo(tileset);
   tileset.allTilesLoaded.addEventListener(function () {
-    console.log('模型已经全部加载完成')
+    console.log("模型已经全部加载完成");
+  });
+};
+set3Dtitle3();
 
-  })
-}
-set3Dtitle3()
-
-let waterEntity = null
-let waterTimer = null
+let waterEntity = null;
+let waterTimer = null;
 const onStart = () => {
-  const waterCoord = [113.06508063476562, 22.64993861205814, 50, 113.06527473705533, 22.64260237495509, 50, 113.06027660076428, 22.643076702115824, 50, 113.060173479617576, 22.651161317346762, 50]
+  const waterCoord = [
+    121.48033090358801, 29.790483294870796, 0, 121.4778771950879,
+    29.79083578574342, 0, 121.47877939338282, 29.79193540741442, 0,
+    121.4804061804202, 29.791480141327728, 0,
+  ];
 
-  let startHeight = 50
-  const targetHeight = 100
+  let startHeight = 10;
+  const targetHeight = 20;
   waterEntity = viewer.entities.add({
     polygon: {
       hierarchy: Cesium.Cartesian3.fromDegreesArrayHeights(waterCoord),
       material: Cesium.Color.fromBytes(64, 157, 253, 200),
       perPositionHeight: true,
-      extrudedHeight: new Cesium.CallbackProperty(() => { return startHeight }, false)
-    }
-  })
+      extrudedHeight: new Cesium.CallbackProperty(() => {
+        return startHeight;
+      }, false),
+    },
+  });
   waterTimer = setInterval(() => {
     if (startHeight < targetHeight) {
-      startHeight += 0.1
+      startHeight += 0.1;
       if (startHeight >= targetHeight) {
-        startHeight = targetHeight
-        clearInterval(waterTimer)
+        startHeight = targetHeight;
+        clearInterval(waterTimer);
       }
       // 使用该方式会闪烁，改用 Cesium.CallbackProperty 平滑
       // this.waterEntity.polygon.extrudedHeight.setValue(startHeight)
     }
-  }, 50)
-}
+  }, 50);
+};
 const onDel = () => {
   if (waterTimer) {
-    clearInterval(waterTimer)
+    clearInterval(waterTimer);
   }
-  viewer.entities.remove(waterEntity)
-}
+  viewer.entities.remove(waterEntity);
+};
 onUnmounted(() => {
-  onDel()
-})
+  onDel();
+});
 </script>
 <template>
   <operate-box>
-    <el-button type='primary' @click='onStart'>开始模拟</el-button>
-    <el-button type='primary' @click='onDel'>删除</el-button>
+    <el-button type="primary" @click="onStart">开始模拟</el-button>
+    <el-button type="primary" @click="onDel">删除</el-button>
   </operate-box>
 </template>
-<style lang='less' scoped>
-
-</style>
+<style lang="less" scoped></style>

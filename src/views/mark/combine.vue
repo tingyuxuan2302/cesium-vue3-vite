@@ -3,10 +3,10 @@
  * @Author: 笙痞
  * @Date: 2023-01-05 11:05:00
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-03-28 15:57:19
+ * @LastEditTime: 2023-11-22 20:04:20
 -->
 <script setup>
-import { ref, h } from "vue";
+import { ref, h, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import Dialog from "@/utils/cesiumCtrl/dialog";
@@ -28,7 +28,7 @@ const initCluster = () => {
 
         dataSource.entities.values.forEach((entity) => {
           // 将点拉伸一定高度，防止被地形压盖
-          entity.position._value.z += 50;
+          entity.position._value.z += 2000;
           entity._id = `mark-${entity.id}`;
           entity.billboard = {
             image: "/images/mark-icon.png",
@@ -170,6 +170,9 @@ const onClear = () => {
   handleClose();
   viewer.dataSources?.removeAll();
 };
+onUnmounted(() => {
+  onClear();
+});
 </script>
 <template>
   <OperateBox>
@@ -177,5 +180,4 @@ const onClear = () => {
     <el-button type="primary" @click="onClear">清除打点</el-button>
   </OperateBox>
 </template>
-<style lang='less' scoped>
-</style>
+<style lang="less" scoped></style>

@@ -3,11 +3,11 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-10 09:57:34
+ * @LastEditTime: 2023-11-22 10:21:26
 -->
 
 <script setup>
-import { nextTick, ref } from "vue";
+import { nextTick, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
@@ -122,11 +122,15 @@ viewer.camera.setView({
 
 const onClear = () => {
   handleClose();
-  billboardsCollection.removeAll();
-  primitives.removeAll();
+  billboardsCollection?.removeAll();
+  primitives?.removeAll();
   primitivesCollection = null;
   billboardsCollectionCombine = null;
 };
+
+onUnmounted(() => {
+  onClear();
+});
 
 const onCluster = () => {
   getGeojson("/json/schools.geojson").then(({ res }) => {

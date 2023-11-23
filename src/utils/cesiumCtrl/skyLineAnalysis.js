@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-05-19 09:58:36
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-19 10:10:50
+ * @LastEditTime: 2023-11-22 17:15:20
  */
 import * as Cesium from "cesium"
 
@@ -13,7 +13,7 @@ export default class SkyLineAnalysis {
   constructor(viewer) {
     this.viewer = viewer
   }
-  open = () => {
+  open() {
     if (this.skylineAnayStages) {
       this.silhouette.enabled = true;
       return;
@@ -80,7 +80,7 @@ export default class SkyLineAnalysis {
     })
     this.skylineAnayStages.add(this.silhouette)
   }
-  close = () => {
+  close() {
     this.silhouette.enabled = false
   }
 }

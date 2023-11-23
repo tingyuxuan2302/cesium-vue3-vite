@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-09-08 13:41:23
+ * @LastEditTime: 2023-11-22 20:01:06
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -21,11 +21,11 @@ const init = () => {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
     imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer"
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
     }),
-    // terrainProvider: new Cesium.CesiumTerrainProvider({
-    //   url: "http://data.marsgis.cn/terrain",
-    // }),
+    terrainProvider: new Cesium.CesiumTerrainProvider({
+      url: "http://data.marsgis.cn/terrain",
+    }),
     // terrain: Cesium.Terrain.fromWorldTerrain({
     //   requestVertexNormals: true, //Needed to visualize slope
     // }),
@@ -42,30 +42,21 @@ const init = () => {
   viewer.scene.debugShowFramesPerSecond = true;
   viewer.scene.globe.depthTestAgainstTerrain = true;
 
-  // const imageryProvider = new Cesium.UrlTemplateImageryProvider({
-  //   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
-  // })
-  // viewer.imageryLayers.addImageryProvider(imageryProvider)
-  // viewer.camera.setView({
-  //   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
-  //   destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
-  // })
-
   store.commit("initViewer", viewer);
-  // 外天空盒 
+  // 外天空盒
   viewer.scene.skyBox = new Cesium.SkyBox({
     sources: {
-      positiveX: '/images/Standard-Cube-Map/px1.png',
-      negativeX: '/images/Standard-Cube-Map/nx1.png',
-      positiveY: '/images/Standard-Cube-Map/pz.png',
-      negativeY: '/images/Standard-Cube-Map/nz1.png',
-      positiveZ: '/images/Standard-Cube-Map/py.png',
-      negativeZ: '/images/Standard-Cube-Map/ny1.png'
-    }
-  })
+      positiveX: "/images/Standard-Cube-Map/px1.png",
+      negativeX: "/images/Standard-Cube-Map/nx1.png",
+      positiveY: "/images/Standard-Cube-Map/pz.png",
+      negativeY: "/images/Standard-Cube-Map/nz1.png",
+      positiveZ: "/images/Standard-Cube-Map/py.png",
+      negativeZ: "/images/Standard-Cube-Map/ny1.png",
+    },
+  });
 
   // 调试使用
-  window.viewer = viewer
+  window.viewer = viewer;
 
   // 监听点击事件，拾取坐标
   const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
@@ -74,9 +65,9 @@ const init = () => {
     const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
     console.log(
       "经度：" +
-      Cesium.Math.toDegrees(randiansPos.longitude) +
-      ", 纬度：" +
-      Cesium.Math.toDegrees(randiansPos.latitude)
+        Cesium.Math.toDegrees(randiansPos.longitude) +
+        ", 纬度：" +
+        Cesium.Math.toDegrees(randiansPos.latitude)
     );
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };

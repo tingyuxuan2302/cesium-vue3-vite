@@ -3,37 +3,34 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 13:39:25
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-23 16:33:39
+ * @LastEditTime: 2023-12-21 14:10:37
 -->
 <script setup>
 import * as Cesium from "cesium";
 import { useStore } from "vuex";
-import { onBeforeMount, onUnmounted, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 import RoadThroughLine from "@/utils/cesiumCtrl/roadThrough.js";
 import { getGeojson } from "@/common/api/api.js";
 
 const store = useStore();
 const { viewer } = store.state;
 
-// const imageryProvider = new Cesium.UrlTemplateImageryProvider({
-//   url: "http://114.215.136.187:8080/spatio/resource-service/4e57e9342d7244dc95e36bf5e6980eb9/63/{z}/{x}/{y}.png",
-// })
-// viewer.imageryLayers.addImageryProvider(imageryProvider)
-onBeforeMount(() => {
+const jsonUrl = "/json/qdRoad_less.geojson";
+
+onMounted(() => {
   viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
 });
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
-  destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
+  destination: Cesium.Cartesian3.fromDegrees(120.188, 36.67, 200000),
 });
 
+let _dataSource = null;
+const material = new RoadThroughLine(1000, "/images/spriteline.png");
 const onStartEntity = () => {
-  const material = new RoadThroughLine(1000, "/images/spriteline.png");
   // 道路闪烁线
-  Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (
-    dataSource
-  ) {
-    viewer.dataSources.add(dataSource);
+  _dataSource = new Cesium.GeoJsonDataSource();
+  _dataSource.load(jsonUrl).then(function (dataSource) {
     const entities = dataSource.entities.values;
     // 聚焦
     // viewer.zoomTo(entities);
@@ -43,9 +40,11 @@ const onStartEntity = () => {
       entity.polyline.material = material;
     }
   });
+  viewer.dataSources.add(_dataSource);
 };
+let primitives = null;
 const onStartPimitive = async () => {
-  const { res } = await getGeojson("/json/qingdaoRoad.geojson");
+  const { res } = await getGeojson(jsonUrl);
   const { features } = res;
   const instance = [];
   if (features?.length) {
@@ -105,13 +104,13 @@ const onStartPimitive = async () => {
       asynchronous: false,
     });
 
-    viewer.scene.primitives.add(primitive);
+    primitives = viewer.scene.primitives.add(primitive);
   }
 };
-
 const onClear = () => {
-  viewer.dataSources.removeAll();
-  viewer.scene.primitives.removeAll();
+  // 此处注意不要使用removeAll，将实例都删除的话，再次添加会报错
+  _dataSource && viewer.dataSources.remove(_dataSource, false);
+  primitives && viewer.scene.primitives.remove(primitives);
 };
 onUnmounted(() => {
   onClear();

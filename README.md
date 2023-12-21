@@ -3,18 +3,21 @@
  * @Author: 笙痞77
  * @Date: 2023-01-10 17:02:14
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-05-17 09:32:43
+ * @LastEditTime: 2023-12-21 17:14:22
 -->
 
 # Vue 3 + Vite
 
-项目基于 vue3 + vite + cesium，已实现常见三维动画场景，欢迎有兴趣的同学加入共建，一起搞开源，一起学习，一起乐呵呵~~
+项目基于 vue3 + vite + cesium，已实现常见三维动画场景，效果浏览：http://www.brown77.cn:3389 （廉价服务器，请耐心等待）
 
 ## 项目启动
 
 ```
 npm i
 npm run dev
+
+// 安装失败的把node_modules删掉，用yarn安装
+yarn install
 ```
 
 ## 功能（已完成）

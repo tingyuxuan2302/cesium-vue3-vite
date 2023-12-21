@@ -3,31 +3,34 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 09:18:28
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-23 16:32:08
+ * @LastEditTime: 2023-12-21 14:09:38
 -->
 <script setup>
 import * as Cesium from "cesium";
 import { useStore } from "vuex";
-import { onUnmounted, ref } from "vue";
+import { onUnmounted, ref, onBeforeMount, onMounted } from "vue";
 import "@/utils/cesiumCtrl/lineMaterial.js";
 import LineFlickerMaterialProperty from "@/utils/cesiumCtrl/lineMaterial.js";
 import { getGeojson } from "@/common/api/api.js";
 
 const store = useStore();
 const { viewer } = store.state;
+const jsonUrl = "/json/qdRoad_less.geojson";
+
+onMounted(() => {
+  viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+});
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
-  destination: Cesium.Cartesian3.fromDegrees(120.36, 36.09, 40000),
+  destination: Cesium.Cartesian3.fromDegrees(120.188, 36.67, 200000),
 });
+let _dataSource = null;
 const onStart = () => {
-  // 道路闪烁线
-  Cesium.GeoJsonDataSource.load("/json/qingdaoRoad.geojson").then(function (
-    dataSource
-  ) {
-    viewer.dataSources.add(dataSource);
+  _dataSource = new Cesium.GeoJsonDataSource();
+  _dataSource.load(jsonUrl).then(function (dataSource) {
     const entities = dataSource.entities.values;
     // 聚焦
-    viewer.zoomTo(entities);
+    // viewer.zoomTo(entities);
     for (let i = 0; i < entities.length; i++) {
       let entity = entities[i];
       entity.polyline.width = 3.0;
@@ -39,19 +42,17 @@ const onStart = () => {
       });
     }
   });
+  viewer.dataSources.add(_dataSource);
 };
 
-// const onStart = () => {
-//   getGeojson("/json/qingdaoRoad.geojson").then(({res}) => {
-
-//   })
-// }
-
 const onClear = () => {
-  viewer.dataSources.removeAll();
+  viewer.dataSources.remove(_dataSource);
 };
 onUnmounted(() => {
   onClear();
+  viewer.scene.terrainProvider = new Cesium.CesiumTerrainProvider({
+    url: "http://data.marsgis.cn/terrain",
+  });
 });
 </script>
 <template>

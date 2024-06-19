@@ -85,7 +85,27 @@ handler.setInputAction((e) => {
   console.log("xxxx", e);
   // 获取实体
   const pick = scene.pick(e.position);
-  if (Cesium.defined(pick) && pick.id.indexOf("xx") > -1) {
+  // 判断primitive的点击
+  if (pick.id) {
+    if (Cesium.defined(pick) && pick.id.indexOf("xx") > -1) {
+      const property = pointFeatures[pick.primitive._index];
+      const opts = {
+        viewer,
+        position: {
+          _value: pick.primitive.position,
+        },
+        title: property.properties.name,
+        content: property.properties.address,
+      };
+      if (dialogs.value) {
+        // 只允许一个弹窗出现
+        dialogs.value.windowClose();
+      }
+      dialogs.value = new Dialog(opts);
+      return;
+    }
+  }
+  if (Cesium.defined(pick) && pick.collection._id.indexOf("mark") > -1) {
     const property = pointFeatures[pick.primitive._index];
     const opts = {
       viewer,

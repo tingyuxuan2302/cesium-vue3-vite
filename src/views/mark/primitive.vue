@@ -85,7 +85,7 @@ handler.setInputAction((e) => {
   console.log("xxxx", e);
   // 获取实体
   const pick = scene.pick(e.position);
-  if (Cesium.defined(pick) && pick.collection._id.indexOf("mark") > -1) {
+  if (Cesium.defined(pick) && pick.id.indexOf("xx") > -1) {
     const property = pointFeatures[pick.primitive._index];
     const opts = {
       viewer,
@@ -136,6 +136,7 @@ const onCluster = () => {
   getGeojson("/json/schools.geojson").then(({ res }) => {
     console.log(res);
     const { features } = res;
+    pointFeatures = features;
     formatClusterPoint(features);
   });
 };
@@ -165,6 +166,7 @@ const formatClusterPoint = (features) => {
 
     // 带图片的点
     billboardsCollectionCombine.add({
+      id: feature.properties.id,
       image: "/images/mark-icon.png",
       width: 32,
       height: 32,

@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2023-01-09 14:34:21
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 10:21:26
+ * @LastEditTime: 2024-06-02 21:31:46
 -->
 
 <script setup>
@@ -18,9 +18,10 @@ import Dialog from "@/utils/cesiumCtrl/dialog";
 // 聚合实现：https://www.jianshu.com/p/80d40c447657
 
 const store = useStore();
+// viewer就是cesium实例化之后的场景示例，我把他存在了vuex的store中
 const { viewer } = store.state;
 const dialogs = ref();
-
+// 先把广告牌实例化，然后再添加到场景中
 const billboardsCollection = viewer.scene.primitives.add(
   new Cesium.BillboardCollection()
 );
@@ -28,9 +29,9 @@ let billboardsCollectionCombine = new Cesium.BillboardCollection();
 
 let primitivesCollection = null;
 let primitives = null;
-
+// 点位特性信息集合
 let pointFeatures = [];
-
+// 先获取点位的json信息
 const getJson = () => {
   getGeojson("/json/chuzhong.geojson").then(({ res }) => {
     console.log(res);
@@ -43,7 +44,9 @@ const getJson = () => {
 const formatData = (features) => {
   for (let i = 0; i < features.length; i++) {
     const feature = features[i];
+    // 每个点位的坐标
     const coordinates = feature.geometry.coordinates;
+    // 将坐标处理成3D笛卡尔点
     const position = Cesium.Cartesian3.fromDegrees(
       coordinates[0],
       coordinates[1],
@@ -58,6 +61,7 @@ const formatData = (features) => {
     // })
     // 带图片的点
     billboardsCollection._id = `mark`;
+    // add的是Billboard，将一个个Billboard添加到集合当中
     billboardsCollection.add({
       image: "/images/mark-icon.png",
       width: 32,
@@ -80,13 +84,17 @@ const formatData = (features) => {
   }
 };
 const scene = viewer.scene;
+// ScreenSpaceEventHandler的参数是要添加事件的元素，直接给整个画布添加
 const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
 handler.setInputAction((e) => {
   console.log("xxxx", e);
-  // 获取实体
+  // 获取点击的实体
   const pick = scene.pick(e.position);
+  // 判断点击的是不是点位
   if (Cesium.defined(pick) && pick.collection._id.indexOf("mark") > -1) {
+    // 拿到点位的属性信息
     const property = pointFeatures[pick.primitive._index];
+    // 弹窗所需的参数
     const opts = {
       viewer,
       position: {

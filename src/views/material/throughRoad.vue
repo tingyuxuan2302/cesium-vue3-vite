@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-01-11 13:39:25
  * @LastEditors: 笙痞77
- * @LastEditTime: 2023-12-21 14:10:37
+ * @LastEditTime: 2024-06-22 21:33:21
 -->
 <script setup>
 import * as Cesium from "cesium";
@@ -11,14 +11,17 @@ import { useStore } from "vuex";
 import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 import RoadThroughLine from "@/utils/cesiumCtrl/roadThrough.js";
 import { getGeojson } from "@/common/api/api.js";
+import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 
 const store = useStore();
 const { viewer } = store.state;
 
-const jsonUrl = "/json/qdRoad_less.geojson";
+// const jsonUrl = "/json/qdRoad_less.geojson";
+const jsonUrl = "/json/qingdaoRoad.geojson";
 
 onMounted(() => {
   viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
+  modifyMap(viewer);
 });
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。

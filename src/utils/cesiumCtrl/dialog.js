@@ -2,8 +2,8 @@
  * @Descripttion: 自定义弹窗
  * @Author: 笙痞
  * @Date: 2023-01-06 10:36:19
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-06 16:59:15
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2024-06-01 11:15:18
  */
 import * as Cesium from "cesium";
 import { createApp, h } from "vue";
@@ -13,6 +13,7 @@ export default class Dialog {
   constructor(opts) {
     const { viewer, position, ...rest } = opts;
     this.viewer = viewer;
+    // 点位的空间位置信息
     this.position = position._value;
     const { vmInstance } = createDialog({
       ...rest, // 主要是弹窗内容
@@ -23,7 +24,7 @@ export default class Dialog {
     } else {
       this.vmInstance = vmInstance;
     }
-
+    // 将弹窗元素添加到渲染cesium的容器中
     viewer.cesiumWidget.container.appendChild(vmInstance.$el);
     this.addPostRender();
   }
@@ -33,13 +34,17 @@ export default class Dialog {
   }
   postRender() {
     if (!this.vmInstance.$el || !this.vmInstance.$el.style) return;
+    // 画布高度
     const canvasHeight = this.viewer.scene.canvas.height;
+    // 实例化屏幕坐标
     const windowPosition = new Cesium.Cartesian2();
+    // 将WGS84 经纬度坐标转换成屏幕坐标，这通常用于将 HTML 元素放置在与场景中的对象相同的屏幕位置。
     Cesium.SceneTransforms.wgs84ToWindowCoordinates(
       this.viewer.scene,
       this.position,
       windowPosition
     );
+    // 调整弹窗的位置
     this.vmInstance.$el.style.bottom =
       canvasHeight - windowPosition.y + 260 + "px";
     const elWidth = this.vmInstance.$el.offsetWidth;
@@ -61,7 +66,7 @@ export default class Dialog {
       this.vmInstance.$el.style.display = "none";
     }
   }
-  //关闭
+  //关闭弹窗
   windowClose() {
     if (this.vmInstance) {
       this.vmInstance.$el.remove();
@@ -97,6 +102,7 @@ const createDialog = (opts) => {
   });
 
   parentNode = document.createElement("div");
+  // 将Popup组件挂载到父级div中，生成弹窗实例
   const instance = app.mount(parentNode);
   document.body.appendChild(parentNode);
 

@@ -54,5 +54,8 @@
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china"
+  },
+  "dependencies": {
+    "@dvgis/cesium-map": "^4.0.0"
   }
 }

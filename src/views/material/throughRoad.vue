@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: 笙痞77
  * @Date: 2023-01-11 13:39:25
- * @LastEditors: 笙痞77
- * @LastEditTime: 2024-06-22 21:33:21
+ * @LastEditors: 不浪
+ * @LastEditTime: 2024-07-13 09:55:03
 -->
 <script setup>
 import * as Cesium from "cesium";
@@ -21,7 +21,7 @@ const jsonUrl = "/json/qingdaoRoad.geojson";
 
 onMounted(() => {
   viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
-  modifyMap(viewer);
+  modifyMap({ viewer });
 });
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。

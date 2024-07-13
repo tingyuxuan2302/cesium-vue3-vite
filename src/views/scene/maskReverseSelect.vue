@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-04 11:19:51
  * @LastEditors: 不浪
- * @LastEditTime: 2024-07-13 09:38:50
+ * @LastEditTime: 2024-07-13 09:57:58
 -->
 <script setup>
 import * as Cesium from "cesium";
@@ -17,7 +17,11 @@ const { viewer } = store.state;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
 
 onMounted(() => {
-  modifyMap(viewer);
+  modifyMap({
+    viewer,
+    style: "normal",
+    changeColor: false,
+  });
 });
 
 const onStart = async () => {
@@ -44,14 +48,14 @@ const onStart = async () => {
           },
         ],
       },
-      material: Cesium.Color.BLACK.withAlpha(0.6), //外部颜色
+      material: Cesium.Color.BLACK.withAlpha(0.9), //外部颜色
     },
   });
   const line = new Cesium.Entity({
     id: 2,
     polyline: {
       positions: maskspoint,
-      width: 2, //边界线宽
+      width: 4, //边界线宽
       material: Cesium.Color.fromCssColorString("#6dcdeb"), //边界线颜色
       clampToGround: true, // 贴地
     },

@@ -2,18 +2,23 @@
  * @Description: 
  * @Author: 笙痞77
  * @Date: 2023-04-04 11:19:51
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-23 16:05:07
+ * @LastEditors: 不浪
+ * @LastEditTime: 2024-07-13 09:38:50
 -->
 <script setup>
 import * as Cesium from "cesium";
 import { useStore } from "vuex";
-import { onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
+import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 
 const store = useStore();
 const { viewer } = store.state;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
+
+onMounted(() => {
+  modifyMap(viewer);
+});
 
 const onStart = async () => {
   const { res } = await getGeojson("/json/laixi.geojson");

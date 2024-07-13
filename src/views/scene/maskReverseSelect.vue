@@ -2,18 +2,27 @@
  * @Description: 
  * @Author: 笙痞77
  * @Date: 2023-04-04 11:19:51
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-23 16:05:07
+ * @LastEditors: 不浪
+ * @LastEditTime: 2024-07-13 13:43:57
 -->
 <script setup>
 import * as Cesium from "cesium";
 import { useStore } from "vuex";
-import { onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
+import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 
 const store = useStore();
 const { viewer } = store.state;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
+
+onMounted(() => {
+  modifyMap({
+    viewer,
+    style: "normal",
+    changeColor: false,
+  });
+});
 
 const onStart = async () => {
   const { res } = await getGeojson("/json/laixi.geojson");
@@ -30,23 +39,25 @@ const onStart = async () => {
     id: 1,
     polygon: {
       hierarchy: {
+        // 定义多边形的环区域
         positions: Cesium.Cartesian3.fromDegreesArray([
           100, 0, 100, 89, 160, 89, 160, 0,
-        ]), //外部区域
+        ]),
+        // 定义多边形的孔
         holes: [
           {
-            positions: maskspoint, //挖空区域
+            positions: maskspoint,
           },
         ],
       },
-      material: Cesium.Color.BLACK.withAlpha(0.6), //外部颜色
+      material: Cesium.Color.BLACK.withAlpha(0.9), //外部颜色
     },
   });
   const line = new Cesium.Entity({
     id: 2,
     polyline: {
       positions: maskspoint,
-      width: 2, //边界线宽
+      width: 4, //边界线宽
       material: Cesium.Color.fromCssColorString("#6dcdeb"), //边界线颜色
       clampToGround: true, // 贴地
     },

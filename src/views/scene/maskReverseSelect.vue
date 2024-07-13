@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-04-04 11:19:51
  * @LastEditors: 不浪
- * @LastEditTime: 2024-07-13 09:57:58
+ * @LastEditTime: 2024-07-13 13:43:57
 -->
 <script setup>
 import * as Cesium from "cesium";
@@ -39,12 +39,14 @@ const onStart = async () => {
     id: 1,
     polygon: {
       hierarchy: {
+        // 定义多边形的环区域
         positions: Cesium.Cartesian3.fromDegreesArray([
           100, 0, 100, 89, 160, 89, 160, 0,
-        ]), //外部区域
+        ]),
+        // 定义多边形的孔
         holes: [
           {
-            positions: maskspoint, //挖空区域
+            positions: maskspoint,
           },
         ],
       },

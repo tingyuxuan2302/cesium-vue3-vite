@@ -2,8 +2,8 @@
  * @Description: 
  * @Author: 笙痞77
  * @Date: 2023-01-29 10:14:51
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 20:20:37
+ * @LastEditors: 不浪
+ * @LastEditTime: 2024-07-07 11:11:35
 -->
 <script setup>
 import * as Cesium from "cesium";
@@ -26,9 +26,14 @@ const create = () => {
     new Cesium.Primitive({
       geometryInstances: new Cesium.GeometryInstance({
         geometry: new Cesium.RectangleGeometry({
-          rectangle: Cesium.Rectangle.fromDegrees(120.34, 36.06, 120.42, 36.13),
+          rectangle: Cesium.Rectangle.fromDegrees(
+            120.388,
+            36.071,
+            120.449,
+            36.118
+          ),
           vertexFormat: Cesium.EllipsoidSurfaceAppearance.VERTEX_FORMAT,
-          height: 1000,
+          height: 100,
         }),
       }),
       appearance: new Cesium.EllipsoidSurfaceAppearance({
@@ -40,13 +45,13 @@ const create = () => {
                 64 / 255.0,
                 157 / 255.0,
                 253 / 255.0,
-                0.5
+                0.6
               ),
               normalMap: "/images/waterNormals.jpg",
               frequency: 1000.0,
               animationSpeed: 0.1,
               amplitude: 10,
-              specularIntensity: 10,
+              specularIntensity: 8,
             },
           },
         }),

@@ -13,6 +13,7 @@
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@babel/eslint-parser": "^7.19.1",
+    "@cesium-china/cesium-map": "^1.0.0",
     "@element-plus/icons-vue": "^2.1.0",
     "@types/cesium": "^1.70.0",
     "@vitejs/plugin-vue": "^3.1.0",
@@ -46,16 +47,9 @@
     "vite-plugin-cesium": "~1.2.22",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-imagemin": "^0.6.1",
     "vite-plugin-require-transform": "^1.0.3",
     "vue": "^3.2.37",
     "vue-router": "^4.1.5",
     "vuex": "^4.1.0"
-  },
-  "resolutions": {
-    "bin-wrapper": "npm:bin-wrapper-china"
-  },
-  "dependencies": {
-    "@dvgis/cesium-map": "^4.0.0"
   }
 }

@@ -96,6 +96,15 @@ const routes = [
           activePath: "/mark/combine",
         },
       },
+      {
+        path: "entities",
+        name: "mark_entities",
+        component: () => import("@/views/mark/entities.vue"),
+        meta: {
+          title: "基本要素",
+          activePath: "/mark/entities",
+        },
+      },
     ],
   },
   {

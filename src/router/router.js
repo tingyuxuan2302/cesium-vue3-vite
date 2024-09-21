@@ -96,6 +96,15 @@ const routes = [
           activePath: "/mark/combine",
         },
       },
+      {
+        path: "entities",
+        name: "mark_entities",
+        component: () => import("@/views/mark/entities.vue"),
+        meta: {
+          title: "基本要素",
+          activePath: "/mark/entities",
+        },
+      },
     ],
   },
   {
@@ -231,6 +240,24 @@ const routes = [
           activePath: "/geometry/arrow",
         },
       },
+      {
+        path: "terrainFlat",
+        name: "geometry_terrainFlat",
+        component: () => import("@/views/geometry/TerrainFlat.vue"),
+        meta: {
+          title: "地形压平",
+          activePath: "/geometry/TerrainFlat",
+        },
+      },
+      // {
+      //   path: "modelFlat",
+      //   name: "geometry_modelFlat",
+      //   component: () => import("@/views/geometry/ModelFlat.vue"),
+      //   meta: {
+      //     title: "模型压平",
+      //     activePath: "/geometry/ModelFlat",
+      //   },
+      // },
     ],
   },
   {

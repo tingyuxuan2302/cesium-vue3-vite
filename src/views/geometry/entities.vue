@@ -23,7 +23,7 @@ const { viewer } = store.state;
 const scene = viewer.scene;
 
 //实体一 添加多边形面
-const addPolygon = () => {  
+const addPolygon = () => {
   const entities = viewer.entities.add({
     polygon: {
       hierarchy: Cesium.Cartesian3.fromDegreesArray([
@@ -52,7 +52,7 @@ const addPolygon = () => {
   })
   viewer.zoomTo(entities);
 }
-  
+
 const addBox = () => {
   const box = viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(-109.080842, 45.002073),
@@ -91,8 +91,8 @@ const addCorridorGraphics = () => {
       width: 5000,
       material: Cesium.Color.RED.withAlpha(0.5),
       positions: Cesium.Cartesian3.fromDegreesArray([
-      -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
-      -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
+        -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
+        -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
       ])
     })
   })
@@ -132,7 +132,7 @@ const addPolylineGraphics = () => {
   viewer.zoomTo(graphics);
 }
 
-const addPolylineVolumes = () => {
+const addPolylineVolumes = (cornerType, color = "ORANGE") => {
   const redTube = viewer.entities.add({
     name: "Red tube with rounded corners",
     polylineVolume: {
@@ -143,9 +143,12 @@ const addPolylineVolumes = () => {
         36.0,
         -89.0,
         36.0,
+        -87.84,
+        42.49
       ]),
       shape: computeCircle(60000.0),
-      material: Cesium.Color.RED,
+      material: Cesium.Color[color],
+      cornerType: Cesium.CornerType[cornerType]
     },
   });
   viewer.zoomTo(redTube);
@@ -154,7 +157,7 @@ const addPolylineVolumes = () => {
 const addRectangle = () => {
   const rectangle = viewer.entities.add({
     rectangle: {
-      coordinates: Cesium.Rectangle.fromDegrees(-110.0,20.0,-80.0,25.0),
+      coordinates: Cesium.Rectangle.fromDegrees(-110.0, 20.0, -80.0, 25.0),
       extrudedHeight: 300000.0,
       height: 100000.0,
       material: Cesium.Color.RED.withAlpha(0.5),
@@ -261,7 +264,9 @@ const clear = () => {
     </div>
     <div style="margin-top: 10px;">
       <el-button type="primary" @click="addPolylineGraphics">添加线段</el-button>
-      <el-button type="primary" @click="addPolylineVolumes">添加线段体积</el-button>
+      <el-button type="primary" @click="addPolylineVolumes('ROUNDED', 'RED')">线段体积(圆形)</el-button>
+      <el-button type="primary" @click="addPolylineVolumes('MITERED', 'BLUE')">线段体积(直角)</el-button>
+      <el-button type="primary" @click="addPolylineVolumes('BEVELED')">线段体积(切角)</el-button>
       <el-button type="primary" @click="addRectangle">添加矩形</el-button>
       <el-button type="primary" @click="addSpheres">添加球体</el-button>
       <el-button type="primary" @click="addWall">添加墙</el-button>

@@ -96,15 +96,6 @@ const routes = [
           activePath: "/mark/combine",
         },
       },
-      {
-        path: "entities",
-        name: "mark_entities",
-        component: () => import("@/views/mark/entities.vue"),
-        meta: {
-          title: "基本要素",
-          activePath: "/mark/entities",
-        },
-      },
     ],
   },
   {
@@ -213,6 +204,15 @@ const routes = [
       title: "几何",
     },
     children: [
+      {
+        path: "entities",
+        name: "geometry_entities",
+        component: () => import("@/views/geometry/entities.vue"),
+        meta: {
+          title: "基本要素",
+          activePath: "/geometry/entities",
+        },
+      },
       {
         path: "measure",
         name: "geometry_measure",

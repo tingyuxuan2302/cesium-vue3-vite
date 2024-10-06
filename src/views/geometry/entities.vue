@@ -1,21 +1,15 @@
 <!--
- * @Descripttion: 底层打点，对于大数据量的点渲染效果更佳
- * @Author: 笙痞
- * @Date: 2023-01-09 14:34:21
- * @LastEditors: 笙痞77
- * @LastEditTime: 2024-06-02 21:31:46
+ * @Descripttion: entities各类基本要素渲染
+ * @Author: LukeSuperCoder
+ * @Date: 2024-09-25 10:00:00
+ * @LastEditors: LukeSuperCoder
+ * @LastEditTime: 2024-09-25 10:00:00
 -->
 
 <script setup>
-import { nextTick, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
-import PrimitiveCluster from "@/utils/cesiumCtrl/primitiveCluster";
-import Dialog from "@/utils/cesiumCtrl/dialog";
-
-// 聚合实现：https://blog.csdn.net/qq_53979889/article/details/126173439#comments_24834053
-// 聚合实现：https://www.jianshu.com/p/80d40c447657
 
 const store = useStore();
 // viewer就是cesium实例化之后的场景示例，我把他存在了vuex的store中

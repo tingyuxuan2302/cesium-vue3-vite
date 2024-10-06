@@ -249,15 +249,15 @@ const routes = [
           activePath: "/geometry/TerrainFlat",
         },
       },
-      // {
-      //   path: "modelFlat",
-      //   name: "geometry_modelFlat",
-      //   component: () => import("@/views/geometry/ModelFlat.vue"),
-      //   meta: {
-      //     title: "模型压平",
-      //     activePath: "/geometry/ModelFlat",
-      //   },
-      // },
+      {
+        path: "modelFlat",
+        name: "geometry_modelFlat",
+        component: () => import("@/views/geometry/ModelFlat.vue"),
+        meta: {
+          title: "模型压平",
+          activePath: "/geometry/ModelFlat",
+        },
+      },
     ],
   },
   {

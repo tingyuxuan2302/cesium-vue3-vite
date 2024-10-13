@@ -7,6 +7,7 @@
 -->
 
 <script setup>
+import { onMounted } from "vue";
 import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
@@ -18,25 +19,25 @@ const scene = viewer.scene;
 
 //实体一 添加多边形面
 const addPolygon = () => {
-  const entities = viewer.entities.add({
-    polygon: {
-      hierarchy: Cesium.Cartesian3.fromDegreesArray([
-        -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
-        -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
-        -107.919731, 41.003906, -109.04798, 40.998429, -111.047063, 40.998429,
-        -111.047063, 42.000709, -111.047063, 44.476286, -111.05254, 45.002073,
-      ]),
-      height: 1000,
-      material: Cesium.Color.RED.withAlpha(0.5),
-      outline: true,
-      outlineColor: Cesium.Color.BLACK,
-    }
-  })
+  // const entities = viewer.entities.add({
+  //   polygon: {
+  //     hierarchy: Cesium.Cartesian3.fromDegreesArray([
+  //       -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
+  //       -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
+  //       -107.919731, 41.003906, -109.04798, 40.998429, -111.047063, 40.998429,
+  //       -111.047063, 42.000709, -111.047063, 44.476286, -111.05254, 45.002073,
+  //     ]),
+  //     height: 8000,
+  //     material: Cesium.Color.RED.withAlpha(0.5),
+  //     outline: true,
+  //     outlineColor: Cesium.Color.BLACK,
+  //   }
+  // })
   const entities1 = viewer.entities.add({
     polygon: {
       hierarchy: Cesium.Cartesian3.fromDegreesArray([
-        -109.080842, 45.002073, -105.91517, 45.002073, -104.058488, 44.996596,
-        -104.053011, 43.002989, -104.053011, 41.003906, -105.728954, 40.998429,
+        -109.080842, 45.002073, -104.058488, 45.002073,
+        -104.053011, 41.003906, -105.728954, 41.003906,
       ]),
       height: 5000,
       material: Cesium.Color.BLUE.withAlpha(0.5),
@@ -44,14 +45,14 @@ const addPolygon = () => {
       outlineColor: Cesium.Color.BLACK,
     }
   })
-  viewer.zoomTo(entities);
+  viewer.zoomTo(entities1);
 }
 
 const addBox = () => {
   const box = viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(-109.080842, 45.002073),
     box: new Cesium.BoxGraphics({
-      heightReference: 1,
+      heightReference: 1, // 贴在地形上或3Dtiles上
       dimensions: new Cesium.Cartesian3(5000, 5000, 5000),
       material: Cesium.Color.RED.withAlpha(0.5),
       //在指定距离内展示
@@ -66,9 +67,9 @@ const addEllipseGraphics = () => {
   const ellipse = viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(-105.91517, 45.002073),
     ellipse: new Cesium.EllipseGraphics({
-      heightReference: 1000,
-      extrudedHeight: 1000,
-      semiMinorAxis: 5000,
+      heightReference: 'NONE',
+      extrudedHeight: 5000,
+      semiMinorAxis: 3000,
       semiMajorAxis: 5000,
       material: Cesium.Color.RED.withAlpha(0.5),
     })
@@ -78,7 +79,6 @@ const addEllipseGraphics = () => {
 
 const addCorridorGraphics = () => {
   const corridor = viewer.entities.add({
-    position: Cesium.Cartesian3.fromDegrees(-105.91517, 45.002073),
     corridor: new Cesium.CorridorGraphics({
       extrudedHeight: 10000,
       height: 1000,
@@ -244,6 +244,10 @@ const computeCircle = (radius) => {
 const clear = () => {
   viewer.entities.removeAll();
 }
+
+onMounted(() => {
+  clear()
+})
 
 </script>
 <template>

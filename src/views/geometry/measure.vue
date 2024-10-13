@@ -23,6 +23,9 @@ viewer.camera.setView({
 });
 const measure = new MeasureTool(viewer);
 
+/**
+ * 测距
+ */
 const onLineMeasure = () => {
   measure.drawLineMeasureGraphics({
     clampToGround: true,
@@ -31,15 +34,21 @@ const onLineMeasure = () => {
     },
   });
 };
+/**
+ * 测面积
+ */
 const onAreaMeasure = () => {
   measure.drawAreaMeasureGraphics({
     clampToGround: true,
-    callback: () => {},
+    callback: () => { },
   });
 };
+/**
+ * 三角量测
+ */
 const onTrianglesMeasure = () => {
   measure.drawTrianglesMeasureGraphics({
-    callback: () => {},
+    callback: () => { },
   });
 };
 const onClear = () => {

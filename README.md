@@ -1,6 +1,6 @@
 # 教程
 
-如有需要《Cesium从入门到实战》教程的请 + 微信：brown_7778 目前课程正在开发中，课程介绍：https://ww7rybwvygd.feishu.cn/docx/PG1TdAhK0oASyZxluGqciO7BnSg  
+如有需要《Cesium从入门到实战》教程的请 + 微信：brown_7778 课程V1.0版本已完结，详情请戳：https://ww7rybwvygd.feishu.cn/docx/PG1TdAhK0oASyZxluGqciO7BnSg  
 
 可以优先锁定早鸟价格，后续会阶梯式涨价！
 

@@ -67,6 +67,9 @@ const formatData = (features) => {
       width: 32,
       height: 32,
       position,
+      // disableDepthTestDistance: 50000000,
+      // heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
+      // sizeInMeters: true
     });
     // TODO:如果text是动态的，有性能问题；
     // labelCollection.add({

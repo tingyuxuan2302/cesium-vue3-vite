@@ -40,7 +40,7 @@ const init = () => {
   viewer.cesiumWidget.creditContainer.style.display = "none";
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
-  viewer.scene.globe.depthTestAgainstTerrain = true;
+  viewer.scene.globe.depthTestAgainstTerrain = false;
 
   store.commit("initViewer", viewer);
   // 外天空盒
@@ -65,9 +65,9 @@ const init = () => {
     const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
     console.log(
       "经度：" +
-        Cesium.Math.toDegrees(randiansPos.longitude) +
-        ", 纬度：" +
-        Cesium.Math.toDegrees(randiansPos.latitude)
+      Cesium.Math.toDegrees(randiansPos.longitude) +
+      ", 纬度：" +
+      Cesium.Math.toDegrees(randiansPos.latitude)
     );
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };

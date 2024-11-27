@@ -58,4 +58,10 @@ export default defineConfig({
   //     }
   //   }
   // }
+  server: {
+    // 开发服务器配置
+    host: "0.0.0.0", // 开发模式下，配置ip访问
+    open: "/pages/", // 指定打开的路由
+    port: 6678, // 指定端口
+  },
 });

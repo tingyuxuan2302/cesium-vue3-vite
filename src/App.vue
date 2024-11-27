@@ -9,6 +9,7 @@
 import { onMounted } from "vue";
 import store from "@/store/store.js";
 import * as Cesium from "cesium";
+import CesiumTerrainProviderEdit from "./utils/cesiumCtrl/flat/CesiumTerrainProviderEdit.js";
 
 Cesium.Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxYWE5M2QzNy1hNGFjLTQ3YzItYmU0ZS05MDkyODc1MzVhNzAiLCJpZCI6MTE1MDQwLCJpYXQiOjE2Njg1OTA2NDh9.oW-_utGumUSPqYzlWGjhG8hbda-b4UxZdL0_2t4ASig";
@@ -23,7 +24,8 @@ const init = () => {
     imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
       url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
     }),
-    terrainProvider: new Cesium.CesiumTerrainProvider({
+    //此处使用CesiumTerrainProviderEdit替换原来的CesiumTerrainProvider类，实现指定区域地形压平处理
+    terrainProvider: new CesiumTerrainProviderEdit({
       url: "http://data.marsgis.cn/terrain",
     }),
     // terrain: Cesium.Terrain.fromWorldTerrain({

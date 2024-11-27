@@ -25,18 +25,18 @@ export default class DrawTool {
    * 激活点线面
    * @param drawType
    */
-  activate(drawType) {
+  activate(drawType, callback) {
     this.clearAll();
     this._drawType = drawType;
     this._dataSource = new Cesium.CustomDataSource("_dataSource");
     this.viewer.dataSources.add(this._dataSource);
-    this._registerEvents(); //注册鼠标事件
+    this._registerEvents(callback); //注册鼠标事件
   }
 
   /**
    * 注册鼠标事件
    */
-  _registerEvents() {
+  _registerEvents(callback) {
     this._drawHandler = new Cesium.ScreenSpaceEventHandler(
       this.viewer.scene.canvas
     );
@@ -50,12 +50,14 @@ export default class DrawTool {
         this._leftClickEventForPolyline();
         this._mouseMoveEventForPolyline();
         this._rightClickEventForPolyline();
+        this._doubleClickEventForPolyline();
         break;
       }
       case "Polygon": {
         this._leftClickEventForPolygon();
         this._mouseMoveEventForPolygon();
-        this._rightClickEventForPolygon();
+        this._rightClickEventForPolygon(callback);
+        this._doubleClickEventForPolygon(callback);
         break;
       }
     }
@@ -133,6 +135,32 @@ export default class DrawTool {
   }
 
   /**
+   * 鼠标事件之绘制线的双击事件
+   * @private
+   */
+  _doubleClickEventForPolyline() {
+    this._drawHandler.setInputAction((e) => {
+      let p = this.viewer.scene.pickPosition(e.position);
+      if (!p) return;
+      this._removeAllEvent();
+      this._dataSource.entities.removeAll();
+      this._dataSource.entities.add({
+        polyline: {
+          positions: this._tempPositions,
+          clampToGround: true, //贴地
+          width: 3,
+          material: new Cesium.PolylineDashMaterialProperty({
+            color: Cesium.Color.YELLOW,
+          }),
+          depthFailMaterial: new Cesium.PolylineDashMaterialProperty({
+            color: Cesium.Color.YELLOW,
+          }),
+        },
+      });
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  }
+
+  /**
    * 鼠标事件之绘制面的左击事件
    * @private
    */
@@ -161,14 +189,14 @@ export default class DrawTool {
    * 鼠标事件之绘制面的右击事件
    * @private
    */
-  _rightClickEventForPolygon() {
+  _rightClickEventForPolygon(callback) {
     this._drawHandler.setInputAction((e) => {
       let p = this.viewer.scene.pickPosition(e.position);
       if (!p) return;
       this._tempPositions.push(this._tempPositions[0]);
       this._removeAllEvent();
       this._dataSource.entities.removeAll();
-      this._dataSource.entities.add({
+      const polygonEntity = this._dataSource.entities.add({
         polyline: {
           positions: this._tempPositions,
           clampToGround: true, //贴地
@@ -187,9 +215,48 @@ export default class DrawTool {
           clampToGround: true,
         },
       });
+      // 调用回调函数，传递绘制完成的实体或其他相关数据
+      if (callback && typeof callback === 'function') {
+          callback(polygonEntity);
+      }
     }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
   }
-
+  /**
+   * 鼠标事件之绘制面的右击事件
+   * @private
+  */
+  _doubleClickEventForPolygon(callback) {
+    this._drawHandler.setInputAction((e) => {
+      let p = this.viewer.scene.pickPosition(e.position);
+      if (!p) return;
+      this._tempPositions.push(this._tempPositions[0]);
+      this._removeAllEvent();
+      this._dataSource.entities.removeAll();
+      const polygonEntity = this._dataSource.entities.add({
+        polyline: {
+          positions: this._tempPositions,
+          clampToGround: true, //贴地
+          width: 3,
+          material: new Cesium.PolylineDashMaterialProperty({
+            color: Cesium.Color.YELLOW,
+          }),
+          depthFailMaterial: new Cesium.PolylineDashMaterialProperty({
+            color: Cesium.Color.YELLOW,
+          }),
+        },
+        polygon: {
+          hierarchy: this._tempPositions,
+          extrudedHeightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+          material: Cesium.Color.RED.withAlpha(0.4),
+          clampToGround: true,
+        },
+      });
+      // 调用回调函数，传递绘制完成的实体或其他相关数据
+      if (callback && typeof callback === 'function') {
+          callback(polygonEntity);
+      }
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  }
   /**
    * 移除所有鼠标事件
    * @private

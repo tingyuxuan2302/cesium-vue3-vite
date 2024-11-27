@@ -2,11 +2,11 @@
  * @Description:
  * @Author: 笙痞77
  * @Date: 2024-06-23 19:53:32
- * @LastEditors: 不浪
- * @LastEditTime: 2024-07-13 21:10:29
+ * @LastEditors: 笙痞77
+ * @LastEditTime: 2024-07-25 14:30:32
  */
 import * as Cesium from "cesium";
-import { AMapImageryProvider } from "@dvgis/cesium-map";
+import { AMapImageryProvider } from "@cesium-china/cesium-map";
 
 /**
  * 修改底图样式

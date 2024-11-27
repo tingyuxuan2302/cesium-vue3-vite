@@ -205,6 +205,15 @@ const routes = [
     },
     children: [
       {
+        path: "entities",
+        name: "geometry_entities",
+        component: () => import("@/views/geometry/entities.vue"),
+        meta: {
+          title: "基本要素",
+          activePath: "/geometry/entities",
+        },
+      },
+      {
         path: "measure",
         name: "geometry_measure",
         component: () => import("@/views/geometry/measure.vue"),
@@ -229,6 +238,24 @@ const routes = [
         meta: {
           title: "态势图",
           activePath: "/geometry/arrow",
+        },
+      },
+      {
+        path: "terrainFlat",
+        name: "geometry_terrainFlat",
+        component: () => import("@/views/geometry/TerrainFlat.vue"),
+        meta: {
+          title: "地形压平",
+          activePath: "/geometry/TerrainFlat",
+        },
+      },
+      {
+        path: "modelFlat",
+        name: "geometry_modelFlat",
+        component: () => import("@/views/geometry/ModelFlat.vue"),
+        meta: {
+          title: "模型压平",
+          activePath: "/geometry/ModelFlat",
         },
       },
     ],

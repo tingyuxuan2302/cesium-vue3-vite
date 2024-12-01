@@ -332,6 +332,24 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/highClass",
+    component: EmptyRouterView,
+    meta: {
+      title: "高级功能",
+    },
+    children: [
+      {
+        path: "dynamicWater",
+        name: "highClass_dynamicWater",
+        component: () => import("@/views/highClass/dynamicWater.vue"),
+        meta: {
+          title: "动态网格水",
+          activePath: "/highClass/dynamicWater",
+        },
+      },
+    ],
+  },
   // {
   //   path: "/lowCode",
   //   component: EmptyRouterView,

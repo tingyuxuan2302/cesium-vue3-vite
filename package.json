@@ -22,6 +22,7 @@
     "cesium-heatmap-es6": "^0.8.0",
     "cesium-measure": "^0.2.10",
     "cors": "^2.8.5",
+    "dat.gui": "^0.7.9",
     "dayjs": "^1.11.7",
     "element-plus": "^2.3.4",
     "eslint": "^8.25.0",

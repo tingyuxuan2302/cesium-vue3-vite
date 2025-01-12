@@ -195,6 +195,15 @@ const routes = [
           activePath: "/material/skybox",
         },
       },
+      {
+        path: "fence",
+        name: "material_fence",
+        component: () => import("@/views/material/fence.vue"),
+        meta: {
+          title: "电子围栏",
+          activePath: "/material/fence",
+        },
+      },
     ],
   },
   {
@@ -348,26 +357,44 @@ const routes = [
           activePath: "/highClass/dynamicWater",
         },
       },
+      {
+        path: "wind3D",
+        name: "highClass_wind3D",
+        component: () => import("@/views/highClass/wind3D.vue"),
+        meta: {
+          title: "3D风场",
+          activePath: "/highClass/wind3D",
+        },
+      },
+      {
+        path: "roaming",
+        name: "highClass_roaming",
+        component: () => import("@/views/highClass/roaming.vue"),
+        meta: {
+          title: "插值运动",
+          activePath: "/highClass/roaming",
+        },
+      },
     ],
   },
-  // {
-  //   path: "/lowCode",
-  //   component: EmptyRouterView,
-  //   meta: {
-  //     title: "低代码平台",
-  //   },
-  //   children: [
-  //     {
-  //       path: "set",
-  //       name: "lowCode_set",
-  //       component: () => import("@/views/lowCode/lowCode.vue"),
-  //       meta: {
-  //         title: "配置",
-  //         activePath: "/lowCode/set",
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/models",
+    component: EmptyRouterView,
+    meta: {
+      title: "模型",
+    },
+    children: [
+      {
+        path: "czml",
+        name: "models_czml",
+        component: () => import("@/views/models/czml.vue"),
+        meta: {
+          title: "卫星轨道czml",
+          activePath: "/models/czml",
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;

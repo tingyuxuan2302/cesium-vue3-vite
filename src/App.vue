@@ -21,13 +21,13 @@ const init = () => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
-    imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-    }),
+    // imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+    //   url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+    // }),
     //此处使用CesiumTerrainProviderEdit替换原来的CesiumTerrainProvider类，实现指定区域地形压平处理
-    terrainProvider: new CesiumTerrainProviderEdit({
-      url: "http://data.marsgis.cn/terrain",
-    }),
+    // terrainProvider: new CesiumTerrainProviderEdit({
+    //   url: "http://data.marsgis.cn/terrain",
+    // }),
     // terrain: Cesium.Terrain.fromWorldTerrain({
     //   requestVertexNormals: true, //Needed to visualize slope
     // }),
@@ -43,7 +43,7 @@ const init = () => {
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
   viewer.scene.globe.depthTestAgainstTerrain = true;
-
+  window.__viewer = viewer
   store.commit("initViewer", viewer);
   // 外天空盒
   viewer.scene.skyBox = new Cesium.SkyBox({
@@ -67,9 +67,9 @@ const init = () => {
     const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
     console.log(
       "经度：" +
-        Cesium.Math.toDegrees(randiansPos.longitude) +
-        ", 纬度：" +
-        Cesium.Math.toDegrees(randiansPos.latitude)
+      Cesium.Math.toDegrees(randiansPos.longitude) +
+      ", 纬度：" +
+      Cesium.Math.toDegrees(randiansPos.latitude)
     );
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };

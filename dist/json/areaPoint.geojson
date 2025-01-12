@@ -1,0 +1,90 @@
+{
+  "type": "FeatureCollection",
+  "name": "质心",
+  "crs": {
+    "type": "name",
+    "properties": { "name": "urn:ogc:def:crs:EPSG::4490" }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "NAME": "城阳区", "ID": "370214" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.328681342962199, 36.276083937582328]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "黄岛区", "ID": "370211" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [119.873637968005511, 35.859279188158723]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "即墨区", "ID": "370215" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.514537137506395, 36.482758299032852]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "胶州市", "ID": "370281" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [119.947649932673997, 36.240185533396648]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "莱西市", "ID": "370285" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.430941177681802, 36.857720152192577]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "崂山区", "ID": "370212" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.573261230743853, 36.189343558417363]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "李沧区", "ID": "370213" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.420607327926348, 36.185088598150514]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "平度市", "ID": "370283" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [119.939346490857048, 36.781438386433294]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "市北区", "ID": "370203" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.364492510409193, 36.111776174079637]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "NAME": "市南区", "ID": "370202" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.364274033398999, 36.066888884437127]
+      }
+    }
+  ]
+}

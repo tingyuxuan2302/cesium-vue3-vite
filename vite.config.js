@@ -16,46 +16,50 @@ import viteCompression from "vite-plugin-compression";
 // import viteImagemin from "vite-plugin-imagemin";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
-    cesium(),
-    {
-      ...viteCompression({
-        //gzip压缩
-        verbose: true,
-        disable: false,
-        threshold: 10240,
-        algorithm: "gzip",
-        ext: ".gz",
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
       }),
-      apply: "build",
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
+      cesium(),
+      {
+        ...viteCompression({
+          //gzip压缩
+          verbose: true,
+          disable: false,
+          threshold: 10240,
+          algorithm: "gzip",
+          ext: ".gz",
+        }),
+        apply: "build",
+      },
+      // viteImagemin(), // 图片压缩
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
     },
-    // viteImagemin(), // 图片压缩
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
+    build: {
+      commonjsOptions: {
+        strictRequires: true, // 兼容commonjs
+      },
+      outDir: "docs",
     },
-  },
-  build: {
-    commonjsOptions: {
-      strictRequires: true, // 兼容commonjs
-    },
-  },
-  base: "./",
-  // server: {
-  //   proxy: {
-  //     "/api": {
-  //       target: "http://localhost:3000",
-  //       rewrite: (path) => path.replace(/^\/api/, "")
-  //     }
-  //   }
-  // }
+    base: mode === "production" ? "/cesium-vue3-vite/" : "./",
+
+    // server: {
+    //   proxy: {
+    //     "/api": {
+    //       target: "http://localhost:3000",
+    //       rewrite: (path) => path.replace(/^\/api/, "")
+    //     }
+    //   }
+    // }
+  };
 });

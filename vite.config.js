@@ -49,7 +49,7 @@ export default defineConfig({
       strictRequires: true, // 兼容commonjs
     },
   },
-  base: "./",
+  // base: "./",
   // server: {
   //   proxy: {
   //     "/api": {

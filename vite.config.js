@@ -3,7 +3,7 @@
  * @Author: 笙痞77
  * @Date: 2023-06-05 11:16:24
  * @LastEditors: 笙痞77
- * @LastEditTime: 2025-01-13 17:18:41
+ * @LastEditTime: 2025-01-13 17:25:20
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -49,14 +49,6 @@ export default defineConfig(({ mode }) => {
       //     },
       //   ],
       // }),
-      {
-        name: "adjust-static-path",
-        apply: "build",
-        transformIndexHtml(html) {
-          // 修改静态资源引用路径，确保打包后路径正确
-          return html.replace(/\/json\//g, "/docs/json/");
-        },
-      },
     ],
     resolve: {
       alias: {
@@ -76,9 +68,18 @@ export default defineConfig(({ mode }) => {
             for (const fileName in bundle) {
               const chunk = bundle[fileName];
               if (chunk.type === "chunk" && chunk.code) {
-                chunk.code = chunk.code.replace(/\/json\//g, "/docs/json/");
-                chunk.code = chunk.code.replace(/\/images\//g, "/docs/images/");
-                chunk.code = chunk.code.replace(/\/models\//g, "/docs/models/");
+                chunk.code = chunk.code.replace(
+                  /\/json\//g,
+                  "/cesium-vue3-vite/json/"
+                );
+                chunk.code = chunk.code.replace(
+                  /\/images\//g,
+                  "/cesium-vue3-vite/images/"
+                );
+                chunk.code = chunk.code.replace(
+                  /\/models\//g,
+                  "/cesium-vue3-vite/models/"
+                );
               }
             }
           },

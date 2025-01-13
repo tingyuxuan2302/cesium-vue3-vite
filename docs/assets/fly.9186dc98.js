@@ -1,1 +1,0 @@
-import{u as a,o,b as s}from"./index.f76e180b.js";const m={__name:"fly",setup(r){const e=a(),{viewer:t}=e.state;return t.camera.flyTo({destination:Cesium.Cartesian3.fromDegrees(120.36,36.09,4e4),orientation:{heading:Cesium.Math.toRadians(0),pitch:Cesium.Math.toRadians(-90),roll:0},duration:3}),(n,i)=>(o(),s("div"))}};export{m as default};

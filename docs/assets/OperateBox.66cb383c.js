@@ -1,0 +1,1 @@
+import{_,o as n,b as o,N as t}from"./index.bc967ea1.js";const s={},c={class:"container"};function r(e,a){return n(),o("div",c,[t(e.$slots,"default",{},void 0,!0)])}const l=_(s,[["render",r],["__scopeId","data-v-bee88e5d"]]);export{l as _};

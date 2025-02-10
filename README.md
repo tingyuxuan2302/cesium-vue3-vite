@@ -6,7 +6,7 @@
 
 # Vue 3 + Vite
 
-项目基于 vue3 + vite + cesium，已实现常见三维动画场景，效果浏览：http://www.brown77.cn:3389 （廉价服务器，请耐心等待）
+项目基于 vue3 + vite + cesium，已实现常见三维动画场景，效果浏览：[https://tingyuxuan2302.github.io/cesium-vue3-vite/#/](https://tingyuxuan2302.github.io/cesium-vue3-vite/#/) 
 
 # 欢迎交流
 

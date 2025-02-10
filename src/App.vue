@@ -2,8 +2,8 @@
  * @Descripttion: 
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 20:01:06
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-02-08 14:11:21
 -->
 <script setup>
 import { onMounted } from "vue";
@@ -21,13 +21,13 @@ const init = () => {
   const viewer = new Cesium.Viewer("cesiumContainer", {
     infoBox: false,
     timeline: false, // 是否显示时间线控件
-    imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-      url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
-    }),
+    // imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
+    //   url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
+    // }),
     //此处使用CesiumTerrainProviderEdit替换原来的CesiumTerrainProvider类，实现指定区域地形压平处理
-    terrainProvider: new CesiumTerrainProviderEdit({
-      url: "http://data.marsgis.cn/terrain",
-    }),
+    // terrainProvider: new CesiumTerrainProviderEdit({
+    //   url: "http://data.marsgis.cn/terrain",
+    // }),
     // terrain: Cesium.Terrain.fromWorldTerrain({
     //   requestVertexNormals: true, //Needed to visualize slope
     // }),
@@ -35,6 +35,7 @@ const init = () => {
     // contextOptions: {
     //   requestWebgl1: true,
     // },
+    baseLayer: Cesium.ImageryLayer.fromProviderAsync(Cesium.ArcGisMapServerImageryProvider.fromBasemapType(Cesium.ArcGisBaseMapType.SATELLITE)),
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;
@@ -42,8 +43,8 @@ const init = () => {
   viewer.cesiumWidget.creditContainer.style.display = "none";
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
-  viewer.scene.globe.depthTestAgainstTerrain = false;
-
+  viewer.scene.globe.depthTestAgainstTerrain = true;
+  window.__viewer = viewer
   store.commit("initViewer", viewer);
   // 外天空盒
   viewer.scene.skyBox = new Cesium.SkyBox({

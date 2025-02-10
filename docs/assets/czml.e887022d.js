@@ -1,0 +1,1 @@
+import{o,b as t}from"./index.bc967ea1.js";const s={__name:"czml",setup(c){const{viewer:e}=window;let a=new Cesium.CzmlDataSource.load("/cesium-vue3-vite/models/wx.czml");return e.dataSources.add(a),e.clock.shouldAnimate=!0,(l,r)=>(o(),t("div"))}};export{s as default};

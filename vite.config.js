@@ -2,8 +2,8 @@
  * @Description:
  * @Author: 笙痞77
  * @Date: 2023-06-05 11:16:24
- * @LastEditors: 笙痞77
- * @LastEditTime: 2024-07-25 14:29:47
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-02-08 14:08:13
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -13,55 +13,87 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import path from "path";
 import cesium from "vite-plugin-cesium";
 import viteCompression from "vite-plugin-compression";
+
 // import viteImagemin from "vite-plugin-imagemin";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
-    cesium(),
-    {
-      ...viteCompression({
-        //gzip压缩
-        verbose: true,
-        disable: false,
-        threshold: 10240,
-        algorithm: "gzip",
-        ext: ".gz",
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
       }),
-      apply: "build",
+      Components({
+        resolvers: [ElementPlusResolver()],
+      }),
+      cesium(),
+      {
+        ...viteCompression({
+          //gzip压缩
+          verbose: true,
+          disable: false,
+          threshold: 10240,
+          algorithm: "gzip",
+          ext: ".gz",
+        }),
+        apply: "build",
+      },
+      // viteImagemin(), // 图片压缩
+      // viteStaticCopy({
+      //   targets: [
+      //     {
+      //       src: "public/*", // 指定源文件路径
+      //       dest: "docs/", // 指定打包后目标路径
+      //     },
+      //   ],
+      // }),
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src"),
+      },
     },
-    // viteImagemin(), // 图片压缩
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src"),
+    build: {
+      commonjsOptions: {
+        strictRequires: true, // 兼容commonjs
+      },
+      outDir: "docs",
+      rollupOptions: {
+        plugins: {
+          // 重写静态资源路径
+          name: "rewrite-paths",
+          generateBundle(_, bundle) {
+            for (const fileName in bundle) {
+              const chunk = bundle[fileName];
+              if (chunk.type === "chunk" && chunk.code) {
+                chunk.code = chunk.code.replace(
+                  /\/json\//g,
+                  "/cesium-vue3-vite/json/"
+                );
+                chunk.code = chunk.code.replace(
+                  /\/images\//g,
+                  "/cesium-vue3-vite/images/"
+                );
+                chunk.code = chunk.code.replace(
+                  /\/models\//g,
+                  "/cesium-vue3-vite/models/"
+                );
+              }
+            }
+          },
+        },
+      },
     },
-  },
-  build: {
-    commonjsOptions: {
-      strictRequires: true, // 兼容commonjs
-    },
-  },
-  base: "./",
-  // server: {
-  //   proxy: {
-  //     "/api": {
-  //       target: "http://localhost:3000",
-  //       rewrite: (path) => path.replace(/^\/api/, "")
-  //     }
-  //   }
-  // }
-  server: {
-    // 开发服务器配置
-    host: "0.0.0.0", // 开发模式下，配置ip访问
-    open: "/pages/", // 指定打开的路由
-    port: 6678, // 指定端口
-  },
+    base: "./",
+
+    // server: {
+    //   proxy: {
+    //     "/api": {
+    //       target: "http://localhost:3000",
+    //       rewrite: (path) => path.replace(/^\/api/, "")
+    //     }
+    //   }
+    // }
+  };
 });

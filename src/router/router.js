@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 15:30:35
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-02-08 16:42:15
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -195,6 +195,24 @@ const routes = [
           activePath: "/material/skybox",
         },
       },
+      {
+        path: "fence",
+        name: "material_fence",
+        component: () => import("@/views/material/fence.vue"),
+        meta: {
+          title: "电子围栏",
+          activePath: "/material/fence",
+        },
+      },
+      {
+        path: "wallPolygonDiffuse",
+        name: "material_wallPolygonDiffuse",
+        component: () => import("@/views/material/wallPolygonDiffuse.vue"),
+        meta: {
+          title: "多边形扩散墙",
+          activePath: "/material/wallPolygonDiffuse",
+        },
+      },
     ],
   },
   {
@@ -332,24 +350,60 @@ const routes = [
       },
     ],
   },
-  // {
-  //   path: "/lowCode",
-  //   component: EmptyRouterView,
-  //   meta: {
-  //     title: "低代码平台",
-  //   },
-  //   children: [
-  //     {
-  //       path: "set",
-  //       name: "lowCode_set",
-  //       component: () => import("@/views/lowCode/lowCode.vue"),
-  //       meta: {
-  //         title: "配置",
-  //         activePath: "/lowCode/set",
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/highClass",
+    component: EmptyRouterView,
+    meta: {
+      title: "高级功能",
+    },
+    children: [
+      {
+        path: "dynamicWater",
+        name: "highClass_dynamicWater",
+        component: () => import("@/views/highClass/dynamicWater.vue"),
+        meta: {
+          title: "动态网格水",
+          activePath: "/highClass/dynamicWater",
+        },
+      },
+      {
+        path: "wind3D",
+        name: "highClass_wind3D",
+        component: () => import("@/views/highClass/wind3D.vue"),
+        meta: {
+          title: "3D风场",
+          activePath: "/highClass/wind3D",
+        },
+      },
+      {
+        path: "roaming",
+        name: "highClass_roaming",
+        component: () => import("@/views/highClass/roaming.vue"),
+        meta: {
+          title: "插值运动",
+          activePath: "/highClass/roaming",
+        },
+      },
+    ],
+  },
+  {
+    path: "/models",
+    component: EmptyRouterView,
+    meta: {
+      title: "模型",
+    },
+    children: [
+      {
+        path: "czml",
+        name: "models_czml",
+        component: () => import("@/views/models/czml.vue"),
+        meta: {
+          title: "卫星轨道czml",
+          activePath: "/models/czml",
+        },
+      },
+    ],
+  },
 ];
 
 export default routes;

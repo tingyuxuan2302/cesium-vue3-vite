@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
- * @LastEditors: 不浪 897411954@qq.com
- * @LastEditTime: 2025-02-08 16:42:15
+ * @LastEditors: brown 897411954@qq.com
+ * @LastEditTime: 2025-02-16 19:11:43
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -382,6 +382,15 @@ const routes = [
         meta: {
           title: "插值运动",
           activePath: "/highClass/roaming",
+        },
+      },
+      {
+        path: "videoProjection",
+        name: "highClass_videoProjection",
+        component: () => import("@/views/highClass/videoProjection.vue"),
+        meta: {
+          title: "视频投射",
+          activePath: "/highClass/videoProjection",
         },
       },
     ],

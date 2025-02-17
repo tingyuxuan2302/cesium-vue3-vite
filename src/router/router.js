@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: brown 897411954@qq.com
- * @LastEditTime: 2025-02-16 19:11:43
+ * @LastEditTime: 2025-02-17 21:30:19
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -391,6 +391,15 @@ const routes = [
         meta: {
           title: "视频投射",
           activePath: "/highClass/videoProjection",
+        },
+      },
+      {
+        path: "defineRoad",
+        name: "highClass_defineRoad",
+        component: () => import("@/views/highClass/defineRoad.vue"),
+        meta: {
+          title: "自动化生成道路",
+          activePath: "/highClass/defineRoad",
         },
       },
     ],

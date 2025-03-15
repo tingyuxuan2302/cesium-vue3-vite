@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: brown 897411954@qq.com
- * @LastEditTime: 2025-02-17 21:30:19
+ * @LastEditTime: 2025-03-15 14:25:40
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -348,6 +348,15 @@ const routes = [
           activePath: "/analysis/elevation",
         },
       },
+      {
+        path: "visibleRange",
+        name: "analysis_visibleRange",
+        component: () => import("@/views/analysis/visibleRange.vue"),
+        meta: {
+          title: "可视域分析",
+          activePath: "/analysis/visibleRange",
+        },
+      },
     ],
   },
   {
@@ -400,6 +409,15 @@ const routes = [
         meta: {
           title: "自动化生成道路",
           activePath: "/highClass/defineRoad",
+        },
+      },
+      {
+        path: "radarEmission",
+        name: "highClass_radarEmission",
+        component: () => import("@/views/highClass/radarEmission.vue"),
+        meta: {
+          title: "雷达发射波",
+          activePath: "/highClass/radarEmission",
         },
       },
     ],

@@ -76,7 +76,7 @@ function initFloor() {
   const entity1 = viewer.entities.add({
     position: position1,
     model: {
-      uri: "//data.mars3d.cn/gltf/mars/floor/top.glb",
+      uri: "/models/top.glb",
       scale: 1,
     },
   });

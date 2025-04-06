@@ -7,12 +7,11 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { ref } from "vue";
 import dayjs from "dayjs";
 import Clock from "@/utils/cesiumCtrl/clock.js";
-const store = useStore();
-const { viewer } = store.state;
+
+const { viewer } = window;
 
 new Clock(viewer);
 
@@ -53,5 +52,4 @@ new Clock(viewer);
     <el-button type="primary" @click="onClear">清除</el-button> -->
   </operate-box>
 </template>
-<style scoped lang='less'>
-</style>
+<style scoped lang="less"></style>

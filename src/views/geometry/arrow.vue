@@ -7,12 +7,10 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref } from "vue";
 import Arrow from "@/utils/cesiumCtrl/drawArrow/drawPlot";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 onMounted(() => {
   viewer.scene.terrainProvider = new Cesium.CesiumTerrainProvider({

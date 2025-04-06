@@ -6,26 +6,26 @@
  * @LastEditTime: 2023-01-04 18:17:07
 -->
 <script setup>
-import FogEffect from "@/utils/cesiumCtrl/fog.js"
-import { useStore } from "vuex"
-import { onUnmounted } from "vue"
-import { Color } from "cesium"
+import FogEffect from "@/utils/cesiumCtrl/fog.js";
 
-const store = useStore()
-const instance = new FogEffect(store.state.viewer, {
+import { onUnmounted } from "vue";
+import { Color } from "cesium";
+
+const { viewer } = window;
+const instance = new FogEffect(viewer, {
   visibility: 0.2,
-  color: new Color(0.8, 0.8, 0.8, 0.3)
-})
+  color: new Color(0.8, 0.8, 0.8, 0.3),
+});
 
 const hide = () => {
-  instance.show(false)
-}
+  instance.show(false);
+};
 const start = () => {
-  instance.show(true)
-}
+  instance.show(true);
+};
 onUnmounted(() => {
-  instance.destroy()
-})
+  instance.destroy();
+});
 </script>
 <template>
   <div class="container">

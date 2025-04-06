@@ -7,12 +7,10 @@
 -->
 <script setup>
 import { ref } from "vue";
-import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import Dialog from "@/utils/cesiumCtrl/dialog";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const dialogs = ref();
 
 const set3Dtitle3 = () => {
@@ -157,5 +155,4 @@ handler.setInputAction((e) => {
     <el-button type="primary" @click="onShowInfo">展示楼层</el-button>
   </operate-box>
 </template>
-<style lang='less' scoped>
-</style>
+<style lang="less" scoped></style>

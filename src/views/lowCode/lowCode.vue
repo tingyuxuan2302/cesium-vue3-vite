@@ -7,20 +7,18 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { ref } from "vue";
 
 import Marks from "./components/marks.vue";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 </script>
 <template>
   <div class="set-box">
     <Marks></Marks>
   </div>
 </template>
-<style scoped lang='less'>
+<style scoped lang="less">
 .set-box {
   position: absolute;
   z-index: 100;

@@ -1,10 +1,9 @@
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref } from "vue";
 
-const store = useStore();
-const { viewer } = store.state;
+
+const { viewer } = window;
 
 viewer.camera.setView({
   destination: Cesium.Cartesian3.fromDegrees(

@@ -7,14 +7,12 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref, onBeforeMount, onMounted } from "vue";
 import "@/utils/cesiumCtrl/lineMaterial.js";
 import LineFlickerMaterialProperty from "@/utils/cesiumCtrl/lineMaterial.js";
 import { getGeojson } from "@/common/api/api.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const jsonUrl = "/json/qdRoad_less.geojson";
 
 onMounted(() => {

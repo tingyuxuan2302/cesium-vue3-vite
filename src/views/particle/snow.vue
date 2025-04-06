@@ -2,28 +2,29 @@
  * @Descripttion: 
  * @Author: 笙痞
  * @Date: 2023-01-04 11:07:05
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 17:59:58
+ * @LastEditors: brown 897411954@qq.com
+ * @LastEditTime: 2025-03-29 19:54:41
 -->
 <script setup>
-import SnowEffect from "@/utils/cesiumCtrl/snow.js"
-import { useStore } from "vuex"
-import { onUnmounted } from "vue"
+import SnowEffect from "@/utils/cesiumCtrl/snow.js";
 
+import { onUnmounted } from "vue";
+
+const { viewer } = window;
 onUnmounted(() => {
-  snow.destroy()
-})
-const store = useStore()
-const snow = new SnowEffect(store.state.viewer, {
+  snow.destroy();
+});
+
+const snow = new SnowEffect(viewer, {
   snowSize: 0.02, // 雪花大小
   snowSpeed: 60.0, // 雪速
-})
+});
 const hide = () => {
-  snow.show(false)
-}
+  snow.show(false);
+};
 const start = () => {
-  snow.show(true)
-}
+  snow.show(true);
+};
 </script>
 <template>
   <div class="container">

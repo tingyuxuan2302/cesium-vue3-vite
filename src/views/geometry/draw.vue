@@ -7,12 +7,10 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref } from "vue";
 import DrawTool from "@/utils/cesiumCtrl/drawGraphic";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const drawTool = new DrawTool(viewer);
 
 onUnmounted(() => {

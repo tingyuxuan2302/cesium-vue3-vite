@@ -8,7 +8,6 @@
 
 <script setup>
 import { nextTick, onUnmounted, ref } from "vue";
-import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
 import PrimitiveCluster from "@/utils/cesiumCtrl/primitiveCluster";
@@ -17,9 +16,8 @@ import Dialog from "@/utils/cesiumCtrl/dialog";
 // 聚合实现：https://blog.csdn.net/qq_53979889/article/details/126173439#comments_24834053
 // 聚合实现：https://www.jianshu.com/p/80d40c447657
 
-const store = useStore();
 // viewer就是cesium实例化之后的场景示例，我把他存在了vuex的store中
-const { viewer } = store.state;
+const { viewer } = window;
 const dialogs = ref();
 // 先把广告牌实例化，然后再添加到场景中
 const billboardsCollection = viewer.scene.primitives.add(

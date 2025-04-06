@@ -7,11 +7,9 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref, onMounted } from "vue";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 onUnmounted(() => {
   onClear();

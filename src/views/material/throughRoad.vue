@@ -7,14 +7,12 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 import RoadThroughLine from "@/utils/cesiumCtrl/roadThrough.js";
 import { getGeojson } from "@/common/api/api.js";
 import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 // const jsonUrl = "/json/qdRoad_less.geojson";
 const jsonUrl = "/json/qingdaoRoad.geojson";

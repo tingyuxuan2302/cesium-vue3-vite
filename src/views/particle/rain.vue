@@ -2,30 +2,30 @@
  * @Descripttion: 
  * @Author: 笙痞
  * @Date: 2023-01-04 11:07:05
- * @LastEditors: 笙痞
- * @LastEditTime: 2023-01-04 18:00:10
+ * @LastEditors: brown 897411954@qq.com
+ * @LastEditTime: 2025-03-29 20:00:24
 -->
 <script setup>
-import RainEffect from "@/utils/cesiumCtrl/rain.js"
-import { useStore } from "vuex"
-import { onUnmounted } from "vue"
+import RainEffect from "@/utils/cesiumCtrl/rain.js";
 
-const store = useStore()
-const instance = new RainEffect(store.state.viewer, {
+import { onUnmounted } from "vue";
+
+const { viewer } = window;
+const instance = new RainEffect(viewer, {
   tiltAngle: -0.2, //倾斜角度
   rainSize: 1.0, // 雨大小
-  rainSpeed: 120.0 // 雨速
-})
+  rainSpeed: 120.0, // 雨速
+});
 
 const hide = () => {
-  instance.show(false)
-}
+  instance.show(false);
+};
 const start = () => {
-  instance.show(true)
-}
+  instance.show(true);
+};
 onUnmounted(() => {
-  instance.destroy()
-})
+  instance.destroy();
+});
 </script>
 <template>
   <div class="container">

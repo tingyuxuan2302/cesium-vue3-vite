@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: brown 897411954@qq.com
- * @LastEditTime: 2025-03-15 14:25:40
+ * @LastEditTime: 2025-03-29 20:08:14
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -418,6 +418,24 @@ const routes = [
         meta: {
           title: "雷达发射波",
           activePath: "/highClass/radarEmission",
+        },
+      },
+      {
+        path: "viewFrustum",
+        name: "highClass_viewFrustum",
+        component: () => import("@/views/highClass/viewFrustum.vue"),
+        meta: {
+          title: "GUI视锥体",
+          activePath: "/highClass/viewFrustum",
+        },
+      },
+      {
+        path: "floorDivide",
+        name: "highClass_floorDivide",
+        component: () => import("@/views/highClass/floorDivide.vue"),
+        meta: {
+          title: "楼栋分层",
+          activePath: "/highClass/floorDivide",
         },
       },
     ],

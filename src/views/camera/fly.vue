@@ -6,13 +6,10 @@
  * @LastEditTime: 2023-01-05 11:12:32
 -->
 <script setup>
-import { ref } from 'vue'
-import { useStore } from "vuex"
-import * as Cesium from "cesium"
+import { ref } from "vue";
+import * as Cesium from "cesium";
 
-const store = useStore()
-const { viewer } = store.state
-
+const { viewer } = window;
 
 viewer.camera.flyTo({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
@@ -26,11 +23,9 @@ viewer.camera.flyTo({
     roll: 0.0, // 左右
   },
   duration: 3, // 飞行时间（s）
-})
+});
 </script>
 <template>
   <div></div>
 </template>
-<style lang='less' scoped>
-
-</style>
+<style lang="less" scoped></style>

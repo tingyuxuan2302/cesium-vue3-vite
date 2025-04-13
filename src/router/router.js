@@ -438,6 +438,15 @@ const routes = [
           activePath: "/highClass/floorDivide",
         },
       },
+      {
+        path: "potholing",
+        name: "highClass_potholing",
+        component: () => import("@/views/highClass/potholing.vue"),
+        meta: {
+          title: "地形挖洞",
+          activePath: "/highClass/potholing",
+        },
+      },
     ],
   },
   {

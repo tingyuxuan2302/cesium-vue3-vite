@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
- * @LastEditors: brown 897411954@qq.com
- * @LastEditTime: 2025-03-29 20:08:14
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-04-21 21:50:36
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -445,6 +445,15 @@ const routes = [
         meta: {
           title: "地形挖洞",
           activePath: "/highClass/potholing",
+        },
+      },
+      {
+        path: "loadgif",
+        name: "highClass_loadgif",
+        component: () => import("@/views/highClass/loadgif.vue"),
+        meta: {
+          title: "gif动图",
+          activePath: "/highClass/loadgif",
         },
       },
     ],

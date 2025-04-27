@@ -3,7 +3,7 @@
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
  * @LastEditors: 不浪 897411954@qq.com
- * @LastEditTime: 2025-04-21 21:50:36
+ * @LastEditTime: 2025-04-27 11:02:22
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -454,6 +454,15 @@ const routes = [
         meta: {
           title: "gif动图",
           activePath: "/highClass/loadgif",
+        },
+      },
+      {
+        path: "typhoon",
+        name: "highClass_typhoon",
+        component: () => import("@/views/highClass/typhoon.vue"),
+        meta: {
+          title: "台风气象模拟",
+          activePath: "/highClass/typhoon",
         },
       },
     ],

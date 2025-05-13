@@ -7,13 +7,11 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref } from "vue";
 import CircleDiffusion from "@/utils/cesiumCtrl/diffuse.js";
 import { COORDINATE } from "@/common/constant.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 viewer.camera.setView({
   // 从以度为单位的经度和纬度值返回笛卡尔3位置。

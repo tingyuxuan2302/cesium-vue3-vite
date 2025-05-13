@@ -7,12 +7,10 @@
 -->
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
-import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import MeasureTool from "@/utils/cesiumCtrl/measure.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const measure = new MeasureTool(viewer);
 
 onUnmounted(() => {

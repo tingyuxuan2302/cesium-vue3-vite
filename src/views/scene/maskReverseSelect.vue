@@ -7,13 +7,11 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
 import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
 
 onMounted(() => {

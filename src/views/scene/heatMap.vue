@@ -7,14 +7,12 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
 import { CesiumHeatmap } from "@/utils/cesiumCtrl/cesiumHeatMap.js";
 // import { CesiumHeatmap } from "cesium-heatmap-es6";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 let cesiumHeatMap = null;
 const getData = async () => {
   const { res } = await getGeojson("/json/heatMap.json");
@@ -55,6 +53,4 @@ onUnmounted(() => {
   </operate-box>
 </template>
 
-<style scoped lang='less'>
-</style>
-
+<style scoped lang="less"></style>

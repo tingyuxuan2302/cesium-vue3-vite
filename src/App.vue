@@ -2,12 +2,11 @@
  * @Descripttion: 
  * @Author: 笙痞
  * @Date: 2022-10-13 16:07:57
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 20:01:06
+ * @LastEditors: brown 897411954@qq.com
+ * @LastEditTime: 2025-03-29 20:00:41
 -->
 <script setup>
 import { onMounted } from "vue";
-import store from "@/store/store.js";
 import * as Cesium from "cesium";
 import CesiumTerrainProviderEdit from "./utils/cesiumCtrl/flat/CesiumTerrainProviderEdit.js";
 
@@ -35,6 +34,11 @@ const init = () => {
     // contextOptions: {
     //   requestWebgl1: true,
     // },
+    baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+      Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+        Cesium.ArcGisBaseMapType.SATELLITE
+      )
+    ),
   });
   // 不显示底图
   // viewer.imageryLayers.get(0).show = false;
@@ -43,8 +47,6 @@ const init = () => {
   // 显示帧率
   viewer.scene.debugShowFramesPerSecond = true;
   viewer.scene.globe.depthTestAgainstTerrain = true;
-  window.__viewer = viewer
-  store.commit("initViewer", viewer);
   // 外天空盒
   viewer.scene.skyBox = new Cesium.SkyBox({
     sources: {
@@ -67,9 +69,9 @@ const init = () => {
     const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
     console.log(
       "经度：" +
-      Cesium.Math.toDegrees(randiansPos.longitude) +
-      ", 纬度：" +
-      Cesium.Math.toDegrees(randiansPos.latitude)
+        Cesium.Math.toDegrees(randiansPos.longitude) +
+        ", 纬度：" +
+        Cesium.Math.toDegrees(randiansPos.latitude)
     );
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };

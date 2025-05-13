@@ -2,14 +2,12 @@
   <div></div>
 </template>
 <script setup>
-import { ref } from 'vue'
-import * as Cesium from 'cesium'
+import { ref } from "vue";
+import * as Cesium from "cesium";
 import Erosion from "@/utils/cesiumCtrl/Erosion.js";
 import * as dat from "dat.gui";
-import { useStore } from "vuex";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 const createSquareRectangle = (centerLon, centerLat, sideLength) => {
   // 将边长转换为度
@@ -27,7 +25,7 @@ const createSquareRectangle = (centerLon, centerLat, sideLength) => {
 
   // 返回[west, south, east, north]格式的数组
   return [west, south, east, north];
-}
+};
 
 const config = {
   minElevation: 1153.0408311859962,
@@ -45,16 +43,17 @@ const getImageSource = async () => {
     maxElevation: config.maxElevation,
     canvas: image,
   };
-}
+};
 
 // const viewer = new Cesium.Viewer("cesiumContainer", {
 //   terrainProvider: await Cesium.CesiumTerrainProvider.fromIonAssetId(1, {
 //     requestVertexNormals: true,
 //   }),
 // });
-viewer.scene.terrainProvider = await Cesium.CesiumTerrainProvider.fromIonAssetId(1, {
-  requestVertexNormals: true,
-})
+viewer.scene.terrainProvider =
+  await Cesium.CesiumTerrainProvider.fromIonAssetId(1, {
+    requestVertexNormals: true,
+  });
 viewer.scene.msaaSamples = 4;
 viewer.scene.highDynamicRange = true;
 viewer.postProcessStages.fxaa.enabled = true;
@@ -130,10 +129,7 @@ for (let i = 0; i < pointsLength; ++i) {
   );
   midpoint = Cesium.Cartesian3.multiplyByScalar(midpoint, 0.5, midpoint);
 
-  const up = Cesium.Cartesian3.normalize(
-    midpoint,
-    new Cesium.Cartesian3()
-  );
+  const up = Cesium.Cartesian3.normalize(midpoint, new Cesium.Cartesian3());
   let right = Cesium.Cartesian3.subtract(
     points[nextIndex],
     midpoint,
@@ -141,19 +137,12 @@ for (let i = 0; i < pointsLength; ++i) {
   );
   right = Cesium.Cartesian3.normalize(right, right);
 
-  let normal = Cesium.Cartesian3.cross(
-    right,
-    up,
-    new Cesium.Cartesian3()
-  );
+  let normal = Cesium.Cartesian3.cross(right, up, new Cesium.Cartesian3());
   normal = Cesium.Cartesian3.normalize(normal, normal);
 
   // Compute distance by pretending the plane is at the origin
   const originCenteredPlane = new Cesium.Plane(normal, 0.0);
-  const distance = Cesium.Plane.getPointDistance(
-    originCenteredPlane,
-    midpoint
-  );
+  const distance = Cesium.Plane.getPointDistance(originCenteredPlane, midpoint);
 
   clippingPlanes.push(new Cesium.ClippingPlane(normal, distance));
 }
@@ -165,4 +154,4 @@ globe.clippingPlanes = new Cesium.ClippingPlaneCollection({
 });
 globe.backFaceCulling = true;
 </script>
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

@@ -9,15 +9,12 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref } from "vue";
 import DrawTool from "@/utils/cesiumCtrl/drawGraphic";
-import {PlanishArea} from "@/utils/cesiumCtrl/flat/PlanishArea";
-import {TilesetPlanish} from "@/utils/cesiumCtrl/flat/TilesetPlanish";
+import { PlanishArea } from "@/utils/cesiumCtrl/flat/PlanishArea";
+import { TilesetPlanish } from "@/utils/cesiumCtrl/flat/TilesetPlanish";
 
-
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const drawTool = new DrawTool(viewer);
 const planishArea = new PlanishArea();
 let tilesetPlanish = null;
@@ -28,20 +25,19 @@ const getDrawPolygon = (e) => {
   drawTool.clearAll();
   clearPlanish();
   const coords = e.polygon.hierarchy.getValue().positions; //获取绘制区域世界坐标
-  planishArea.name = '测试';
+  planishArea.name = "测试";
   planishArea.area = coords;
   planishArea.height = height.value;
-  tilesetPlanish.addRegionEditsDataArr([planishArea]);  //添加压平数据并进行地形压平处理
-}
+  tilesetPlanish.addRegionEditsDataArr([planishArea]); //添加压平数据并进行地形压平处理
+};
 
-
- /**
+/**
  * 清除压平
  */
 const clearPlanish = () => {
   tilesetPlanish.removeRegionEditsData(planishArea.uuid);
   drawTool.clearAll();
-}
+};
 const set3Dtitle3 = () => {
   let translation = Cesium.Cartesian3.fromArray([0, 0, 0]);
   let m = Cesium.Matrix4.fromTranslation(translation);
@@ -109,10 +105,21 @@ onUnmounted(() => {
 </script>
 <template>
   <operate-box>
-    <div style="background-color: red; color: aliceblue;">注意：如果从地形压平跳转过来需要手动刷新一下页面，否则压平效果可能不生效</div>
-    <div style="color: aliceblue;">高度设置(由于海拔原因高度为0不一定可以达到压平效果,可根据实际情况调节高度)</div>
-    <el-input label="高度设置" type="number" v-model="height" style="width: 100px;"></el-input>
-    <el-button type="primary" @click="drawTool.activate('Polygon', getDrawPolygon)"
+    <div style="background-color: red; color: aliceblue">
+      注意：如果从地形压平跳转过来需要手动刷新一下页面，否则压平效果可能不生效
+    </div>
+    <div style="color: aliceblue">
+      高度设置(由于海拔原因高度为0不一定可以达到压平效果,可根据实际情况调节高度)
+    </div>
+    <el-input
+      label="高度设置"
+      type="number"
+      v-model="height"
+      style="width: 100px"
+    ></el-input>
+    <el-button
+      type="primary"
+      @click="drawTool.activate('Polygon', getDrawPolygon)"
       >开始绘制</el-button
     >
     <el-button type="primary" @click="clearPlanish()">清除</el-button>

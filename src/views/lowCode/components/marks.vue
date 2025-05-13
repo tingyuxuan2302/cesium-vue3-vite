@@ -1,13 +1,11 @@
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { ref, watch } from "vue";
 import { getMarksJson } from "@/common/api/marks.js";
 import { ElMessage } from "element-plus";
 import { BASE_URL } from "@/common/constant";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const dialogShow = ref(false);
 const fileList = ref([]);
 const photoList = ref([]);
@@ -139,5 +137,4 @@ const photoSuccess = (res, file) => {
     </el-form>
   </el-dialog>
 </template>
-<style scoped lang='less'>
-</style>
+<style scoped lang="less"></style>

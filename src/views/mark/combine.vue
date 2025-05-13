@@ -7,14 +7,12 @@
 -->
 <script setup>
 import { ref, h, onUnmounted } from "vue";
-import { useStore } from "vuex";
 import * as Cesium from "cesium";
 import Dialog from "@/utils/cesiumCtrl/dialog";
 import DialogContent from "./components/DialogContent.vue";
 
-const store = useStore();
 const dialogs = ref();
-const { viewer } = store.state;
+const { viewer } = window;
 const initCluster = () => {
   viewer.dataSources.add(
     new Cesium.GeoJsonDataSource()

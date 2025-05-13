@@ -2,8 +2,8 @@
  * @Descripttion:
  * @Author: 笙痞
  * @Date: 2022-10-13 16:54:33
- * @LastEditors: 笙痞77
- * @LastEditTime: 2023-11-22 15:30:35
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-04-27 11:02:22
  */
 const EmptyRouterView = () =>
   import("@/views/routerViews/emptyRouterViews.vue");
@@ -204,6 +204,15 @@ const routes = [
           activePath: "/material/fence",
         },
       },
+      {
+        path: "wallPolygonDiffuse",
+        name: "material_wallPolygonDiffuse",
+        component: () => import("@/views/material/wallPolygonDiffuse.vue"),
+        meta: {
+          title: "多边形扩散墙",
+          activePath: "/material/wallPolygonDiffuse",
+        },
+      },
     ],
   },
   {
@@ -339,6 +348,15 @@ const routes = [
           activePath: "/analysis/elevation",
         },
       },
+      {
+        path: "visibleRange",
+        name: "analysis_visibleRange",
+        component: () => import("@/views/analysis/visibleRange.vue"),
+        meta: {
+          title: "可视域分析",
+          activePath: "/analysis/visibleRange",
+        },
+      },
     ],
   },
   {
@@ -373,6 +391,78 @@ const routes = [
         meta: {
           title: "插值运动",
           activePath: "/highClass/roaming",
+        },
+      },
+      {
+        path: "videoProjection",
+        name: "highClass_videoProjection",
+        component: () => import("@/views/highClass/videoProjection.vue"),
+        meta: {
+          title: "视频投射",
+          activePath: "/highClass/videoProjection",
+        },
+      },
+      {
+        path: "defineRoad",
+        name: "highClass_defineRoad",
+        component: () => import("@/views/highClass/defineRoad.vue"),
+        meta: {
+          title: "自动化生成道路",
+          activePath: "/highClass/defineRoad",
+        },
+      },
+      {
+        path: "radarEmission",
+        name: "highClass_radarEmission",
+        component: () => import("@/views/highClass/radarEmission.vue"),
+        meta: {
+          title: "雷达发射波",
+          activePath: "/highClass/radarEmission",
+        },
+      },
+      {
+        path: "viewFrustum",
+        name: "highClass_viewFrustum",
+        component: () => import("@/views/highClass/viewFrustum.vue"),
+        meta: {
+          title: "GUI视锥体",
+          activePath: "/highClass/viewFrustum",
+        },
+      },
+      {
+        path: "floorDivide",
+        name: "highClass_floorDivide",
+        component: () => import("@/views/highClass/floorDivide.vue"),
+        meta: {
+          title: "楼栋分层",
+          activePath: "/highClass/floorDivide",
+        },
+      },
+      {
+        path: "potholing",
+        name: "highClass_potholing",
+        component: () => import("@/views/highClass/potholing.vue"),
+        meta: {
+          title: "地形挖洞",
+          activePath: "/highClass/potholing",
+        },
+      },
+      {
+        path: "loadgif",
+        name: "highClass_loadgif",
+        component: () => import("@/views/highClass/loadgif.vue"),
+        meta: {
+          title: "gif动图",
+          activePath: "/highClass/loadgif",
+        },
+      },
+      {
+        path: "typhoon",
+        name: "highClass_typhoon",
+        component: () => import("@/views/highClass/typhoon.vue"),
+        meta: {
+          title: "台风气象模拟",
+          activePath: "/highClass/typhoon",
         },
       },
     ],

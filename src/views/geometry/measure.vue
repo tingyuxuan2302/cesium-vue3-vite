@@ -7,12 +7,10 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref, onBeforeMount, watch } from "vue";
 import MeasureTool from "@/utils/cesiumCtrl/measure.js";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 onBeforeMount(() => {
   viewer.scene.terrainProvider = new Cesium.EllipsoidTerrainProvider({});
@@ -40,7 +38,7 @@ const onLineMeasure = () => {
 const onAreaMeasure = () => {
   measure.drawAreaMeasureGraphics({
     clampToGround: true,
-    callback: () => { },
+    callback: () => {},
   });
 };
 /**
@@ -48,7 +46,7 @@ const onAreaMeasure = () => {
  */
 const onTrianglesMeasure = () => {
   measure.drawTrianglesMeasureGraphics({
-    callback: () => { },
+    callback: () => {},
   });
 };
 const onClear = () => {

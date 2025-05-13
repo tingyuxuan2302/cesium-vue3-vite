@@ -20,44 +20,44 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onMounted, onUnmounted, ref } from "vue";
 import DrawTool from "@/utils/cesiumCtrl/drawGraphic";
-import {PlanishArea} from "@/utils/cesiumCtrl/flat/PlanishArea";
+import { PlanishArea } from "@/utils/cesiumCtrl/flat/PlanishArea";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 const drawTool = new DrawTool(viewer);
 const planishArea = new PlanishArea();
 let height = ref(0);
 viewer.camera.flyTo({
-  destination: Cesium.Cartesian3.fromDegrees(114.261160,22.965522,5000),
-  orientation : {
-        heading : Cesium.Math.toRadians(175.0),
-        pitch : Cesium.Math.toRadians(-35.0),
-        roll : 0.0
-    }
+  destination: Cesium.Cartesian3.fromDegrees(114.26116, 22.965522, 5000),
+  orientation: {
+    heading: Cesium.Math.toRadians(175.0),
+    pitch: Cesium.Math.toRadians(-35.0),
+    roll: 0.0,
+  },
 });
 //获取绘制完成回调，拿到绘制面数据
 const getDrawPolygon = (e) => {
   drawTool.clearAll();
   clearPlanish();
-  const coords = e.polygon.hierarchy.getValue().positions.map(position => Cesium.Cartographic.fromCartesian(position));
+  const coords = e.polygon.hierarchy
+    .getValue()
+    .positions.map((position) => Cesium.Cartographic.fromCartesian(position));
   let areaData = [];
-  coords.forEach(cartographic => {
+  coords.forEach((cartographic) => {
     // 弧度转为经纬度
     let lon = Cesium.Math.toDegrees(cartographic.longitude);
     let lat = Cesium.Math.toDegrees(cartographic.latitude);
     areaData.push(lon);
     areaData.push(lat);
   });
-  planishArea.name = '测试';
+  planishArea.name = "测试";
   planishArea.area = areaData;
   planishArea.height = height.value;
   savePlanish(planishArea.uuid, areaData, planishArea.height);
-}
+};
 
- /**
+/**
  * 进行地形压平处理
  * @param uuid 唯一标识符
  * @param areaData 压平区域数据
@@ -68,8 +68,8 @@ const savePlanish = (uuid, areaData, height) => {
   // 进行压平处理
   terrainProvider.addTerrainEditsData(uuid, areaData, height);
   viewer.scene.globe._surface.invalidateAllTiles();
-}
- /**
+};
+/**
  * 清除压平
  */
 const clearPlanish = () => {
@@ -77,7 +77,7 @@ const clearPlanish = () => {
   terrainProvider.removeTerrainEditsData(planishArea.uuid);
   viewer.scene.globe._surface.invalidateAllTiles();
   drawTool.clearAll();
-}
+};
 onUnmounted(() => {
   drawTool.clearAll();
   clearPlanish();
@@ -85,9 +85,16 @@ onUnmounted(() => {
 </script>
 <template>
   <operate-box>
-    <div style="color: aliceblue;">高度设置(默认设置为0代表压平处理)</div>
-    <el-input label="高度设置" type="number" v-model="height" style="width: 100px;"></el-input>
-    <el-button type="primary" @click="drawTool.activate('Polygon', getDrawPolygon)"
+    <div style="color: aliceblue">高度设置(默认设置为0代表压平处理)</div>
+    <el-input
+      label="高度设置"
+      type="number"
+      v-model="height"
+      style="width: 100px"
+    ></el-input>
+    <el-button
+      type="primary"
+      @click="drawTool.activate('Polygon', getDrawPolygon)"
       >开始绘制</el-button
     >
     <el-button type="primary" @click="clearPlanish()">清除</el-button>

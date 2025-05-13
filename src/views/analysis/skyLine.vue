@@ -7,13 +7,12 @@
 -->
 <script setup>
 import * as Cesium from "cesium";
-import { useStore } from "vuex";
 import { onUnmounted, ref, onMounted } from "vue";
 import SkyLineAnalysis from "@/utils/cesiumCtrl/skyLineAnalysis.js";
 import { sleep } from "@/common/utils.js";
 
-const store = useStore();
-const { viewer } = store.state;
+
+const { viewer } = window;
 
 let skyLineIns;
 

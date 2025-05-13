@@ -2,8 +2,8 @@
  * @Description:
  * @Author: 笙痞77
  * @Date: 2023-06-05 11:16:24
- * @LastEditors: 笙痞77
- * @LastEditTime: 2025-01-13 17:25:20
+ * @LastEditors: 不浪 897411954@qq.com
+ * @LastEditTime: 2025-02-08 14:08:13
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -13,7 +13,6 @@ import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import path from "path";
 import cesium from "vite-plugin-cesium";
 import viteCompression from "vite-plugin-compression";
-import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // import viteImagemin from "vite-plugin-imagemin";
 

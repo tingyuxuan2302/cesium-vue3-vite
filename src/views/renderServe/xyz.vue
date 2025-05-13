@@ -7,11 +7,9 @@
 -->
 <script setup>
 import { onMounted, ref, onUnmounted } from "vue";
-import { useStore } from "vuex";
 import * as Cesium from "cesium";
 
-const store = useStore();
-const { viewer } = store.state;
+const { viewer } = window;
 
 const imageryProvider = new Cesium.UrlTemplateImageryProvider({
   url: new Cesium.Resource({

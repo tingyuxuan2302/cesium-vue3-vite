@@ -1,5 +1,5 @@
 import * as Cesium from "cesium";
-const { __viewer } = window;
+const { viewer } = window;
 export const latlng = {};
 
 /**
@@ -49,10 +49,10 @@ latlng.getCurrentMousePosition = function (scene, position, noPickEntity) {
 
 /**
  * 提取地球中心点坐标
- * @param {Cesium.Viewer} __viewer
+ * @param {Cesium.Viewer} viewer
  * */
-latlng.getCenter = function (__viewer) {
-  var scene = __viewer.scene;
+latlng.getCenter = function (viewer) {
+  var scene = viewer.scene;
   var target = pickCenterPoint(scene);
   var bestTarget = target;
   if (!bestTarget) {
@@ -68,7 +68,7 @@ latlng.getCenter = function (__viewer) {
   // 获取地球中心点世界位置  与  摄像机的世界位置  之间的距离
   var distance = Cesium.Cartesian3.distance(
     bestTarget,
-    __viewer.scene.camera.positionWC
+    viewer.scene.camera.positionWC
   );
   result.cameraZ = distance;
 
@@ -89,9 +89,9 @@ function pickCenterPoint(scene) {
 
 /**
  * 提取地球视域边界
- * @param {Cesium.Viewer} __viewer
+ * @param {Cesium.Viewer} viewer
  * */
-latlng.getExtent = function (__viewer) {
+latlng.getExtent = function (viewer) {
   // 范围对象
   var extent = {
     xmin: 70,
@@ -101,14 +101,14 @@ latlng.getExtent = function (__viewer) {
   }; //默认值：中国区域
 
   // 得到当前三维场景
-  var scene = __viewer.scene;
+  var scene = viewer.scene;
 
   // 得到当前三维场景的椭球体
   var ellipsoid = scene.globe.ellipsoid;
   var canvas = scene.canvas;
 
   // canvas左上角
-  var car3_lt = __viewer.camera.pickEllipsoid(
+  var car3_lt = viewer.camera.pickEllipsoid(
     new Cesium.Cartesian2(0, 0),
     ellipsoid
   );
@@ -126,7 +126,7 @@ latlng.getExtent = function (__viewer) {
     // 这里每次10像素递加，一是10像素相差不大，二是为了提高程序运行效率
     for (var yIdx = 0; yIdx <= yMax; yIdx += 10) {
       var xIdx = yIdx <= xMax ? yIdx : xMax;
-      car3_lt2 = __viewer.camera.pickEllipsoid(
+      car3_lt2 = viewer.camera.pickEllipsoid(
         new Cesium.Cartesian2(xIdx, yIdx),
         ellipsoid
       );
@@ -140,7 +140,7 @@ latlng.getExtent = function (__viewer) {
   }
 
   // canvas右下角
-  var car3_rb = __viewer.camera.pickEllipsoid(
+  var car3_rb = viewer.camera.pickEllipsoid(
     new Cesium.Cartesian2(canvas.width, canvas.height),
     ellipsoid
   );
@@ -158,7 +158,7 @@ latlng.getExtent = function (__viewer) {
     // 这里每次10像素递减，一是10像素相差不大，二是为了提高程序运行效率
     for (var yIdx = canvas.height; yIdx >= yMax; yIdx -= 10) {
       var xIdx = yIdx >= xMax ? yIdx : xMax;
-      car3_rb2 = __viewer.camera.pickEllipsoid(
+      car3_rb2 = viewer.camera.pickEllipsoid(
         new Cesium.Cartesian2(xIdx, yIdx),
         ellipsoid
       );
@@ -187,11 +187,11 @@ latlng.getExtent = function (__viewer) {
 };
 /**
  * 提取视域边界
- * @param {Cesium.Viewer} __viewer
+ * @param {Cesium.Viewer} viewer
  *
  * */
-latlng.getViewBounds = function (__viewer) {
-  var rectangle = __viewer.camera.computeViewRectangle();
+latlng.getViewBounds = function (viewer) {
+  var rectangle = viewer.camera.computeViewRectangle();
   // 弧度转为经纬度，west为左（西）侧边界的经度，以下类推
   var west = (rectangle.west / Math.PI) * 180;
   var north = (rectangle.north / Math.PI) * 180;
@@ -213,11 +213,11 @@ latlng.getViewBounds = function (__viewer) {
 
 /**
  * 提取相机视角范围参数
- * @param {Cesium.Viewer} __viewer
+ * @param {Cesium.Viewer} viewer
  *
  * */
-latlng.getCameraView = function (__viewer) {
-  var camera = __viewer.camera;
+latlng.getCameraView = function (viewer) {
+  var camera = viewer.camera;
   var position = camera.positionCartographic;
 
   var bookmark = {};
@@ -247,10 +247,10 @@ latlng.formatPositon = function (position) {
 };
 
 //笛卡尔转经纬度/弧度
-latlng.Cartesian3To = function (cartesian3, __viewer) {
+latlng.Cartesian3To = function (cartesian3, viewer) {
   if (cartesian3) {
-    if (__viewer) {
-      var ellipsoid = __viewer.scene.globe.ellipsoid;
+    if (viewer) {
+      var ellipsoid = viewer.scene.globe.ellipsoid;
       var cartographic;
       //转弧度
       cartographic = ellipsoid.cartesianToCartographic(cartesian3);
@@ -275,46 +275,46 @@ latlng.Cartesian3To = function (cartesian3, __viewer) {
 //绕点 环绕飞行
 latlng.windingPoint = {
   isStart: false,
-  __viewer: null,
-  start: function (__viewer, point) {
-    if (!point) point = latlng.getCenter(__viewer);
+  viewer: null,
+  start: function (viewer, point) {
+    if (!point) point = latlng.getCenter(viewer);
 
-    this.__viewer = __viewer;
+    this.viewer = viewer;
     this.position = Cesium.Cartesian3.fromDegrees(point.x, point.y, point.z);
 
     this.distance =
       point.distance ||
-      Cesium.Cartesian3.distance(this.position, __viewer.camera.positionWC); // 给定相机距离点多少距离飞行
+      Cesium.Cartesian3.distance(this.position, viewer.camera.positionWC); // 给定相机距离点多少距离飞行
     this.angle = 360 / (point.time || 60); //time：给定飞行一周所需时间(单位 秒)
 
-    this.time = __viewer.clock.currentTime.clone();
-    this.heading = __viewer.camera.heading; // 相机的当前heading
-    this.pitch = __viewer.camera.pitch;
+    this.time = viewer.clock.currentTime.clone();
+    this.heading = viewer.camera.heading; // 相机的当前heading
+    this.pitch = viewer.camera.pitch;
 
-    this.__viewer.clock.onTick.addEventListener(this.clock_onTickHandler, this);
+    this.viewer.clock.onTick.addEventListener(this.clock_onTickHandler, this);
     this.isStart = true;
   },
   clock_onTickHandler: function (e) {
     var delTime = Cesium.JulianDate.secondsDifference(
-      this.__viewer.clock.currentTime,
+      this.viewer.clock.currentTime,
       this.time
     ); // 当前已经过去的时间，单位 秒
     var heading = Cesium.Math.toRadians(delTime * this.angle) + this.heading;
 
-    this.__viewer.scene.camera.setView({
+    this.viewer.scene.camera.setView({
       destination: this.position, // 点的坐标
       orientation: {
         heading: heading,
         pitch: this.pitch,
       },
     });
-    this.__viewer.scene.camera.moveBackward(this.distance);
+    this.viewer.scene.camera.moveBackward(this.distance);
   },
   stop: function () {
     if (!this.isStart) return;
 
-    if (this.__viewer)
-      this.__viewer.clock.onTick.removeEventListener(
+    if (this.viewer)
+      this.viewer.clock.onTick.removeEventListener(
         this.clock_onTickHandler,
         this
       );
@@ -325,30 +325,30 @@ latlng.windingPoint = {
 //固定点 向四周旋转
 latlng.aroundPoint = {
   isStart: false,
-  __viewer: null,
-  start: function (__viewer, point) {
-    if (!point) point = latlng.getCenter(__viewer);
+  viewer: null,
+  start: function (viewer, point) {
+    if (!point) point = latlng.getCenter(viewer);
 
-    this.__viewer = __viewer;
+    this.viewer = viewer;
     this.position = Cesium.Cartesian3.fromDegrees(point.x, point.y, point.z);
 
     this.angle = 360 / (point.time || 60); //time：给定飞行一周所需时间(单位 秒)
 
-    this.time = __viewer.clock.currentTime.clone();
-    this.heading = __viewer.camera.heading; // 相机的当前heading
-    this.pitch = __viewer.camera.pitch;
+    this.time = viewer.clock.currentTime.clone();
+    this.heading = viewer.camera.heading; // 相机的当前heading
+    this.pitch = viewer.camera.pitch;
 
-    this.__viewer.clock.onTick.addEventListener(this.clock_onTickHandler, this);
+    this.viewer.clock.onTick.addEventListener(this.clock_onTickHandler, this);
     this.isStart = true;
   },
   clock_onTickHandler: function (e) {
     // 当前已经过去的时间，单位s
     var delTime = Cesium.JulianDate.secondsDifference(
-      this.__viewer.clock.currentTime,
+      this.viewer.clock.currentTime,
       this.time
     );
     var heading = Cesium.Math.toRadians(delTime * this.angle) + this.heading;
-    __viewer.scene.camera.setView({
+    viewer.scene.camera.setView({
       orientation: {
         heading: heading,
         pitch: this.pitch,
@@ -358,8 +358,8 @@ latlng.aroundPoint = {
   stop: function () {
     if (!this.isStart) return;
 
-    if (this.__viewer)
-      this.__viewer.clock.onTick.removeEventListener(
+    if (this.viewer)
+      this.viewer.clock.onTick.removeEventListener(
         this.clock_onTickHandler,
         this
       );

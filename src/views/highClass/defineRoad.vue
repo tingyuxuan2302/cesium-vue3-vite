@@ -9,9 +9,9 @@ import * as Cesium from "cesium";
 import axios from "axios";
 import * as turf from "@turf/turf";
 
-const { __viewer } = window;
+const { viewer } = window;
 // 目的地带方向
-__viewer.camera.setView({
+viewer.camera.setView({
   destination: Cesium.Cartesian3.fromDegrees(117.2, 31.8, 3000),
 });
 
@@ -43,7 +43,7 @@ function initRoad(arr) {
 
   var luKuan = 30;
   var nArr2 = [];
-  var ellipsoid = __viewer.scene.globe.ellipsoid;
+  var ellipsoid = viewer.scene.globe.ellipsoid;
   arr.forEach((element) => {
     var catographic = Cesium.Cartographic.fromCartesian(element);
     var height = Number(catographic.height.toFixed(2));
@@ -69,7 +69,7 @@ function initRoad(arr) {
     kkk1.push(v[0]);
     kkk1.push(v[1]);
   });
-  __viewer.entities.add({
+  viewer.entities.add({
     polygon: {
       hierarchy: Cesium.Cartesian3.fromDegreesArray(kkk1),
       material: new Cesium.Color(81 / 255, 81 / 255, 81 / 255, 1),
@@ -94,7 +94,7 @@ function initRoad(arr) {
     kkkk2.push(v[0]);
     kkkk2.push(v[1]);
   });
-  __viewer.entities.add({
+  viewer.entities.add({
     polygon: {
       hierarchy: {
         positions: Cesium.Cartesian3.fromDegreesArray(kkkk1),
@@ -130,7 +130,7 @@ function initRoad(arr) {
     kkkk4.push(v[0]);
     kkkk4.push(v[1]);
   });
-  __viewer.entities.add({
+  viewer.entities.add({
     polygon: {
       hierarchy: {
         positions: Cesium.Cartesian3.fromDegreesArray(kkkk3),
@@ -158,7 +158,7 @@ function initRoad(arr) {
     kkkk1.push(v[0]);
     kkkk1.push(v[1]);
   });
-  __viewer.entities.add({
+  viewer.entities.add({
     polygon: {
       hierarchy: Cesium.Cartesian3.fromDegreesArray(kkkk1),
       material: new Cesium.ImageMaterialProperty({

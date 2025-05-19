@@ -3,18 +3,18 @@
   <div></div>
 </template>
 <script setup>
-import { ref } from 'vue'
-import * as Cesium from 'cesium'
+import { ref } from "vue";
+import * as Cesium from "cesium";
 
-const { __viewer } = window
+const { viewer } = window;
 
 function map_common_addDatasouce(datasouceName) {
-  let datasouce = __viewer.dataSources._dataSources.find(t => {
+  let datasouce = viewer.dataSources._dataSources.find((t) => {
     return t && t.name == datasouceName;
   });
   if (!datasouce) {
     datasouce = new Cesium.CustomDataSource(datasouceName);
-    __viewer.dataSources.add(datasouce);
+    viewer.dataSources.add(datasouce);
   }
   return datasouce;
 }
@@ -31,29 +31,43 @@ function DynamicWallMaterialProperty(options) {
   this.color = options.color || Cesium.Color.BLUE;
   this.duration = options.duration || 1000;
   this.trailImage = options.trailImage;
-  this._time = (new Date()).getTime();
+  this._time = new Date().getTime();
 }
 
 /**
  * 带方向的墙体
  * @param {*} options.get:true/false
- * @param {*} options.count:数量 
+ * @param {*} options.count:数量
  * @param {*} options.freely:vertical/standard
  * @param {*} options.direction:+/-
  */
 function _getDirectionWallShader(options) {
   if (options && options.get) {
-    var materail = "czm_material czm_getMaterial(czm_materialInput materialInput)\n\
+    var materail =
+      "czm_material czm_getMaterial(czm_materialInput materialInput)\n\
       {\n\
           czm_material material = czm_getDefaultMaterial(materialInput);\n\
           vec2 st = materialInput.st;";
-    if (options.freely == "vertical") { //（由下到上）
-      materail += "vec4 colorImage = texture(image, vec2(fract(st.s), fract(float(" + options.count + ")*st.t" + options.direction + " time)));\n\ ";
-    } else { //（逆时针）
-      materail += "vec4 colorImage = texture(image, vec2(fract(float(" + options.count + ")*st.s " + options.direction + " time), fract(st.t)));\n\ ";
+    if (options.freely == "vertical") {
+      //（由下到上）
+      materail +=
+        "vec4 colorImage = texture(image, vec2(fract(st.s), fract(float(" +
+        options.count +
+        ")*st.t" +
+        options.direction +
+        " time)));\n\ ";
+    } else {
+      //（逆时针）
+      materail +=
+        "vec4 colorImage = texture(image, vec2(fract(float(" +
+        options.count +
+        ")*st.s " +
+        options.direction +
+        " time), fract(st.t)));\n\ ";
     }
     //泛光
-    materail += "vec4 fragColor;\n\
+    materail +=
+      "vec4 fragColor;\n\
           fragColor.rgb = (colorImage.rgb+color.rgb) / 1.0;\n\
           fragColor = czm_gammaCorrect(fragColor);\n\
           material.diffuse = colorImage.rgb;\n\
@@ -61,7 +75,7 @@ function _getDirectionWallShader(options) {
           material.emission = fragColor.rgb;\n\
           return material;\n\
       }";
-    return materail
+    return materail;
   }
 }
 
@@ -69,17 +83,17 @@ Object.defineProperties(DynamicWallMaterialProperty.prototype, {
   isConstant: {
     get: function () {
       return false;
-    }
+    },
   },
   definitionChanged: {
     get: function () {
       return this._definitionChanged;
-    }
+    },
   },
-  color: Cesium.createPropertyDescriptor('color')
+  color: Cesium.createPropertyDescriptor("color"),
 });
 
-var MaterialType = 'wallType' + parseInt(Math.random() * 1000);
+var MaterialType = "wallType" + parseInt(Math.random() * 1000);
 DynamicWallMaterialProperty.prototype.getType = function (time) {
   return MaterialType;
 };
@@ -88,19 +102,27 @@ DynamicWallMaterialProperty.prototype.getValue = function (time, result) {
   if (!Cesium.defined(result)) {
     result = {};
   }
-  result.color = Cesium.Property.getValueOrClonedDefault(this._color, time, Cesium.Color.WHITE, result.color);
+  result.color = Cesium.Property.getValueOrClonedDefault(
+    this._color,
+    time,
+    Cesium.Color.WHITE,
+    result.color
+  );
   result.image = this.trailImage;
   if (this.duration) {
-    result.time = (((new Date()).getTime() - this._time) % this.duration) / this.duration;
+    result.time =
+      ((new Date().getTime() - this._time) % this.duration) / this.duration;
   }
-  __viewer.scene.requestRender();
+  viewer.scene.requestRender();
   return result;
 };
 
 DynamicWallMaterialProperty.prototype.equals = function (other) {
-  return this === other ||
-    (other instanceof DynamicWallMaterialProperty
-      && Cesium.Property.equals(this._color, other._color))
+  return (
+    this === other ||
+    (other instanceof DynamicWallMaterialProperty &&
+      Cesium.Property.equals(this._color, other._color))
+  );
 };
 
 Cesium.Material._materialCache.addMaterial(MaterialType, {
@@ -109,58 +131,34 @@ Cesium.Material._materialCache.addMaterial(MaterialType, {
     uniforms: {
       color: new Cesium.Color(1.0, 0.0, 0.0, 0.1),
       image: Cesium.Material.DefaultImageId,
-      time: -20
+      time: -20,
     },
     source: _getDirectionWallShader({
       get: true,
       count: 3.0,
-      freely: 'vertical',
-      direction: '-'
-    })
+      freely: "vertical",
+      direction: "-",
+    }),
   },
   translucent: function (material) {
     return true;
-  }
+  },
 });
 // Cesium.DynamicWallMaterialProperty = DynamicWallMaterialProperty;
 
 //加载范围
 function loadWall() {
   let data = [
-    [
-      104.0185546875,
-      30.66235300961486
-    ],
-    [
-      104.01589393615723,
-      30.65652022496456
-    ],
-    [
-      104.029541015625,
-      30.65053940942565
-    ],
-    [
-      104.0397548675537,
-      30.65777541087788
-    ],
-    [
-      104.03829574584961,
-      30.66604446357028
-    ],
-    [
-      104.0255069732666,
-      30.667963963897005
-    ],
-    [
-      104.0185546875,
-      30.66235300961486
-    ]
-  ]
-  let coor = Array.prototype.concat.apply(
-    [],
-    data
-  );
-  let datasouce = map_common_addDatasouce('wall');
+    [104.0185546875, 30.66235300961486],
+    [104.01589393615723, 30.65652022496456],
+    [104.029541015625, 30.65053940942565],
+    [104.0397548675537, 30.65777541087788],
+    [104.03829574584961, 30.66604446357028],
+    [104.0255069732666, 30.667963963897005],
+    [104.0185546875, 30.66235300961486],
+  ];
+  let coor = Array.prototype.concat.apply([], data);
+  let datasouce = map_common_addDatasouce("wall");
 
   datasouce.entities.add({
     wall: {
@@ -174,18 +172,22 @@ function loadWall() {
       //   transparent: true,//设置透明
       //   image: "./fence-wall-2.png",
       //   repeat: new Cesium.Cartesian2(1.0, 1),
-      // }), 
+      // }),
 
       // 动态
-      material: new DynamicWallMaterialProperty({ trailImage: "/images/wall.png", color: Cesium.Color.CYAN, duration: 1500 })
+      material: new DynamicWallMaterialProperty({
+        trailImage: "/images/wall.png",
+        color: Cesium.Color.CYAN,
+        duration: 1500,
+      }),
     },
   });
 }
 loadWall();
-//设置相机位置及方向  
-__viewer.camera.flyTo({
+//设置相机位置及方向
+viewer.camera.flyTo({
   destination: Cesium.Cartesian3.fromDegrees(104.02, 30.655, 5000),
   duration: 2,
 });
 </script>
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

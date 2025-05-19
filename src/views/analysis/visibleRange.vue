@@ -4,15 +4,15 @@ import * as Cesium from "cesium";
 import "@/utils/cesiumCtrl/latlng.js";
 import ViewShed from "@/utils/cesiumCtrl/ViewShed.js";
 
-const { __viewer } = window;
+const { viewer } = window;
 
-__viewer.terrainProvider = await Cesium.createWorldTerrainAsync({
+viewer.terrainProvider = await Cesium.createWorldTerrainAsync({
   requestVertexNormals: true, // 请求法线，用于地形光照
 });
 // 深度监测
-__viewer.scene.globe.depthTestAgainstTerrain = true;
+viewer.scene.globe.depthTestAgainstTerrain = true;
 
-// __viewer.camera.setView({
+// viewer.camera.setView({
 //   // 从以度为单位的经度和纬度值返回笛卡尔3位置。
 //   destination: Cesium.Cartesian3.fromDegrees(120.58, 36.13, 4000),
 // });
@@ -23,7 +23,7 @@ var options = {
   qdOffset: 2,
   zdOffset: 2,
 };
-var viewshed2 = new ViewShed(__viewer, options);
+var viewshed2 = new ViewShed(viewer, options);
 viewsheds.push(viewshed2);
 
 // function click_clear() {
@@ -42,11 +42,11 @@ const set3Dtitle3 = () => {
     show: true, // 是否显示图块集(默认true)
   };
   const tileset = new Cesium.Cesium3DTileset(tilesetJson);
-  __viewer.flyTo(tileset);
+  viewer.flyTo(tileset);
   // 异步加载
   tileset.readyPromise
     .then(function (tileset) {
-      __viewer.scene.primitives.add(tileset);
+      viewer.scene.primitives.add(tileset);
     })
     .catch(function (error) {
       console.log(error);

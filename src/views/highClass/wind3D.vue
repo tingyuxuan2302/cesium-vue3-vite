@@ -35,7 +35,7 @@ fetch("/json/2024122600.json")
   .then((res) => res.json())
   .then((res) => {
     windLayer = new CesiumWind(res, { windOptions });
-    windLayer.addTo(window.__viewer);
+    windLayer.addTo(window.viewer);
     // windLayer.remove();
   });
 </script>

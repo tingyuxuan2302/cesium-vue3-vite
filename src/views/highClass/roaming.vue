@@ -8,29 +8,29 @@
   </OperateBox>
 </template>
 <script setup>
-import { ref } from 'vue'
-import Roaming from '@/utils/cesiumCtrl/Roaming.js'
-import * as Cesium from 'cesium'
+import { ref } from "vue";
+import Roaming from "@/utils/cesiumCtrl/Roaming.js";
+import * as Cesium from "cesium";
 import { getGeojson } from "@/common/api/api.js";
 
-const { __viewer } = window
+const { viewer } = window;
 
-var roaming = new Roaming(__viewer, { time: 30 });
+var roaming = new Roaming(viewer, { time: 30 });
 const onStart = () => {
   getGeojson("/json/roaming.json").then(({ res }) => {
-    cameraRoaming(res)
+    cameraRoaming(res);
   });
-}
+};
 
 function cameraRoaming(obj) {
   let arr = obj.features[0].geometry.coordinates;
-  let a111 = []
+  let a111 = [];
   arr.forEach((k) => {
-    a111.push(Cesium.Cartesian3.fromDegrees(k[0], k[1], 1000))
-  })
+    a111.push(Cesium.Cartesian3.fromDegrees(k[0], k[1], 1000));
+  });
   roaming.modelRoaming({
     model: {
-      uri: '/models/Cesium_Air.glb',
+      uri: "/models/Cesium_Air.glb",
       scale: 30,
       silhouetteSize: 5, //边框大小
       silhouetteColor: Cesium.Color.fromCssColorString("#001aff"), //边框
@@ -41,15 +41,15 @@ function cameraRoaming(obj) {
     },
     polyline: {
       show: true,
-      material: Cesium.Color.RED
-    }
-  })
+      material: Cesium.Color.RED,
+    },
+  });
 }
 const pauseOrContinue = (params) => {
-  roaming.PauseOrContinue(params)
-}
+  roaming.PauseOrContinue(params);
+};
 const endRoaming = () => {
-  roaming.EndRoaming()
-}
+  roaming.EndRoaming();
+};
 </script>
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

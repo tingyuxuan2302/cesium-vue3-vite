@@ -13,10 +13,10 @@ import CesiumVideo from "@/utils/cesiumCtrl/Video.js";
 import * as Cesium from "cesium";
 import { ref } from "vue";
 
-const { __viewer } = window;
+const { viewer } = window;
 const video_dom = ref(null);
 const onStart = () => {
-  __viewer.camera.setView({
+  viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(85.788705, 45.163394, 2000),
   });
   var options = {
@@ -26,7 +26,7 @@ const onStart = () => {
     viewPosition: Cesium.Cartesian3.fromDegrees(85.788705, 45.161394, 900),
     viewPositionEnd: Cesium.Cartesian3.fromDegrees(85.788705, 45.167394, 500),
   };
-  const v = new CesiumVideo(__viewer, options);
+  const v = new CesiumVideo(viewer, options);
   v.drawVideo();
 
   // 播放

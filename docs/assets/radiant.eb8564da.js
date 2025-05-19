@@ -1,0 +1,34 @@
+var M=Object.defineProperty;var E=(a,e,i)=>e in a?M(a,e,{enumerable:!0,configurable:!0,writable:!0,value:i}):a[e]=i;var n=(a,e,i)=>(E(a,typeof e!="symbol"?e+"":e,i),i);import{_ as S}from"./OperateBox.0986405a.js";import{a as T,o as b,c as x,w as C,d as h,e as _}from"./index.fe5814f1.js";import{E as I}from"./el-button.af2fec77.js";import{C as v}from"./constant.b790157a.js";class W{constructor(e,i){n(this,"viewer");n(this,"id");n(this,"duration");n(this,"maxRadius");n(this,"pointDraged");n(this,"leftDownFlag");n(this,"update_position");this.viewer=e,this.id=i,this.duration=1e3,this.maxRadius=1e3,this.pointDraged=null,this.leftDownFlag=!1}change_duration(e){this.duration=e}change_color(e){const i=this.viewer.entities.getById(this.id);i._ellipse._material.color=new Cesium.Color.fromCssColorString(e)}change_position(e){const i=Cesium.Cartesian3.fromDegrees(parseFloat(e[0]),parseFloat(e[1]),parseFloat(e[2])),r=this.viewer.entities.getById(this.id);r.position=i}del(){this.viewer.entities.removeById(this.id)}add(e,i,r,l,u=!1){const t=this;if(this.duration=l,this.maxRadius=r,!u)return;function o(d){t.pointDraged=t.viewer.scene.pick(d.position),t.pointDraged&&t.pointDraged.id&&t.pointDraged.id.id===t.id&&(t.leftDownFlag=!0,t.viewer.scene.screenSpaceCameraController.enableRotate=!1)}function s(d){t.leftDownFlag=!1,t.pointDraged=null,t.viewer.scene.screenSpaceCameraController.enableRotate=!0}function m(d){if(t.leftDownFlag===!0&&t.pointDraged!==null&&t.pointDraged!==void 0){const w=t.viewer.camera.getPickRay(d.endPosition),g=t.viewer.scene.globe.pick(w,t.viewer.scene);t.pointDraged.id.position=g;const f=t.viewer.scene.globe.ellipsoid.cartesianToCartographic(g),D=Cesium.Math.toDegrees(f.latitude),y=Cesium.Math.toDegrees(f.longitude);let p=f.height;p=p<0?0:p,t.update_position&&t.update_position([y.toFixed(8),D.toFixed(8),p])}}this.viewer.screenSpaceEventHandler.setInputAction(o,Cesium.ScreenSpaceEventType.LEFT_DOWN),this.viewer.screenSpaceEventHandler.setInputAction(s,Cesium.ScreenSpaceEventType.LEFT_UP),this.viewer.screenSpaceEventHandler.setInputAction(m,Cesium.ScreenSpaceEventType.MOUSE_MOVE)}}function c(a){this._definitionChanged=new Cesium.Event,this._color=void 0,this._colorSubscription=void 0,this.color=a.color,this.duration=Cesium.defaultValue(a.duration,1e3),this.count=Cesium.defaultValue(a.count,2),this.count<=0&&(this.count=1),this.gradient=Cesium.defaultValue(a.gradient,.1),this.gradient===0&&(this.gradient=0),this.gradient>1&&(this.gradient=1),this._time=new Date().getTime()}Object.defineProperties(c.prototype,{isConstant:{get:function(){return!1}},definitionChanged:{get:function(){return this._definitionChanged}},color:Cesium.createPropertyDescriptor("color"),duration:Cesium.createPropertyDescriptor("duration"),count:Cesium.createPropertyDescriptor("count")});c.prototype.getType=function(a){return Cesium.Material.CircleWaveMaterialType};c.prototype.getValue=function(a,e){return Cesium.defined(e)||(e={}),e.color=Cesium.Property.getValueOrClonedDefault(this._color,a,Cesium.Color.WHITE,e.color),e.time=(new Date().getTime()-this._time)%this.duration/this.duration,e.count=this.count,e.gradient=1+10*(1-this.gradient),e};c.prototype.equals=function(a){return this===a||a instanceof c&&Cesium.Property.equals(this._color,a._color)};Cesium.Material.CircleWaveMaterialType="CircleWaveMaterial";Cesium.Material.CircleWaveSource=`
+                                  czm_material czm_getMaterial(czm_materialInput materialInput) {
+                                    czm_material material = czm_getDefaultMaterial(materialInput);
+                                    material.diffuse = 1.5 * color.rgb;
+                                    vec2 st = materialInput.st;
+                                    vec3 str = materialInput.str;
+                                    float dis = distance(st, vec2(0.5, 0.5));
+                                    float per = fract(time);
+                                    if (abs(str.z) > 0.001) {
+                                      discard;
+                                    }
+                                    if (dis > 0.5) {
+                                      discard;
+                                    } else {
+                                      float perDis = 0.5 / count;
+                                      float disNum;
+                                      float bl = .0;
+                                      for (int i = 0; i <= 9; i++) {
+                                        if (float(i) <= count) {
+                                          disNum = perDis *float(i) - dis + per / count;
+                                          if (disNum > 0.0) {
+                                            if (disNum < perDis) {
+                                              bl = 1.0 - disNum / perDis;
+                                            } else if(disNum - perDis < perDis) {
+                                              bl = 1.0 - abs(1.0 - disNum / perDis);
+                                            }
+                                            material.alpha = pow(bl, gradient);
+                                          }
+                                        }
+                                      }
+                                    }
+                                    return material;
+                                  }
+                                  `;Cesium.Material._materialCache.addMaterial(Cesium.Material.CircleWaveMaterialType,{fabric:{type:Cesium.Material.CircleWaveMaterialType,uniforms:{color:new Cesium.Color(1,0,0,1),time:1,count:1,gradient:.1},source:Cesium.Material.CircleWaveSource},translucent:function(a){return!0}});class F extends W{constructor(i,r){super(i,r);n(this,"count")}change_duration(i){super.change_duration(i);const r=this.viewer.entities.getById(this.id);r._ellipse._material.duration=i}change_waveCount(i){const r=this.viewer.entities.getById(this.id);r._ellipse._material.count=i}add(i,r,l,u,t=!1,o=3){super.add(i,r,l,u,t);const s=this;this.count=o,this.viewer.entities.add({id:s.id,position:Cesium.Cartesian3.fromDegrees(i[0],i[1],i[2]),ellipse:{semiMinorAxis:new Cesium.CallbackProperty(function(m){return s.maxRadius},!1),semiMajorAxis:new Cesium.CallbackProperty(function(m){return s.maxRadius},!1),material:new c({duration:u,gradient:.5,color:new Cesium.Color.fromCssColorString(r),count:o})}})}}const B={__name:"radiant",setup(a){const{viewer:e}=window;e.camera.setView({destination:Cesium.Cartesian3.fromDegrees(...v,1e4)});let i=new F(e,"cirCleWave1");const r=()=>{i.add([...v,10],"red",1e3,3e3)};r();const l=()=>{i.del("cirCleWave1")};return T(()=>{l()}),(u,t)=>{const o=I,s=S;return b(),x(s,null,{default:C(()=>[h(o,{type:"primary",onClick:r},{default:C(()=>t[0]||(t[0]=[_("\u6E32\u67D3")])),_:1}),h(o,{type:"primary",onClick:l},{default:C(()=>t[1]||(t[1]=[_("\u6E05\u9664")])),_:1})]),_:1})}}};export{B as default};

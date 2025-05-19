@@ -1,0 +1,13 @@
+import{_ as d}from"./OperateBox.0986405a.js";import{C,a as f,o as _,c as y,w as n,d as c,e as u}from"./index.fe5814f1.js";import{E as M}from"./el-button.af2fec77.js";import"./request.6255f877.js";import"./axios.a5b46551.js";class o{constructor(e){this._definitionChanged=new Cesium.Event,this._color=void 0,this._speed=void 0,this.color=e.color,this.speed=e.speed}get isConstant(){return!1}get definitionChanged(){return this._definitionChanged}getType(e){return Cesium.Material.LineFlickerMaterialType}getValue(e,r){return Cesium.defined(r)||(r={}),r.color=Cesium.Property.getValueOrDefault(this._color,e,Cesium.Color.RED,r.color),r.speed=Cesium.Property.getValueOrDefault(this._speed,e,5,r.speed),r}equals(e){return this===e||e instanceof o&&Cesium.Property.equals(this._color,e._color)&&Cesium.Property.equals(this._speed,e._speed)}}Object.defineProperties(o.prototype,{color:Cesium.createPropertyDescriptor("color"),speed:Cesium.createPropertyDescriptor("speed")});Cesium.Material.LineFlickerMaterialProperty="LineFlickerMaterialProperty";Cesium.Material.LineFlickerMaterialType="LineFlickerMaterialType";Cesium.Material.LineFlickerMaterialSource=`
+uniform vec4 color;
+uniform float speed;
+czm_material czm_getMaterial(czm_materialInput materialInput){
+czm_material material = czm_getDefaultMaterial(materialInput);
+float time = fract( czm_frameNumber  *  speed / 1000.0);
+vec2 st = materialInput.st;
+float scalar = smoothstep(0.0,1.0,time);
+material.diffuse = color.rgb * scalar;
+material.alpha = color.a * scalar ;
+return material;
+}
+`;Cesium.Material._materialCache.addMaterial(Cesium.Material.LineFlickerMaterialType,{fabric:{type:Cesium.Material.LineFlickerMaterialType,uniforms:{color:new Cesium.Color(1,0,0,1),speed:5},source:Cesium.Material.LineFlickerMaterialSource},translucent:function(m){return!0}});const h="/cesium-vue3-vite/json/qdRoad_less.geojson",v={__name:"highlightRoad",setup(m){const{viewer:e}=window;C(()=>{e.scene.terrainProvider=new Cesium.EllipsoidTerrainProvider({})}),e.camera.setView({destination:Cesium.Cartesian3.fromDegrees(120.188,36.67,2e5)});let r=null;const p=()=>{r=new Cesium.GeoJsonDataSource,r.load(h).then(function(l){const t=l.entities.values;for(let i=0;i<t.length;i++){let a=t[i];a.polyline.width=3,a.polyline.material=new o({color:Cesium.Color.YELLOW,speed:20*Math.random()})}}),e.dataSources.add(r)},s=()=>{e.dataSources.remove(r)};return f(()=>{s(),e.scene.terrainProvider=new Cesium.CesiumTerrainProvider({url:"http://data.marsgis.cn/terrain"})}),(l,t)=>{const i=M,a=d;return _(),y(a,null,{default:n(()=>[c(i,{type:"primary",onClick:p},{default:n(()=>t[0]||(t[0]=[u("\u5F00\u59CB")])),_:1}),c(i,{type:"primary",onClick:s},{default:n(()=>t[1]||(t[1]=[u("\u6E05\u9664")])),_:1})]),_:1})}}};export{v as default};
